@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     const session = await getServerSession(authOptions);
 
@@ -10,7 +10,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const accessToken = (session.user as any).discordAccessToken;
+    const accessToken = (session.user as { discordAccessToken?: string }).discordAccessToken;
 
     if (!accessToken) {
       return NextResponse.json({ error: 'No access token' }, { status: 401 });
@@ -29,7 +29,7 @@ export async function GET(request: NextRequest) {
     const guilds = await response.json();
 
     // Filter guilds where user has MANAGE_SERVER permission (0x20)
-    const manageableGuilds = guilds.filter((guild: any) => {
+    const manageableGuilds = guilds.filter((guild: { permissions: string; owner: boolean }) => {
       const permission = BigInt(guild.permissions);
       return (permission & 0x20n) === 0x20n || guild.owner;
     });
