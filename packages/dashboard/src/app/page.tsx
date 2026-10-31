@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { signIn, useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
-import { Music, Shield, Zap, Users, Play, ChevronRight, Disc, Headphones, Radio, Clock, Settings, Bot, Crown } from 'lucide-react';
+import { Music, Shield, Zap, Users, Play, ChevronRight, Headphones, Radio, Clock, Settings, Bot, Crown } from 'lucide-react';
 import { initScrollAnimations } from '@/lib/scroll-animations';
 
 function Mark() {
