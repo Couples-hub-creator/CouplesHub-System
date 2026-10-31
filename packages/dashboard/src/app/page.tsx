@@ -1,148 +1,78 @@
 'use client';
 
-import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
 import Link from 'next/link';
+import { signIn, useSession } from 'next-auth/react';
+
+function Mark() {
+  return (
+    <span className="brand-mark" aria-hidden="true">
+      <svg viewBox="0 0 32 32" fill="none"><path d="M16 3.5 27 9.8v12.4L16 28.5 5 22.2V9.8L16 3.5Z" stroke="currentColor" strokeWidth="1.4"/><path d="m11 20.5 5-11 5 11m-8-4.2h6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+    </span>
+  );
+}
 
 export default function Home() {
-  const { data: session, status } = useSession();
-  const router = useRouter();
-
-  useEffect(() => {
-    if (status === 'authenticated') {
-      router.push('/dashboard');
-    }
-  }, [status, router]);
-
-  if (status === 'loading') {
-    return (
-      <main className="min-h-screen bg-gradient-to-br from-purple-900 via-pink-800 to-red-700 flex items-center justify-center">
-        <div className="text-white text-2xl">Loading...</div>
-      </main>
-    );
-  }
+  const { status } = useSession();
+  const continueToDashboard = () => {
+    if (status === 'authenticated') window.location.assign('/dashboard');
+    else void signIn('discord', { callbackUrl: '/dashboard' });
+  };
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-purple-900 via-pink-800 to-red-700">
-      {/* Navigation */}
-      <nav className="bg-white/10 backdrop-blur-lg border-b border-white/20">
-        <div className="container mx-auto px-6 py-4">
-          <div className="flex justify-between items-center">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-pink-500 to-purple-600 rounded-xl flex items-center justify-center">
-                <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-                </svg>
-              </div>
-              <span className="text-2xl font-bold text-white">CouplesHub</span>
-            </div>
-            <div className="flex items-center gap-6">
-              <Link href="/features" className="text-white/80 hover:text-white transition">Features</Link>
-              <Link href="/pricing" className="text-white/80 hover:text-white transition">Pricing</Link>
-              <Link
-                href="/auth/signin"
-                className="bg-gradient-to-r from-pink-500 to-purple-600 text-white px-6 py-2 rounded-lg font-bold hover:opacity-90 transition"
-              >
-                Sign In
-              </Link>
-            </div>
-          </div>
+    <main className="site-shell">
+      <div className="ambient ambient-one" />
+      <div className="ambient ambient-two" />
+      <nav className="topbar page-width">
+        <Link href="/" className="brand"><Mark /><span>CAPITAL</span></Link>
+        <div className="top-links">
+          <Link href="/features">Platform</Link>
+          <Link href="/pricing">Plans</Link>
+          <Link href="/invite">Add Bot</Link>
         </div>
+        <button className="button button-quiet nav-login" onClick={continueToDashboard}>
+          {status === 'authenticated' ? 'Open dashboard' : 'Sign in'} <span aria-hidden="true">↗</span>
+        </button>
       </nav>
 
-      {/* Hero Section */}
-      <div className="container mx-auto px-6 py-32">
-        <div className="text-center max-w-4xl mx-auto">
-          <h1 className="text-7xl font-bold text-white mb-6 leading-tight">
-            The Ultimate
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-300 to-purple-300">
-              {' '}Discord Bot
-            </span>
-          </h1>
-          <p className="text-2xl text-white/70 mb-12">
-            Premium bot with 50+ features including music, moderation, economy, leveling, and more.
-            Perfect for communities of all sizes.
-          </p>
-          <div className="flex gap-4 justify-center">
-            <Link
-              href="/auth/signin"
-              className="bg-gradient-to-r from-pink-500 to-purple-600 text-white px-8 py-4 rounded-xl font-bold text-lg hover:opacity-90 transition transform hover:scale-105"
-            >
-              Get Started Free
-            </Link>
-            <Link
-              href="/features"
-              className="bg-white/20 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-white/30 transition"
-            >
-              View Features
-            </Link>
+      <section className="hero page-width">
+        <div className="hero-copy">
+          <div className="eyebrow"><span className="status-dot" /> BUILT FOR COMMUNITIES THAT RUN WELL</div>
+          <h1>Command your<br /><span>community.</span></h1>
+          <p className="hero-lede">A considered control room for your Discord server. Music and moderation live in the bot; server access starts with your Discord account.</p>
+          <div className="hero-actions">
+            <Link href="/invite" className="button button-gold">Add to Discord <span aria-hidden="true">→</span></Link>
+            <button className="button button-outline" onClick={continueToDashboard}>Open Dashboard</button>
           </div>
+          <div className="hero-caption"><span className="caption-rule" /> SERVER CONTROL, WITH CLARITY</div>
         </div>
 
-        {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mt-20 max-w-4xl mx-auto">
-          <div className="text-center">
-            <div className="text-5xl font-bold text-white mb-2">50+</div>
-            <div className="text-white/70">Features</div>
+        <div className="hero-visual" aria-label="CAPITAL platform preview">
+          <div className="orbit orbit-a" /><div className="orbit orbit-b" />
+          <div className="preview-card">
+            <div className="preview-head"><span className="preview-label">CAPITAL / CONTROL</span><span className="live-chip">PLATFORM PREVIEW</span></div>
+            <div className="preview-title">Your community,<br />in good hands.</div>
+            <div className="preview-divider" />
+            <div className="preview-row"><span className="preview-icon">01</span><div><b>Server access</b><small>Sign in securely with Discord</small></div><span className="row-arrow">↗</span></div>
+            <div className="preview-row"><span className="preview-icon">02</span><div><b>Music controls</b><small>Slash commands in your server</small></div><span className="row-arrow">↗</span></div>
+            <div className="preview-row"><span className="preview-icon">03</span><div><b>Moderation tools</b><small>Built for careful administration</small></div><span className="row-arrow">↗</span></div>
+            <div className="preview-footer"><span>DISCORD NATIVE</span><span>DESIGNED TO SCALE</span></div>
           </div>
-          <div className="text-center">
-            <div className="text-5xl font-bold text-white mb-2">99.9%</div>
-            <div className="text-white/70">Uptime</div>
-          </div>
-          <div className="text-center">
-            <div className="text-5xl font-bold text-white mb-2">10K+</div>
-            <div className="text-white/70">Servers</div>
-          </div>
-          <div className="text-center">
-            <div className="text-5xl font-bold text-white mb-2">24/7</div>
-            <div className="text-white/70">Support</div>
-          </div>
+          <div className="floating-note"><span className="note-symbol">✳</span><span><b>One clear view</b><small>Less noise. More control.</small></span></div>
         </div>
-      </div>
+      </section>
 
-      {/* Features Preview */}
-      <div className="container mx-auto px-6 py-20">
-        <h2 className="text-4xl font-bold text-white text-center mb-12">Why Choose CouplesHub?</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 border border-white/20">
-            <div className="text-5xl mb-4">🎵</div>
-            <h3 className="text-2xl font-bold text-white mb-3">Premium Music</h3>
-            <p className="text-white/70">High-quality music from multiple sources with advanced queue management and audio filters.</p>
-          </div>
-          <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 border border-white/20">
-            <div className="text-5xl mb-4">🛡️</div>
-            <h3 className="text-2xl font-bold text-white mb-3">Smart Moderation</h3>
-            <p className="text-white/70">AI-powered auto-moderation with custom punishments and comprehensive logging.</p>
-          </div>
-          <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 border border-white/20">
-            <div className="text-5xl mb-4">⭐</div>
-            <h3 className="text-2xl font-bold text-white mb-3">Engagement</h3>
-            <p className="text-white/70">Economy, leveling, and fun features to keep your community active and engaged.</p>
-          </div>
-        </div>
-      </div>
+      <section className="proof-strip page-width" id="modules">
+        <div><span className="proof-kicker">01 / TODAY</span><b>Music</b><small>Play, queue, pause, loop and volume controls.</small></div>
+        <div><span className="proof-kicker">02 / AVAILABLE</span><b>Moderation</b><small>Ban, kick, timeout, warnings and channel controls.</small></div>
+        <div><span className="proof-kicker">03 / ALWAYS</span><b>Independent worker</b><small>The Discord connection stays on an always-on host.</small></div>
+      </section>
 
-      {/* CTA */}
-      <div className="container mx-auto px-6 py-20">
-        <div className="bg-white/10 backdrop-blur-lg rounded-3xl p-12 border border-white/20 text-center">
-          <h2 className="text-4xl font-bold text-white mb-4">Ready to Transform Your Server?</h2>
-          <p className="text-xl text-white/70 mb-8">Join thousands of communities using CouplesHub today</p>
-          <Link
-            href="/auth/signin"
-            className="inline-block bg-gradient-to-r from-pink-500 to-purple-600 text-white px-8 py-4 rounded-xl font-bold text-lg hover:opacity-90 transition"
-          >
-            Add to Discord Now
-          </Link>
-        </div>
-      </div>
+      <section className="statement page-width" id="architecture">
+        <div className="statement-kicker">THE CAPITAL STANDARD <span>—</span> 2026</div>
+        <div className="statement-copy"><h2>Premium should feel<br />effortless. <em>And work.</em></h2><p>CAPITAL is being rebuilt around the things that matter: a sharp dashboard, dependable bot commands, and an architecture that fits the platforms it runs on.</p></div>
+      </section>
 
-      {/* Footer */}
-      <footer className="border-t border-white/20 py-8">
-        <div className="container mx-auto px-6 text-center text-white/70">
-          <p>© 2024 CouplesHub. All rights reserved.</p>
-        </div>
-      </footer>
+      <footer className="footer page-width"><Link href="/" className="brand"><Mark /><span>CAPITAL</span></Link><span>Discord tools for communities with standards.</span><span>© 2026 CAPITAL</span></footer>
     </main>
   );
 }

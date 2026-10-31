@@ -4,8 +4,11 @@ WORKDIR /app
 
 COPY package*.json ./
 COPY packages/bot/package*.json ./packages/bot/
+COPY packages/dashboard/package*.json ./packages/dashboard/
+COPY packages/bot/prisma ./packages/bot/prisma
 
 RUN npm ci
+RUN npx prisma generate --schema=packages/bot/prisma/schema.prisma
 
 COPY packages/bot ./packages/bot
 

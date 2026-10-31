@@ -8,8 +8,3 @@ export const pusher = new Pusher({
   useTLS: true,
 });
 
-export const pusherClient = () => {
-  return new Pusher(process.env.PUSHER_KEY!, {
-    cluster: process.env.PUSHER_CLUSTER!,
-  });
-};

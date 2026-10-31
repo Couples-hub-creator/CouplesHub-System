@@ -8,7 +8,7 @@ export const authOptions: NextAuthOptions = {
       clientSecret: process.env.DISCORD_CLIENT_SECRET!,
       authorization: {
         params: {
-          scope: 'identify guilds guilds.join',
+          scope: 'identify guilds',
         },
       },
     }),
@@ -16,21 +16,21 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ token, account, user }) {
       if (account) {
-        token.accessToken = account.access_token;
+        token.discordAccessToken = account.access_token;
         token.id = user.id;
       }
       return token;
     },
     async session({ session, token }) {
       if (session.user) {
-        (session.user as any).id = token.id;
-        (session.user as any).accessToken = token.accessToken;
+        session.user.id = token.id;
       }
       return session;
     },
   },
   pages: {
     signIn: '/auth/signin',
+    error: '/auth/error',
   },
   secret: process.env.NEXTAUTH_SECRET,
 };

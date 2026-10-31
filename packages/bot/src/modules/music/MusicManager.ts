@@ -1,6 +1,6 @@
 import { BotClient } from '../../structures/BotClient';
-import { Guild, VoiceBasedChannel, TextChannel } from 'discord.js';
-import { Shoukaku, Player } from 'shoukaku';
+import { VoiceBasedChannel, TextChannel } from 'discord.js';
+import { Player } from 'shoukaku';
 import { logger } from '../../utils/logger';
 
 export interface Track {

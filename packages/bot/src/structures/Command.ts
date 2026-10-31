@@ -3,6 +3,7 @@ import {
   ChatInputCommandInteraction,
   AutocompleteInteraction,
   RESTPostAPIChatInputApplicationCommandsJSONBody,
+  SlashCommandOptionsOnlyBuilder,
 } from 'discord.js';
 
 export type CommandCategory =
@@ -32,7 +33,7 @@ export interface CommandOptions {
 }
 
 export abstract class Command {
-  public abstract data: SlashCommandBuilder;
+  public abstract data: SlashCommandBuilder | SlashCommandOptionsOnlyBuilder;
   public abstract category: CommandCategory;
   public cooldown: number = 3;
   public permissions?: CommandOptions['permissions'];

@@ -7,17 +7,18 @@ import * as path from 'path';
 
 export async function loadCommands(client: BotClient): Promise<void> {
   const commandsPath = path.join(__dirname, '../commands');
-  const commandFolders = fs.readdirSync(commandsPath);
+  const commandFolders = fs.readdirSync(commandsPath, { withFileTypes: true }).filter((entry) => entry.isDirectory());
 
   for (const folder of commandFolders) {
-    const folderPath = path.join(__dirname, '../commands', folder);
-    const commandFiles = fs.readdirSync(folderPath).filter((file) => file.endsWith('.ts'));
+    const folderPath = path.join(commandsPath, folder.name);
+    const commandFiles = fs.readdirSync(folderPath).filter((file) => /\.(ts|js)$/.test(file) && !file.endsWith('.d.ts'));
 
     for (const file of commandFiles) {
       const filePath = path.join(folderPath, file);
-      const command: Command = (await import(filePath)).default;
+      const CommandClass = (await import(filePath)).default;
+      const command: Command = new CommandClass();
 
-      if ('data' in command && 'execute' in command) {
+      if (command?.data && typeof command.execute === 'function') {
         client.commands.set(command.data.name, command);
         logger.info(`Loaded command: ${command.data.name}`);
       } else {
@@ -30,7 +31,16 @@ export async function loadCommands(client: BotClient): Promise<void> {
 export async function registerCommands(client: BotClient): Promise<void> {
   const commands = Array.from(client.commands.values()).map((command) => command.toJSON());
 
-  const rest = new REST().setToken(process.env.DISCORD_TOKEN!);
+  const token = process.env.DISCORD_TOKEN;
+  const clientId = process.env.DISCORD_CLIENT_ID;
+  if (!token || !clientId) {
+    throw new Error('DISCORD_TOKEN and DISCORD_CLIENT_ID are required to register commands.');
+  }
+  if (commands.length === 0) {
+    logger.warn('No slash commands were loaded; skipping Discord registration.');
+    return;
+  }
+  const rest = new REST().setToken(token);
 
   try {
     logger.info(`Started refreshing ${commands.length} application (/) commands.`);
@@ -49,5 +59,6 @@ export async function registerCommands(client: BotClient): Promise<void> {
     }
   } catch (error) {
     logger.error('Error registering commands:', error);
+    throw error;
   }
 }

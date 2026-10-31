@@ -12,9 +12,8 @@ build/
 .next/
 
 # Environment variables
-.env
-.env.local
-.env.*.local
+.env*
+!.env.example
 
 # Logs
 logs/
@@ -40,3 +39,8 @@ Thumbs.db
 
 # Docker
 docker-compose.override.yml
+.vercel
+.turbo
+science_state.json
+__pycache__/
+*.py[cod]

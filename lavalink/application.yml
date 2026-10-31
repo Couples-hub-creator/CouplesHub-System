@@ -4,7 +4,7 @@ server:
 
 lavalink:
   server:
-    password: "youshallnotpass"
+    password: "${LAVALINK_PASSWORD:youshallnotchange_this_local_password}"
     sources:
       youtube: false
       bandcamp: true

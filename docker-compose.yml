@@ -25,6 +25,8 @@ services:
     restart: unless-stopped
     volumes:
       - ./lavalink/application.yml:/opt/Lavalink/application.yml:ro
+    environment:
+      LAVALINK_PASSWORD: ${LAVALINK_PASSWORD:?Set LAVALINK_PASSWORD in .env}
     ports:
       - "2333:2333"
     depends_on:
@@ -36,8 +38,14 @@ services:
       dockerfile: Dockerfile.bot
     container_name: discord-bot
     restart: unless-stopped
-    env_file:
-      - .env
+    environment:
+      DISCORD_TOKEN: ${DISCORD_TOKEN:?Set DISCORD_TOKEN in .env}
+      DISCORD_CLIENT_ID: ${DISCORD_CLIENT_ID:?Set DISCORD_CLIENT_ID in .env}
+      DISCORD_GUILD_ID: ${DISCORD_GUILD_ID:-}
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/discord_bot?schema=public
+      LAVALINK_HOST: lavalink
+      LAVALINK_PORT: 2333
+      LAVALINK_PASSWORD: ${LAVALINK_PASSWORD:?Set LAVALINK_PASSWORD in .env}
     depends_on:
       postgres:
         condition: service_healthy
@@ -54,8 +62,11 @@ services:
       dockerfile: Dockerfile.dashboard
     container_name: discord-bot-dashboard
     restart: unless-stopped
-    env_file:
-      - .env
+    environment:
+      DISCORD_CLIENT_ID: ${DISCORD_CLIENT_ID:?Set DISCORD_CLIENT_ID in .env}
+      DISCORD_CLIENT_SECRET: ${DISCORD_CLIENT_SECRET:?Set DISCORD_CLIENT_SECRET in .env}
+      NEXTAUTH_SECRET: ${NEXTAUTH_SECRET:?Set NEXTAUTH_SECRET in .env}
+      NEXTAUTH_URL: ${NEXTAUTH_URL:-http://localhost:3000}
     ports:
       - "3000:3000"
     depends_on:

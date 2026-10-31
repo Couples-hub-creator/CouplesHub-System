@@ -3,6 +3,8 @@ FROM node:20-alpine
 WORKDIR /app
 
 COPY package*.json ./
+COPY packages/bot/package*.json ./packages/bot/
+COPY packages/bot/prisma ./packages/bot/prisma
 COPY packages/dashboard/package*.json ./packages/dashboard/
 
 RUN npm ci

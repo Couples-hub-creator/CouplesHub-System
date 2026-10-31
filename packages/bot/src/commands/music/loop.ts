@@ -1,4 +1,4 @@
-import { SlashCommandBuilder, ChatInputCommandInteraction, StringSelectMenuBuilder, ActionRowBuilder } from 'discord.js';
+import { SlashCommandBuilder, ChatInputCommandInteraction } from 'discord.js';
 import { Command, CommandCategory } from '../../structures/Command';
 import { MusicManager } from '../../modules/music/MusicManager';
 

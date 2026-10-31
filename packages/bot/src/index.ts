@@ -1,11 +1,16 @@
-import 'dotenv/config';
-import { Client, GatewayIntentBits, Collection, Partials } from 'discord.js';
+import dotenv from 'dotenv';
+import { existsSync } from 'fs';
+import path from 'path';
+import { GatewayIntentBits, Partials } from 'discord.js';
 import { loadCommands } from './handlers/commandHandler';
 import { loadEvents } from './handlers/eventHandler';
 import { logger } from './utils/logger';
 import { Shoukaku, Connectors } from 'shoukaku';
 import { BotClient } from './structures/BotClient';
 import { MusicManager } from './modules/music/MusicManager';
+
+const envPath = [path.resolve(process.cwd(), '.env'), path.resolve(process.cwd(), '../../.env')].find(existsSync);
+if (envPath) dotenv.config({ path: envPath });
 
 const client = new BotClient({
   intents: [
@@ -45,9 +50,24 @@ client.shoukaku.on('error', (error, name) => {
   logger.error(`Lavalink node [${name}] error:`, error);
 });
 
-// Load commands and events
-loadCommands(client);
-loadEvents(client);
+async function startBot() {
+  if (!process.env.DISCORD_TOKEN || !process.env.DISCORD_CLIENT_ID) {
+    throw new Error('Set DISCORD_TOKEN and DISCORD_CLIENT_ID before starting the bot.');
+  }
+  await loadCommands(client);
+  await loadEvents(client);
+  await client.login(process.env.DISCORD_TOKEN);
+}
 
-// Login
-client.login(process.env.DISCORD_TOKEN);
+startBot().catch((error) => {
+  logger.error('Bot startup failed:', error);
+  process.exitCode = 1;
+});
+
+for (const signal of ['SIGINT', 'SIGTERM'] as const) {
+  process.once(signal, async () => {
+    await client.destroy();
+    await client.prisma.$disconnect();
+    process.exit(0);
+  });
+}

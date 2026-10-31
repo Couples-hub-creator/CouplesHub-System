@@ -3,8 +3,8 @@ import './globals.css';
 import { Providers } from '@/components/providers';
 
 export const metadata: Metadata = {
-  title: 'Discord Bot Dashboard',
-  description: 'Manage your Discord bot settings',
+  title: 'CAPITAL — Discord, in control',
+  description: 'A considered control room for your Discord community.',
 };
 
 export default function RootLayout({
