@@ -56,6 +56,7 @@ export class Queue {
   public loop: 'off' | 'track' | 'queue' = 'off';
   public shuffle: boolean = false;
   public paused: boolean = false;
+  public muted: boolean = false;
   public textChannel: TextChannel;
   public voiceChannel: VoiceBasedChannel;
   public guildId: string;
@@ -163,6 +164,15 @@ export class Queue {
   public skip(): void {
     if (this.player) {
       this.player.stopTrack();
+    }
+  }
+
+  public playPrevious(): void {
+    if (this.previousTrack) {
+      this.tracks.unshift(this.currentTrack!);
+      this.currentTrack = this.previousTrack;
+      this.previousTrack = null;
+      this.player?.playTrack({ track: { encoded: this.currentTrack.encoded } });
     }
   }
 
