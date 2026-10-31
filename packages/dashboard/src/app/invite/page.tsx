@@ -53,7 +53,7 @@ export default function Invite() {
         </div>
 
         <a
-          href={`https://discord.com/oauth2/authorize?client_id=${process.env.NEXT_PUBLIC_DISCORD_CLIENT_ID || '1565423957333508146'}&permissions=8&response_type=code&redirect_uri=${encodeURIComponent(process.env.DASHBOARD_URL || 'https://dashboard-couples-hub.vercel.app')}/api/auth/callback/discord&integration_type=0&scope=bot+identify+email+guilds+guilds.members.read`}
+          href={`https://discord.com/oauth2/authorize?client_id=${process.env.NEXT_PUBLIC_DISCORD_CLIENT_ID || '1565423957333508146'}&permissions=8&scope=bot%20applications.commands`}
           target="_blank"
           rel="noopener noreferrer"
           className="button button-gold"
