@@ -8,7 +8,8 @@ export const siteConfig = {
   tagline: 'Discord, in command',
   description:
     'Capital is the command room for your Discord community: studio-grade music, firm moderation, leveling and automation — controlled from one beautiful dashboard.',
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3001',
+  // Production fallback. Local development overrides this in .env.local.
+  url: process.env.NEXT_PUBLIC_SITE_URL ?? 'https://dashboard-couples-hub.vercel.app',
   ogImage: '/opengraph-image',
   links: {
     invite: process.env.NEXT_PUBLIC_INVITE_URL ?? '/api/discord/invite',

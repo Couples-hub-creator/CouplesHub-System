@@ -12,7 +12,7 @@ import { getProofMetrics, getSiteStats } from '@/lib/server/stats';
 import { siteConfig } from '@/config/site';
 
 export const metadata: Metadata = {
-  title: `${siteConfig.name} — ${siteConfig.tagline}`,
+  title: { absolute: `${siteConfig.name} — ${siteConfig.tagline}` },
   description: siteConfig.description,
   alternates: { canonical: '/' },
 };
