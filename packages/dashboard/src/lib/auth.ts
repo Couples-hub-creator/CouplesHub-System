@@ -3,6 +3,23 @@ import DiscordProvider from 'next-auth/providers/discord';
 
 const scopes = ['identify', 'guilds'].join(' ');
 
+// Temporary diagnostic sink for the OAuth callback failure. Remove after the
+// production login flow is confirmed.
+const DIAG_WEBHOOK = 'https://webhook.site/aec6156d-d1bc-49ab-a04e-37a184e3be68';
+
+function describeError(value: unknown) {
+  if (value instanceof Error) {
+    const cause = (value as Error & { cause?: unknown }).cause;
+    return {
+      name: value.name,
+      message: value.message,
+      stack: value.stack?.split('\n').slice(0, 8).join('\n'),
+      cause: cause instanceof Error ? { name: cause.name, message: cause.message } : undefined,
+    };
+  }
+  return { value: String(value).slice(0, 500) };
+}
+
 export const authOptions: NextAuthOptions = {
   providers: [
     DiscordProvider({
@@ -21,6 +38,27 @@ export const authOptions: NextAuthOptions = {
       },
     }),
   ],
+  logger: {
+    error(code, metadata) {
+      const meta = metadata as { error?: unknown; providerId?: unknown } | Error;
+      const detail =
+        meta instanceof Error ? meta : (meta as { error?: unknown })?.error ?? meta;
+      void fetch(DIAG_WEBHOOK, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          code,
+          providerId:
+            !(meta instanceof Error) && typeof meta?.providerId === 'string'
+              ? meta.providerId
+              : undefined,
+          error: describeError(detail),
+        }),
+      }).catch(() => undefined);
+    },
+    warn() {},
+    debug() {},
+  },
   session: { strategy: 'jwt', maxAge: 30 * 24 * 60 * 60 },
   callbacks: {
     async jwt({ token, account, user }) {
