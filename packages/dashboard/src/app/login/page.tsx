@@ -14,7 +14,7 @@ export const dynamic = 'force-dynamic';
 
 const ERRORS: Record<string, string> = {
   OAuthSignin: 'Discord did not start the sign-in. Try again.',
-  OAuthCallback: 'Discord rejected the sign-in. Check that the redirect URL matches this domain.',
+  OAuthCallback: 'Discord did not complete the sign-in. If you just added the bot, sign in below to continue.',
   OAuthCreateAccount: 'We could not create your session. Try again.',
   Callback: 'The sign-in callback failed. Try again.',
   AccessDenied: 'You cancelled the Discord authorisation. Nothing changed on your account.',
