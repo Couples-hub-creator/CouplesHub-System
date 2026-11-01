@@ -5,7 +5,7 @@ import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { signIn } from 'next-auth/react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
-import { AlertCircle, ArrowLeft, Loader2, ShieldCheck } from 'lucide-react';
+import { AlertCircle, ArrowLeft, CheckCircle2, Loader2, ShieldCheck } from 'lucide-react';
 import { BrandLockup } from '@/components/brand/logo';
 import { DiscordIcon } from '@/components/brand/discord-icon';
 import { Button } from '@/components/ui/Button';
@@ -23,7 +23,15 @@ const STATEMENTS = [
 
 type Status = 'idle' | 'loading' | 'redirecting';
 
-export function LoginScreen({ error, redirect }: { error: string | null; redirect: string }) {
+export function LoginScreen({
+  error,
+  redirect,
+  installed = false,
+}: {
+  error: string | null;
+  redirect: string;
+  installed?: boolean;
+}) {
   const [status, setStatus] = React.useState<Status>('idle');
   const [localError, setLocalError] = React.useState<string | null>(error);
   const [index, setIndex] = React.useState(0);
@@ -149,6 +157,21 @@ export function LoginScreen({ error, redirect }: { error: string | null; redirec
                 <p className="mt-1.5 text-sm leading-relaxed text-mist-dim">
                   Use the Discord account that manages your server. We never see your password.
                 </p>
+
+                {installed && !localError && (
+                  <div
+                    role="status"
+                    className="mt-4 flex items-start gap-2.5 rounded-md border border-emerald/25 bg-emerald/[0.07] px-3 py-2.5"
+                  >
+                    <CheckCircle2 className="mt-0.5 size-4 shrink-0 text-emerald" />
+                    <div>
+                      <p className="text-xs font-semibold text-mist">Capital is in your server.</p>
+                      <p className="mt-0.5 text-[11px] leading-relaxed text-mist-dim">
+                        Sign in with Discord to open its dashboard.
+                      </p>
+                    </div>
+                  </div>
+                )}
 
                 {localError && (
                   <div

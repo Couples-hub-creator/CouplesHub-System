@@ -29,7 +29,7 @@ export async function GET(request: Request) {
   invite.searchParams.set('response_type', 'code');
   invite.searchParams.set('redirect_uri', redirect || callback);
   invite.searchParams.set('integration_type', '0');
-  invite.searchParams.set('scope', 'identify email guilds bot applications.commands');
+  invite.searchParams.set('scope', 'identify guilds bot applications.commands');
   if (guildId && /^\d{5,25}$/.test(guildId)) {
     invite.searchParams.set('guild_id', guildId);
     invite.searchParams.set('disable_guild_select', 'true');

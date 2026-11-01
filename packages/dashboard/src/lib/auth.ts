@@ -1,7 +1,7 @@
 import type { NextAuthOptions } from 'next-auth';
 import DiscordProvider from 'next-auth/providers/discord';
 
-const scopes = ['identify', 'guilds', 'guilds.members.read', 'email'].join(' ');
+const scopes = ['identify', 'guilds'].join(' ');
 
 export const authOptions: NextAuthOptions = {
   providers: [
