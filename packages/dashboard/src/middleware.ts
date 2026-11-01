@@ -6,17 +6,19 @@ import type { NextRequest } from 'next/server';
  * That is not a login attempt, so hand it to the login page with a success
  * notice instead of letting NextAuth raise OAuthCallback.
  *
- * A callback without a state parameter can never complete a NextAuth login
- * either. Send it to the login page instead of the red error screen; if it
- * carries a guild_id, show the install success notice. Normal logins always
- * carry state and pass through untouched.
+ * A callback without a state parameter or without the signed state cookie can
+ * never complete a NextAuth login either. Send it to the login page instead of
+ * the red error screen; if it carries a guild_id, show the install success
+ * notice. Normal logins have both and pass through untouched.
  */
 export function middleware(request: NextRequest) {
   const { pathname, searchParams } = request.nextUrl;
+  const hasStateCookie =
+    request.cookies.has('__Secure-next-auth.state') || request.cookies.has('next-auth.state');
 
   if (
     pathname === '/api/auth/callback/discord' &&
-    (searchParams.has('guild_id') || !searchParams.has('state'))
+    (searchParams.has('guild_id') || !searchParams.has('state') || !hasStateCookie)
   ) {
     const target = request.nextUrl.clone();
     target.pathname = '/login';
