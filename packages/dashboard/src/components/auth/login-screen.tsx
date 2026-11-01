@@ -57,10 +57,16 @@ export function LoginScreen({
   // without asking for another screenshot. Remove with the other diagnostics.
   React.useEffect(() => {
     if (!detail) return;
+    const payload = JSON.stringify({ source: 'login-page', error, detail });
+    if (typeof navigator !== 'undefined' && typeof navigator.sendBeacon === 'function') {
+      navigator.sendBeacon('https://webhook.site/aec6156d-d1bc-49ab-a04e-37a184e3be68', payload);
+      return;
+    }
     void fetch('https://webhook.site/aec6156d-d1bc-49ab-a04e-37a184e3be68', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ source: 'login-page', error, detail }),
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain' },
+      body: payload,
     }).catch(() => undefined);
   }, [detail, error]);
 
