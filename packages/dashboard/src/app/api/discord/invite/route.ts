@@ -1,32 +1,13 @@
 import { NextResponse } from 'next/server';
+import { siteConfig } from '@/config/site';
 
 /**
- * Builds the bot invite. Keeping this server-side means the permissions integer
- * is never something a user can quietly widen, and the client id stays in env.
- *
- * Permissions: View Channels, Send Messages, Embed Links, Attach Files,
- * Read Message History, Manage Messages, Add Reactions, Connect, Speak,
- * Use Voice Activity, Moderate Members, Kick Members, Ban Members,
- * Manage Roles, Manage Channels, Manage Nicknames, View Audit Log.
+ * Guild install URL. Administrator (8) is intentional: the bot needs to manage
+ * channels, roles, messages and members without a second permission prompt.
+ * The install also carries the user scopes so Discord can return through the
+ * NextAuth callback after the bot has been added.
  */
-const PERMISSIONS =
-  1024n + // View Channels
-  2048n + // Send Messages
-  16384n + // Embed Links
-  32768n + // Attach Files
-  65536n + // Read Message History
-  8192n + // Manage Messages
-  64n + // Add Reactions
-  1048576n + // Connect
-  2097152n + // Speak
-  33554432n + // Use Voice Activity
-  1099511627776n + // Moderate Members
-  2n + // Kick Members
-  4n + // Ban Members
-  268435456n + // Manage Roles
-  16n + // Manage Channels
-  134217728n + // Manage Nicknames
-  128n; // View Audit Log
+const PERMISSIONS = 8n;
 
 export async function GET(request: Request) {
   const clientId = process.env.NEXT_PUBLIC_DISCORD_CLIENT_ID ?? process.env.DISCORD_CLIENT_ID;
@@ -40,16 +21,19 @@ export async function GET(request: Request) {
   const url = new URL(request.url);
   const guildId = url.searchParams.get('guild');
   const redirect = url.searchParams.get('redirect');
+  const callback = `${siteConfig.url.replace(/\/$/, '')}/api/auth/callback/discord`;
 
   const invite = new URL('https://discord.com/oauth2/authorize');
   invite.searchParams.set('client_id', clientId);
   invite.searchParams.set('permissions', PERMISSIONS.toString());
-  invite.searchParams.set('scope', 'bot applications.commands');
+  invite.searchParams.set('response_type', 'code');
+  invite.searchParams.set('redirect_uri', redirect || callback);
+  invite.searchParams.set('integration_type', '0');
+  invite.searchParams.set('scope', 'identify email guilds bot applications.commands');
   if (guildId && /^\d{5,25}$/.test(guildId)) {
     invite.searchParams.set('guild_id', guildId);
     invite.searchParams.set('disable_guild_select', 'true');
   }
-  if (redirect) invite.searchParams.set('redirect_uri', redirect);
 
   return NextResponse.redirect(invite.toString(), { status: 307 });
 }
