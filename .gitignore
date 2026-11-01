@@ -44,3 +44,6 @@ docker-compose.override.yml
 science_state.json
 __pycache__/
 *.py[cod]
+
+# TypeScript incremental build info
+*.tsbuildinfo

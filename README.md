@@ -1,73 +1,76 @@
-# CAPITAL - Premium Discord Bot
+# Capital
 
-A powerful Discord bot with music, moderation, and a professional dashboard.
+A Discord bot and its dashboard. The dashboard covers music, radio, moderation, auto-mod, leveling, welcome messages, roles, logs, analytics, scheduling and AI chat. The bot currently ships the music and moderation handlers; the remaining dashboard modules persist their settings in PostgreSQL for the bot-side handlers to consume.
 
-## 🚀 Features
+This repository is a monorepo:
 
-### Bot Features
-- **Music System**: Play, queue, pause, skip, volume, loop (Lavalink v4)
-- **Moderation**: Ban, kick, timeout, warnings
-- **Utility**: Help command, server info
-- **More**: 50+ features planned (economy, leveling, tickets, etc.)
-
-### Dashboard
-- Discord OAuth2 authentication
-- Server selection and management
-- Beautiful console-style UI
-- Real-time controls
-- Premium design
-
-## 📋 Prerequisites
-
-- Node.js 20+
-- PostgreSQL database
-- Lavalink v4 server
-- Discord bot token
-
-## 🔧 Setup
-
-### 1. Discord Application Setup
-
-1. Go to https://discord.com/developers/applications
-2. Create new application "CAPITAL"
-3. Enable these intents:
-   - Message Content Intent
-   - Server Members Intent
-   - Presence Intent
-4. Create bot and get token
-5. Add OAuth2 redirect URI:
-   ```
-   http://localhost:3001/api/auth/callback/discord
-   ```
-   (Replace with your Vercel domain after deployment)
-
-### 2. Environment Variables
-
-Copy `.env.example` to `.env` and fill in:
-
-```env
-DISCORD_TOKEN=your_bot_token_here
-DISCORD_CLIENT_ID=your_application_id_here
-DISCORD_CLIENT_SECRET=your_client_secret_here
-DISCORD_GUILD_ID=your_guild_id_for_dev_commands
-
-LAVALINK_HOST=localhost
-LAVALINK_PORT=2333
-LAVALINK_PASSWORD=youshallnotpass
-
-DATABASE_URL=postgresql://postgres:postgres@localhost:5432/discord_bot
-
-NEXTAUTH_SECRET=generate_with_openssl_rand_base64_32
-NEXTAUTH_URL=http://localhost:3001
-DASHBOARD_URL=http://localhost:3001
-
-PUSHER_APP_ID=your_pusher_app_id
-PUSHER_KEY=your_pusher_key
-PUSHER_SECRET=your_pusher_secret
-PUSHER_CLUSTER=eu
+```
+packages/
+  bot/         Discord bot (discord.js + shoukaku/Lavalink)
+  dashboard/   Next.js 14 dashboard and marketing site
+docs/          Bot control API and real-time contract
 ```
 
-### 3. Database Setup
+## What is in this build
+
+### Dashboard
+
+- Marketing site: landing, commands, pricing, docs, status, terms, privacy.
+- Discord OAuth2 sign-in with server selection.
+- Fourteen server modules: overview, music, radio, moderation, auto-mod, leveling, schedule, AI chat, welcome, roles, logs, analytics, settings and premium.
+- Real data only. Screens use PostgreSQL rows or an explicit empty state. No fabricated statistics, testimonials or logos.
+- Loading, empty and error states with retry; optimistic settings saves with rollback; zod validation on every mutation; rate limits on mutation routes.
+- Pusher private-channel updates when configured; TanStack Query polling when it is not.
+- Premium is enforced server-side for AI settings, scheduling and auto-mod rules beyond the free limit of three.
+
+### Bot
+
+- Lavalink v4 music playback with play, pause, resume, skip, stop, queue, now playing, loop, seek and volume commands.
+- Moderation commands (warn, timeout, kick, ban, unban, purge, lock, unlock, slowmode) backed by PostgreSQL cases.
+- Guild rows are synced on startup and on join, so the dashboard can show whether the bot is installed.
+- The dashboard writes settings to the shared PostgreSQL database. The remaining modules (auto-mod, leveling, welcome, roles, logs, analytics, schedule and AI chat) store their configuration, but the bot-side handlers for those modules are not part of this package yet.
+- Live player controls require the optional HMAC-signed bot API described in `docs/bot-integration.md`; the dashboard shows an honest offline state when it is not running.
+
+## Requirements
+
+- Node.js 20+
+- PostgreSQL
+- Lavalink v4 (for music)
+- A Discord application with a bot token and OAuth2 credentials
+
+## Setup
+
+### 1. Discord application
+
+1. Open the [Discord Developer Portal](https://discord.com/developers/applications).
+2. Create an application named Capital.
+3. Enable Message Content, Server Members and Presence intents.
+4. Create the bot and copy its token.
+5. Add the OAuth2 redirect URI:
+   - Local: `http://localhost:3001/api/auth/callback/discord`
+   - Production: `https://your-domain.example/api/auth/callback/discord`
+
+### 2. Environment
+
+Copy `.env.example` to `.env` for the bot and root tooling. Copy `packages/dashboard/.env.example` to `packages/dashboard/.env.local` for the dashboard. Fill in at least:
+
+```env
+DISCORD_TOKEN=
+DISCORD_CLIENT_ID=
+NEXT_PUBLIC_DISCORD_CLIENT_ID=
+DISCORD_CLIENT_SECRET=
+NEXTAUTH_SECRET=
+NEXTAUTH_URL=http://localhost:3001
+NEXT_PUBLIC_SITE_URL=http://localhost:3001
+DATABASE_URL=postgresql://postgres:postgres@localhost:5432/discord_bot?schema=public
+LAVALINK_HOST=localhost
+LAVALINK_PORT=2333
+LAVALINK_PASSWORD=
+```
+
+Optional: Pusher keys, `BOT_API_URL`/`BOT_API_SECRET`, and billing keys. The dashboard reports those features as not configured instead of pretending they work.
+
+### 3. Database
 
 ```bash
 cd packages/bot
@@ -75,142 +78,64 @@ npx prisma generate
 npx prisma db push
 ```
 
-### 4. Install Dependencies
+There is no migrations directory; `db push` applies the additive schema. Run it again after schema changes.
+
+### 4. Install and start
 
 ```bash
 npm install
+docker-compose up -d postgres lavalink
 ```
 
-### 5. Start Lavalink
-
-```bash
-docker-compose up lavalink postgres
-```
-
-Or run Lavalink manually:
-```bash
-docker run -d -p 2333:2333 ghcr.io/lavalink-devs/lavalink:4.0.0
-```
-
-### 6. Start the Bot
+Bot:
 
 ```bash
 cd packages/bot
 npm run dev
 ```
 
-### 7. Start the Dashboard
+Dashboard:
 
 ```bash
 cd packages/dashboard
 npm run dev
 ```
 
-Visit http://localhost:3001
+Open `http://localhost:3001`.
 
-## 🌐 Deployment
+## Verification
 
-### Deploy to Vercel (Dashboard)
-
-1. Push code to GitHub
-2. Import repository in Vercel
-3. Set root directory to `packages/dashboard`
-4. Add environment variables
-5. Deploy
-
-### Deploy Bot to VPS
+From `packages/dashboard`:
 
 ```bash
-# On your VPS
-git clone your-repo
-cd discord-bot
-npm install
-npm run build
-npm start
+npx.cmd tsc --noEmit
+npx.cmd next lint
+npx.cmd next build
 ```
 
-Use PM2 for process management:
-```bash
-npm install -g pm2
-pm2 start dist/index.js --name capital-bot
-pm2 save
-pm2 startup
-```
+On Windows PowerShell, use `npm.cmd` and `npx.cmd`; the `.ps1` shims may be blocked by execution policy.
 
-## 📁 Project Structure
+## Deployment
 
-```
-discord-bot/
-├── packages/
-│   ├── bot/              # Discord bot
-│   │   ├── src/
-│   │   │   ├── commands/ # Slash commands
-│   │   │   ├── events/   # Event handlers
-│   │   │   ├── handlers/ # Command/event loaders
-│   │   │   ├── modules/  # Feature modules
-│   │   │   └── structures/
-│   │   └── prisma/       # Database schema
-│   └── dashboard/        # Next.js dashboard
-│       └── src/
-│           ├── app/       # Next.js pages
-│           ├── components/
-│           └── lib/
-├── docker-compose.yml
-└── .env.example
-```
+- Dashboard: Vercel or any Node host. Set the root directory to `packages/dashboard` and add the environment variables from `packages/dashboard/.env.example`.
+- Bot: a long-running VPS or container with Lavalink. Use PM2 or a process manager.
+- Database: one PostgreSQL instance shared by the bot and dashboard.
+- Real-time: Pusher, not a WebSocket server inside Next.js. Without Pusher the dashboard polls.
 
-## 🎨 Design
+## Routes
 
-The dashboard uses a premium console-style design with:
-- Dark theme
-- Glassmorphism effects
-- Smooth animations
-- Responsive layout
-- Accessible components
+Public: `/`, `/commands`, `/pricing`, `/docs`, `/status`, `/terms`, `/privacy`.
 
-## 🔌 Bot Invite Link
+Access: `/login`, `/servers`, `/account`.
 
-After setting up your application, use this link to invite the bot:
+Dashboard: `/dashboard/[guildId]/overview`, plus `music`, `radio`, `moderation`, `automod`, `leveling`, `schedule`, `ai-chat`, `welcome`, `roles`, `logs`, `analytics`, `settings` and `premium`.
 
-```
-https://discord.com/api/oauth2/authorize?client_id=YOUR_CLIENT_ID&permissions=8&scope=bot%20applications.commands
-```
+## Documentation
 
-Replace `YOUR_CLIENT_ID` with your actual client ID.
+- `docs/bot-integration.md` — bot control API, HMAC headers, player actions and Pusher events.
+- `DECISIONS.md` — architecture decisions, assumptions and the build record.
+- `/design-system` — internal, noindex component and token reference.
 
-## 📝 Available Commands
+## License
 
-### Music
-- `/play <query>` - Play a song
-- `/pause` - Pause playback
-- `/resume` - Resume playback
-- `/skip` - Skip current track
-- `/stop` - Stop playback
-- `/queue` - View queue
-- `/nowplaying` - Show current track
-- `/volume <level>` - Set volume
-- `/loop <mode>` - Set loop mode
-
-### Moderation
-- `/ban <user> [reason]` - Ban a user
-- `/kick <user> [reason]` - Kick a user
-
-### Utility
-- `/help` - View commands
-
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-## 📄 License
-
-MIT License
-
-## 💬 Support
-
-For support, join our Discord server.
-
----
-
-Built with ❤️ by CAPITAL Team
-# CouplesHub
+MIT

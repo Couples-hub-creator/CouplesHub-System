@@ -15,7 +15,9 @@ export async function loadCommands(client: BotClient): Promise<void> {
 
     for (const file of commandFiles) {
       const filePath = path.join(folderPath, file);
-      const CommandClass = (await import(filePath)).default;
+      // CommonJS require works under tsx and in the compiled dist output on Windows.
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      const CommandClass = require(filePath).default;
       const command: Command = new CommandClass();
 
       if (command?.data && typeof command.execute === 'function') {

@@ -33,7 +33,8 @@ client.shoukaku = new Shoukaku(
   [
     {
       name: 'default',
-      url: `ws://${process.env.LAVALINK_HOST}:${process.env.LAVALINK_PORT}`,
+      // Shoukaku v4 expects "host:port" without a protocol prefix.
+      url: `${process.env.LAVALINK_HOST || 'localhost'}:${process.env.LAVALINK_PORT || '2333'}`,
       auth: process.env.LAVALINK_PASSWORD || 'youshallnotpass',
       secure: false,
     },
@@ -46,8 +47,10 @@ client.shoukaku = new Shoukaku(
   }
 );
 
-client.shoukaku.on('error', (error, name) => {
-  logger.error(`Lavalink node [${name}] error:`, error);
+client.shoukaku.on('error', (name, error) => {
+  logger.error(
+    `Lavalink node [${name}] error: ${error instanceof Error ? error.message || error.name : String(error)}`,
+  );
 });
 
 async function startBot() {

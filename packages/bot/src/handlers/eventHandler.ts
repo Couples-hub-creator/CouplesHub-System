@@ -9,7 +9,8 @@ export async function loadEvents(client: BotClient): Promise<void> {
 
   for (const file of eventFiles) {
     const filePath = path.join(eventsPath, file);
-    const event = (await import(filePath)).default;
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const event = require(filePath).default;
 
     const listener = (...args: any[]) => {
       Promise.resolve(event.execute(...args, client)).catch((error) => {

@@ -1,42 +1,33 @@
-import { NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth';
+import { withHandler } from '@/lib/server/api';
+import { requireSession, getManageableGuilds } from '@/lib/server/auth';
+import { prisma } from '@/lib/prisma';
 
-export async function GET() {
+export const dynamic = 'force-dynamic';
+
+/** Guilds the signed-in user can manage, annotated with whether Capital is present. */
+export const GET = withHandler(async () => {
+  await requireSession();
+  const guilds = await getManageableGuilds({ strict: true });
+
+  let installed = new Set<string>();
   try {
-    const session = await getServerSession(authOptions);
-
-    if (!session || !session.user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    const accessToken = (session.user as { discordAccessToken?: string }).discordAccessToken;
-
-    if (!accessToken) {
-      return NextResponse.json({ error: 'No access token' }, { status: 401 });
-    }
-
-    const response = await fetch('https://discord.com/api/v10/users/@me/guilds', {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
+    const rows = await prisma.guild.findMany({
+      where: { guildId: { in: guilds.map((g) => g.id) } },
+      select: { guildId: true },
     });
-
-    if (!response.ok) {
-      return NextResponse.json({ error: 'Failed to fetch guilds from Discord' }, { status: response.status });
-    }
-
-    const guilds = await response.json();
-
-    // Filter guilds where user has MANAGE_SERVER permission (0x20)
-    const manageableGuilds = guilds.filter((guild: { permissions: string; owner: boolean }) => {
-      const permission = BigInt(guild.permissions);
-      return (permission & 0x20n) === 0x20n || guild.owner;
-    });
-
-    return NextResponse.json(manageableGuilds);
-  } catch (error) {
-    console.error('Error fetching guilds:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    installed = new Set(rows.map((r) => r.guildId));
+  } catch {
+    installed = new Set();
   }
-}
+
+  return guilds
+    .map((guild) => ({
+      id: guild.id,
+      name: guild.name,
+      icon: guild.icon,
+      owner: guild.owner,
+      memberCount: guild.approximate_member_count ?? null,
+      botPresent: installed.has(guild.id),
+    }))
+    .sort((a, b) => Number(b.botPresent) - Number(a.botPresent) || a.name.localeCompare(b.name));
+});

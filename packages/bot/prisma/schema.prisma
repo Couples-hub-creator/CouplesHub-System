@@ -12,6 +12,7 @@ model Guild {
   guildId           String   @unique
   prefix            String   @default("!")
   language          String   @default("en")
+  timezone          String   @default("UTC")
   musicEnabled      Boolean  @default(true)
   moderationEnabled Boolean  @default(true)
   autoModEnabled    Boolean  @default(true)
@@ -56,6 +57,13 @@ model Guild {
   buttonRoles       ButtonRole[]
   selectMenuRoles   SelectMenuRole[]
   logs              LogEntry[]
+
+  aiChatSettings    AiChatSettings?
+  scheduleTasks     ScheduleTask[]
+  radioStations     RadioStation[]
+  playlists         SavedPlaylist[]
+  premium           PremiumSubscription?
+  dashboardAudits   DashboardAudit[]
 }
 
 model User {
@@ -87,6 +95,7 @@ model MusicSettings {
   defaultVolume     Int      @default(100)
   autoPlay          Boolean  @default(false)
   twentyFourSeven   Boolean  @default(false)
+  twentyFourSevenChannel String?
   djRole            String?
   djOnly            Boolean  @default(false)
   voteSkipRequired  Int      @default(3)
@@ -152,6 +161,7 @@ model WelcomeSettings {
   leaveChannel    String?
   leaveMessage    String?
   autoRoles       String[] @default([])
+  embedColor      String?
   guild           Guild    @relation(fields: [guildId], references: [guildId], onDelete: Cascade)
 }
 
@@ -163,7 +173,10 @@ model LevelingSettings {
   messageCooldown    Int      @default(60000)
   voiceCooldown      Int      @default(60000)
   levelUpMessage     Boolean  @default(true)
+  levelUpTemplate    String?
   roleRewards        Json     @default("[]")
+  ignoredChannels    String[] @default([])
+  ignoredRoles       String[] @default([])
   guild              Guild    @relation(fields: [guildId], references: [guildId], onDelete: Cascade)
 }
 
@@ -419,4 +432,126 @@ model UtilitySettings {
   id        String   @id @default(cuid())
   guildId   String   @unique
   guild     Guild    @relation(fields: [guildId], references: [guildId], onDelete: Cascade)
+}
+
+// -------------------------------------------------------------
+// Dashboard-driven modules
+// -------------------------------------------------------------
+
+model AiChatSettings {
+  id              String   @id @default(cuid())
+  guildId         String   @unique
+  enabled         Boolean  @default(false)
+  channels        String[] @default([])
+  triggerMode     String   @default("mention") // mention | always
+  personality     String   @default("balanced")
+  systemPrompt    String?
+  creativity      Int      @default(60) // 0-100
+  replyLength     String   @default("medium") // short | medium | long
+  memoryEnabled   Boolean  @default(false)
+  memoryDepth     Int      @default(10)
+  rateLimitPerHour Int     @default(5)
+  blockedTopics   String[] @default([])
+  monthlyQuota    Int      @default(1000)
+  usedThisPeriod  Int      @default(0)
+  periodStart     DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  guild           Guild    @relation(fields: [guildId], references: [guildId], onDelete: Cascade)
+}
+
+model ScheduleTask {
+  id          String   @id @default(cuid())
+  guildId     String
+  name        String
+  kind        String   // command | message | event
+  payload     String
+  channelId   String?
+  recurrence  String   @default("once") // once | daily | weekly | monthly | cron
+  cron        String?
+  runAt       DateTime?
+  timezone    String   @default("UTC")
+  enabled     Boolean  @default(true)
+  lastRunAt   DateTime?
+  nextRunAt   DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  guild       Guild    @relation(fields: [guildId], references: [guildId], onDelete: Cascade)
+  runs        ScheduleRun[]
+
+  @@index([guildId, enabled])
+}
+
+model ScheduleRun {
+  id        String   @id @default(cuid())
+  taskId    String
+  status    String   // success | failed | skipped
+  detail    String?
+  ranAt     DateTime @default(now())
+
+  task      ScheduleTask @relation(fields: [taskId], references: [id], onDelete: Cascade)
+
+  @@index([taskId, ranAt])
+}
+
+model RadioStation {
+  id        String   @id @default(cuid())
+  guildId   String
+  name      String
+  genre     String   @default("custom")
+  streamUrl String
+  logoUrl   String?
+  favorite  Boolean  @default(false)
+  isCustom  Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  guild     Guild    @relation(fields: [guildId], references: [guildId], onDelete: Cascade)
+
+  @@index([guildId])
+}
+
+model SavedPlaylist {
+  id        String   @id @default(cuid())
+  guildId   String
+  name      String
+  createdBy String
+  tracks    Json     @default("[]")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  guild     Guild    @relation(fields: [guildId], references: [guildId], onDelete: Cascade)
+
+  @@index([guildId])
+}
+
+model PremiumSubscription {
+  id           String   @id @default(cuid())
+  guildId      String   @unique
+  plan         String   @default("premium")
+  status       String   @default("inactive") // active | inactive | past_due | canceled
+  provider     String?
+  externalId   String?
+  currentStart DateTime?
+  currentEnd   DateTime?
+  cancelAtEnd  Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  guild        Guild    @relation(fields: [guildId], references: [guildId], onDelete: Cascade)
+}
+
+model DashboardAudit {
+  id           String   @id @default(cuid())
+  guildId      String
+  actorId      String
+  actorName    String?
+  action       String
+  target       String?
+  detail       Json     @default("{}")
+  createdAt    DateTime @default(now())
+
+  guild        Guild    @relation(fields: [guildId], references: [guildId], onDelete: Cascade)
+
+  @@index([guildId, createdAt])
 }
