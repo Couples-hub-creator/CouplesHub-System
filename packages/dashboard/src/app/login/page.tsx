@@ -27,7 +27,7 @@ const ERRORS: Record<string, string> = {
 export default async function LoginPage({
   searchParams,
 }: {
-  searchParams: { error?: string; redirect?: string; installed?: string };
+  searchParams: { error?: string; redirect?: string; installed?: string; detail?: string };
 }) {
   let session = null;
   try {
@@ -46,7 +46,14 @@ export default async function LoginPage({
   const errorMessage = errorCode ? ERRORS[errorCode] ?? ERRORS.Default : null;
   const installed = searchParams.installed === '1';
 
-  return <LoginScreen error={errorMessage} redirect={target} installed={installed} />;
+  return (
+    <LoginScreen
+      error={errorMessage}
+      redirect={target}
+      installed={installed}
+      detail={searchParams.detail ?? null}
+    />
+  );
 }
 
 /** Only allow same-origin relative paths, never an absolute URL. */

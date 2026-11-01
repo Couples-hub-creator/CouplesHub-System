@@ -7,6 +7,8 @@ const scopes = ['identify', 'guilds'].join(' ');
 // production login flow is confirmed.
 const DIAG_WEBHOOK = 'https://webhook.site/aec6156d-d1bc-49ab-a04e-37a184e3be68';
 
+export const authDiagnostics: { lastError: string | null } = { lastError: null };
+
 function describeError(value: unknown) {
   if (value instanceof Error) {
     const cause = (value as Error & { cause?: unknown }).cause;
@@ -43,6 +45,9 @@ export const authOptions: NextAuthOptions = {
       const meta = metadata as { error?: unknown; providerId?: unknown } | Error;
       const detail =
         meta instanceof Error ? meta : (meta as { error?: unknown })?.error ?? meta;
+      const described = describeError(detail);
+      const message = 'message' in described ? described.message : described.value;
+      authDiagnostics.lastError = `${code}: ${message ?? ''}`.slice(0, 300);
       void fetch(DIAG_WEBHOOK, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -52,7 +57,7 @@ export const authOptions: NextAuthOptions = {
             !(meta instanceof Error) && typeof meta?.providerId === 'string'
               ? meta.providerId
               : undefined,
-          error: describeError(detail),
+          error: described,
         }),
       }).catch(() => undefined);
     },

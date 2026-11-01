@@ -27,10 +27,12 @@ export function LoginScreen({
   error,
   redirect,
   installed = false,
+  detail = null,
 }: {
   error: string | null;
   redirect: string;
   installed?: boolean;
+  detail?: string | null;
 }) {
   const [status, setStatus] = React.useState<Status>('idle');
   const [localError, setLocalError] = React.useState<string | null>(error);
@@ -191,6 +193,11 @@ export function LoginScreen({
                       >
                         Try again
                       </button>
+                      {detail && (
+                        <p className="mt-1 break-words font-mono text-[10px] leading-relaxed text-mist-faint">
+                          {detail}
+                        </p>
+                      )}
                     </div>
                   </div>
                 )}
