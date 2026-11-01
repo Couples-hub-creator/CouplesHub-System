@@ -47,3 +47,6 @@ __pycache__/
 
 # TypeScript incremental build info
 *.tsbuildinfo
+
+# Generated Prisma schema copy for the dashboard build
+packages/dashboard/prisma/

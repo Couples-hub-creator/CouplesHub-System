@@ -172,6 +172,7 @@ DASHBOARD SHELL
 - The git remote still points at the old `CouplesHub-System` repository. It is metadata only and is not linked from the site.
 - Add the localhost OAuth redirect in the Discord Developer Portal; the application currently lists only the production callback.
 - Set `DATABASE_URL` in Vercel before deploying. `.env.vercel` intentionally leaves it blank because the production connection string was not supplied.
+- The dashboard build runs `scripts/prepare-prisma.mjs`, which copies the bot schema and runs `prisma generate` before `next build`. Vercel installs can skip package postinstall hooks; without this step the build typechecks against an ungenerated client and fails.
 
 ### Final verification (this build)
 - `npx.cmd tsc --noEmit` — clean.

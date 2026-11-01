@@ -117,7 +117,7 @@ On Windows PowerShell, use `npm.cmd` and `npx.cmd`; the `.ps1` shims may be bloc
 
 ## Deployment
 
-- Dashboard: Vercel or any Node host. Set the root directory to `packages/dashboard` and add the environment variables from `packages/dashboard/.env.example`.
+- Dashboard: Vercel or any Node host. Set the root directory to `packages/dashboard` and add the environment variables from `packages/dashboard/.env.example`. The build generates the Prisma client from the bot schema; `DATABASE_URL` is only required at runtime.
 - Bot: a long-running VPS or container with Lavalink. Use PM2 or a process manager.
 - Database: one PostgreSQL instance shared by the bot and dashboard.
 - Real-time: Pusher, not a WebSocket server inside Next.js. Without Pusher the dashboard polls.
