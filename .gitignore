@@ -33,6 +33,7 @@ Thumbs.db
 # IDE
 .vscode/
 .idea/
+.trae/
 *.swp
 *.swo
 *~
@@ -41,9 +42,6 @@ Thumbs.db
 docker-compose.override.yml
 .vercel
 .turbo
-science_state.json
-__pycache__/
-*.py[cod]
 
 # TypeScript incremental build info
 *.tsbuildinfo

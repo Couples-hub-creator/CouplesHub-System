@@ -4,7 +4,7 @@
 
 ### Current Stack (all kept)
 - **Framework**: Next.js 14 App Router + React 18 + TypeScript — kept. Not migrating to Next 15/React 19: react-three-fiber 8 + drei 9 are already installed and peer-locked to React 18; the brief mandates keeping the existing stack when it is already Next.js.
-- **Auth**: NextAuth v4 + Discord OAuth2 (scopes `identify guilds guilds.members.read email`) — kept, it works. Sign-in page moves from `/auth/signin` to `/login` (authOptions `pages` updated; old route redirects).
+- **Auth**: NextAuth v4 + Discord OAuth2 (login scope `identify guilds`; guild install scopes `identify guilds bot applications.commands`) - kept, it works. Sign-in page moves from `/auth/signin` to `/login` (authOptions `pages` updated; old route redirects).
 - **Database**: Prisma + PostgreSQL — kept. Schema already models Guild, MusicSettings, ModerationSettings, AutoModRule, Infraction, LevelingSettings, WelcomeSettings, RoleSettings, LoggingSettings, LogEntry, User XP, ReactionRole, etc. Missing models for Schedule / AI Chat / Radio stations / saved playlists were added additively; there is no migrations directory, so apply with `prisma db push`.
 - **Bot**: discord.js v14 + shoukaku (Lavalink v4) — kept. Music + moderation commands exist.
 - **Dashboard ↔ bot**: shared PostgreSQL (source of truth) + Pusher for real-time push (already a dependency). TanStack Query polling as fallback when Pusher is not configured. No WebSocket server inside Next.js (Vercel serverless), per brief.
@@ -19,10 +19,9 @@
 7. **Default Tailwind sky-blue palette** in `tailwind.config.ts` — replaced by Crown Jewel tokens.
 8. **No typed API layer, no permission re-checks, no zod validation** — new `src/lib/api/*` + `src/server/*` layer.
 
-### UI/UX Pro Max skill (installed at `.trae/skills/ui-ux-pro-max`)
+### UI/UX Pro Max skill (used during the build)
 - Ran `--design-system` for this project. Its generic output (warm light palette, Bodoni Moda/Jost, horizontal-scroll-journey pattern) **conflicts with the mandated Crown Jewel direction → user brief wins; recorded here as required.**
 - Adopted from the skill: UX rules (skeletons during async, transform/opacity-only animation, ease-out 150–300ms micro-interactions, prefers-reduced-motion, visible focus states, cursor-pointer, no emoji icons), chart guidance (line/area for trends, streaming area for real-time, distinct colorblind-safe series), Next.js guidelines (Server Components by default, route handlers, colocation), and its pre-delivery checklist (merged into the final checklist).
-- Persisted master file at `design-system/MASTER.md` (overridden to Crown Jewel tokens so future sessions stay consistent).
 
 ## DESIGN PLAN: "CROWN JEWEL"
 
