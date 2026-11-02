@@ -32,7 +32,7 @@ export const metadata: Metadata = {
   },
   description: siteConfig.description,
   applicationName: siteConfig.name,
-  keywords: ['discord bot', 'music bot', 'moderation', 'discord dashboard', 'capital'],
+  keywords: ['discord bot', 'music bot', 'moderation', 'discord dashboard', 'couples hub'],
   authors: [{ name: siteConfig.name }],
   openGraph: {
     type: 'website',

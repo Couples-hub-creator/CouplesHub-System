@@ -64,7 +64,7 @@ function MessagePreview({
         />
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-1.5">
-            <span className="text-xs font-semibold text-mist">Capital</span>
+            <span className="text-xs font-semibold text-mist">Couples Hub</span>
             <span className="rounded-sm bg-[#5865F2] px-1 py-px text-[8px] font-bold uppercase text-white">
               app
             </span>
@@ -306,7 +306,7 @@ export function WelcomeView({ guildId, guildName }: { guildId: string; guildName
               <Sparkles className="mt-0.5 size-3.5 shrink-0 text-champagne" />
               <p className="text-[11px] leading-relaxed text-mist-faint">
                 Auto roles are added immediately on join. Roles above the bot&apos;s highest role cannot be
-                assigned — move the Capital role up in Discord if a role is missing.
+                assigned — move the Couples Hub role up in Discord if a role is missing.
               </p>
             </div>
           </div>

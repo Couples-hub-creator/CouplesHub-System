@@ -153,7 +153,7 @@ export function LoginScreen({
               />
 
               <div className="relative">
-                <h1 className="font-display text-2xl font-semibold text-mist">Sign in to Capital</h1>
+                <h1 className="font-display text-2xl font-semibold text-mist">Sign in to Couples Hub</h1>
                 <p className="mt-1.5 text-sm leading-relaxed text-mist-dim">
                   Use the Discord account that manages your server. We never see your password.
                 </p>
@@ -165,7 +165,7 @@ export function LoginScreen({
                   >
                     <CheckCircle2 className="mt-0.5 size-4 shrink-0 text-emerald" />
                     <div>
-                      <p className="text-xs font-semibold text-mist">Capital is in your server.</p>
+                      <p className="text-xs font-semibold text-mist">Couples Hub is in your server.</p>
                       <p className="mt-0.5 text-[11px] leading-relaxed text-mist-dim">
                         Sign in with Discord to open its dashboard.
                       </p>
@@ -245,7 +245,7 @@ export function LoginScreen({
                 rel="noreferrer"
                 className="font-medium text-emerald underline-offset-4 hover:underline"
               >
-                Add Capital to Discord
+                Add Couples Hub to Discord
               </a>{' '}
               first.
             </p>

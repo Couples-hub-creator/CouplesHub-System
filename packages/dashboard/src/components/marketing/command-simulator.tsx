@@ -106,7 +106,7 @@ const TABS: Tab[] = [
     command: '/ask how do I set up reaction roles?',
     author: 'you',
     embed: {
-      title: 'Capital AI',
+      title: 'Couples Hub AI',
       color: 'emerald',
       fields: [
         { name: 'Answer', value: 'Open Roles → Reaction roles, pick a message and attach up to 20 emoji.' },
@@ -231,7 +231,7 @@ export function CommandSimulator() {
                   </div>
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-1.5">
-                      <span className="text-[13px] font-semibold text-emerald">Capital</span>
+                      <span className="text-[13px] font-semibold text-emerald">Couples Hub</span>
                       <span className="rounded bg-[#5865F2] px-1 py-px text-[8px] font-bold uppercase text-white">
                         app
                       </span>
@@ -269,7 +269,7 @@ export function CommandSimulator() {
                 <span className="size-1 rounded-full bg-white/50 animate-typing-dot" style={{ animationDelay: '0.2s' }} />
                 <span className="size-1 rounded-full bg-white/50 animate-typing-dot" style={{ animationDelay: '0.4s' }} />
               </div>
-              Capital is typing
+              Couples Hub is typing
             </div>
           </div>
 

@@ -107,7 +107,7 @@ export function AccountView({ user, guildCount }: AccountViewProps) {
           label="Servers you manage"
           description={
             guildCount === 0
-              ? 'No servers yet. Add Capital to a server where you have Manage Server.'
+              ? 'No servers yet. Add Couples Hub to a server where you have Manage Server.'
               : `${guildCount} ${guildCount === 1 ? 'server' : 'servers'} available in the dashboard.`
           }
         >
@@ -120,8 +120,8 @@ export function AccountView({ user, guildCount }: AccountViewProps) {
         </SettingRow>
 
         <SettingRow
-          label="Add Capital to another server"
-          description="Opens the Discord install flow with the permissions Capital needs."
+          label="Add Couples Hub to another server"
+          description="Opens the Discord install flow with the permissions Couples Hub needs."
         >
           <Button variant="outline" size="sm" asChild>
             <a href="/api/discord/invite" target="_blank" rel="noreferrer">
@@ -138,7 +138,7 @@ export function AccountView({ user, guildCount }: AccountViewProps) {
           description="A JSON file with your profile, the servers you manage, your dashboard activity and your moderation actions."
         >
           <Button variant="outline" size="sm" asChild>
-            <a href="/api/account/export" download="capital-account.json">
+            <a href="/api/account/export" download="couples-hub-account.json">
               <Download className="size-3.5" />
               Download JSON
             </a>
@@ -176,7 +176,7 @@ export function AccountView({ user, guildCount }: AccountViewProps) {
             <Link href="/privacy">Open</Link>
           </Button>
         </SettingRow>
-        <SettingRow label="Terms of service" description="What you agree to when you use Capital.">
+        <SettingRow label="Terms of service" description="What you agree to when you use Couples Hub.">
           <Button variant="ghost" size="sm" asChild>
             <Link href="/terms">Open</Link>
           </Button>

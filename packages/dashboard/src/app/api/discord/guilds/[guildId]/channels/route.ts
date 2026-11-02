@@ -43,7 +43,7 @@ export const GET = withHandler<Ctx>(async (_request, { params }) => {
     throw new ApiError(
       502,
       res.status === 404
-        ? 'Capital is not in that server yet. Add the bot, then reload.'
+        ? 'Couples Hub is not in that server yet. Add the bot, then reload.'
         : 'Discord did not return the channel list. Try again in a moment.',
       'DISCORD_ERROR',
     );

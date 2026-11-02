@@ -41,8 +41,8 @@ METHOD \n PATH \n TIMESTAMP \n BODY
 The signature is `hex(HMAC-SHA256(secret, signingString))`, sent as:
 
 ```
-X-Capital-Timestamp: 1767225600000
-X-Capital-Signature: 9f2c...
+X-CouplesHub-Timestamp: 1767225600000
+X-CouplesHub-Signature: 9f2c...
 Content-Type: application/json
 ```
 
@@ -169,8 +169,8 @@ const MAX_SKEW_MS = 5 * 60 * 1000;
 app.use('/guilds', express.text({ type: 'application/json' }));
 
 function verify(req: express.Request): boolean {
-  const timestamp = req.header('x-capital-timestamp');
-  const signature = req.header('x-capital-signature');
+  const timestamp = req.header('x-coupleshub-timestamp');
+  const signature = req.header('x-coupleshub-signature');
   if (!timestamp || !signature) return false;
 
   if (Math.abs(Date.now() - Number(timestamp)) > MAX_SKEW_MS) return false;
@@ -258,7 +258,7 @@ TanStack Query polling at a slower interval — no feature is lost.
 | --- | --- |
 | `BOT_API_URL` unset | "Live player control is not configured" |
 | Bot unreachable | Player card in a disconnected state, retry button |
-| Bot returns 404 | "Capital is not in that voice channel right now" |
+| Bot returns 404 | "Couples Hub is not in that voice channel right now" |
 | Bot returns 401/500 | "The bot did not accept that request. Try again." |
 
 The dashboard never retries a mutation automatically. Reads retry with backoff.

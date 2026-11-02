@@ -90,8 +90,8 @@ export async function callBotApi<T>(
       method,
       headers: {
         'Content-Type': 'application/json',
-        'X-Capital-Timestamp': timestamp,
-        'X-Capital-Signature': digest,
+        'X-CouplesHub-Timestamp': timestamp,
+        'X-CouplesHub-Signature': digest,
       },
       body: payload || undefined,
       cache: 'no-store',
@@ -107,7 +107,7 @@ export async function callBotApi<T>(
 
   if (!res.ok) {
     if (res.status === 404) {
-      throw new ApiError(409, 'Capital is not in that voice channel right now.', 'NOT_CONNECTED');
+      throw new ApiError(409, 'Couples Hub is not in that voice channel right now.', 'NOT_CONNECTED');
     }
     throw new ApiError(502, 'The bot did not accept that request. Try again.', 'BOT_API_ERROR');
   }

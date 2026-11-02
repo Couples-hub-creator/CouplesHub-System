@@ -112,7 +112,7 @@ export function CommandPalette({
                   className="flex cursor-pointer items-center gap-2.5 rounded-sm px-2 py-2 text-sm text-mist-dim outline-none data-[selected=true]:bg-emerald/[0.1] data-[selected=true]:text-mist"
                 >
                   <ExternalLink className="size-4 text-mist-faint" />
-                  Add Capital to another server
+                  Add Couples Hub to another server
                 </Command.Item>
                 <Command.Item
                   value="sign out log out"

@@ -73,7 +73,7 @@ export default function DocsPage() {
       <div className="max-w-2xl">
         <p className="text-xs font-medium text-emerald">Documentation</p>
         <h1 className="mt-2 font-display text-display-2 font-semibold text-mist">
-          Everything Capital does, and how to set it up.
+          Everything Couples Hub does, and how to set it up.
         </h1>
         <p className="mt-4 text-base leading-relaxed text-mist-dim">
           Written for the person who runs the server, not just the person who wrote the code. If a step is
@@ -121,7 +121,7 @@ export default function DocsPage() {
           <section>
             <H2 id="quick-start">Quick start</H2>
             <P>
-              Add Capital with the invite button. Discord asks which server and which permissions. Capital
+              Add Couples Hub with the invite button. Discord asks which server and which permissions. Couples Hub
               needs Manage Roles, Manage Channels, Kick Members, Ban Members, Moderate Members, Manage
               Messages and Connect/Speak for music. It does not need Administrator.
             </P>
@@ -156,7 +156,7 @@ export default function DocsPage() {
             <H3>Danger zone</H3>
             <P>
               Reset modules re-enables every module and deletes custom auto-mod rules. Delete server data
-              removes everything Capital stored for that server. Both require typing a confirmation word and
+              removes everything Couples Hub stored for that server. Both require typing a confirmation word and
               both are rate-limited.
             </P>
           </section>
@@ -164,7 +164,7 @@ export default function DocsPage() {
           <section>
             <H2 id="music">Music and radio</H2>
             <P>
-              Join a voice channel and run <Code>/play lofi hip hop</Code> or paste a URL. Capital joins,
+              Join a voice channel and run <Code>/play lofi hip hop</Code> or paste a URL. Couples Hub joins,
               queues the track and stays until the queue empties (unless 24/7 is on).
             </P>
             <H3>Player controls</H3>
@@ -182,7 +182,7 @@ export default function DocsPage() {
             </P>
             <H3>24/7 and radio</H3>
             <P>
-              Radio &amp; 24/7 keeps Capital in one voice channel around the clock and reconnects after a
+              Radio &amp; 24/7 keeps Couples Hub in one voice channel around the clock and reconnects after a
               restart. Add custom stations with a direct stream URL. The dashboard validates the URL before
               saving; playback is still handled by Lavalink.
             </P>
@@ -242,7 +242,7 @@ export default function DocsPage() {
             </P>
             <P>
               Role rewards attach a role to a level. Drag rewards to reorder, edit the level inline, or
-              remove one. Capital adds the role when the level is reached; it does not remove roles when
+              remove one. Couples Hub adds the role when the level is reached; it does not remove roles when
               someone drops (levels do not go down).
             </P>
             <P>
@@ -264,8 +264,8 @@ export default function DocsPage() {
               does the rest.
             </P>
             <Callout title="Role hierarchy">
-              Capital can only assign roles below its own highest role. If a role is not being added, move
-              the Capital role above it in Discord → Server Settings → Roles.
+              Couples Hub can only assign roles below its own highest role. If a role is not being added, move
+              the Couples Hub role above it in Discord → Server Settings → Roles.
             </Callout>
           </section>
 
@@ -378,7 +378,7 @@ npm run dev --workspace packages/dashboard`}</Block>
             <P>
               The dashboard never connects to Discord directly for playback. It calls a small HTTP API hosted
               beside the bot, signed with HMAC-SHA256. Requests carry{' '}
-              <Code>X-Capital-Timestamp</Code> and <Code>X-Capital-Signature</Code>; the signature covers
+              <Code>X-CouplesHub-Timestamp</Code> and <Code>X-CouplesHub-Signature</Code>; the signature covers
               method, path, timestamp and body.
             </P>
             <P>

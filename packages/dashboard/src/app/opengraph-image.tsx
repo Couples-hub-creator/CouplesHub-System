@@ -108,7 +108,7 @@ export default function OpengraphImage() {
             />
           </div>
           <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <span style={{ fontSize: 26, fontWeight: 700, letterSpacing: '-0.02em' }}>Capital</span>
+            <span style={{ fontSize: 26, fontWeight: 700, letterSpacing: '-0.02em' }}>Couples Hub</span>
             <span style={{ fontSize: 13, color: '#6F7B93', letterSpacing: '0.16em' }}>DISCORD, IN COMMAND</span>
           </div>
         </div>

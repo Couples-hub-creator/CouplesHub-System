@@ -1,13 +1,13 @@
 /**
- * Capital — single source of truth for brand, links, plans and public copy.
+ * Couples Hub — single source of truth for brand, links, plans and public copy.
  * Every name on the site comes from here. No other brand strings anywhere.
  */
 
 export const siteConfig = {
-  name: 'Capital',
+  name: 'Couples Hub',
   tagline: 'Discord, in command',
   description:
-    'Capital is the command room for your Discord community: studio-grade music, firm moderation, leveling and automation — controlled from one beautiful dashboard.',
+    'Couples Hub is the command room for your Discord community: studio-grade music, firm moderation, leveling and automation — controlled from one beautiful dashboard.',
   // Production fallback. Local development overrides this in .env.local.
   url: process.env.NEXT_PUBLIC_SITE_URL ?? 'https://dashboard-couples-hub.vercel.app',
   ogImage: '/opengraph-image',

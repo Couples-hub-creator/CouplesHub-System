@@ -100,7 +100,7 @@ export function ServerGrid() {
         <div>
           <h1 className="font-display text-display-3 font-semibold text-mist">Choose a server</h1>
           <p className="mt-2 max-w-prose text-sm leading-relaxed text-mist-dim">
-            These are the servers where you have Manage Server. Capital only ever touches the server you
+            These are the servers where you have Manage Server. Couples Hub only ever touches the server you
             open.
           </p>
         </div>
@@ -111,7 +111,7 @@ export function ServerGrid() {
           className="inline-flex shrink-0 items-center gap-1.5 text-sm font-medium text-emerald underline-offset-4 hover:underline"
         >
           <Plus className="size-3.5" />
-          Add Capital to another server
+          Add Couples Hub to another server
         </a>
       </div>
 
@@ -151,7 +151,7 @@ export function ServerGrid() {
         <div className="mt-5 flex items-center gap-3 rounded-md border border-emerald/25 bg-emerald/[0.06] px-4 py-3">
           <span className="size-2 shrink-0 rounded-full bg-emerald animate-pulse-dot" />
           <p className="text-sm text-mist-dim">
-            Waiting for Capital to join. This page updates on its own — no need to refresh.
+            Waiting for Couples Hub to join. This page updates on its own — no need to refresh.
           </p>
           <button
             type="button"
@@ -196,7 +196,7 @@ export function ServerGrid() {
             description={
               search
                 ? 'Try a shorter search term, or clear it to see everything.'
-                : 'You need Manage Server on a server to open it here. Add Capital first, then come back.'
+                : 'You need Manage Server on a server to open it here. Add Couples Hub first, then come back.'
             }
             action={
               search ? (
@@ -206,7 +206,7 @@ export function ServerGrid() {
               ) : (
                 <Button asChild size="sm">
                   <a href="/api/discord/invite" target="_blank" rel="noreferrer">
-                    Add Capital to Discord
+                    Add Couples Hub to Discord
                   </a>
                 </Button>
               )
@@ -284,7 +284,7 @@ export function ServerGrid() {
                           onClick={() => invite(guild.id)}
                         >
                           <Plus className="size-3.5" />
-                          Invite Capital
+                          Invite Couples Hub
                         </Button>
                       )}
                     </div>

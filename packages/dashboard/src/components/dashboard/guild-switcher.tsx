@@ -107,7 +107,7 @@ export function GuildSwitcher({
               className="flex items-center gap-2 rounded-sm px-2 py-1.5 text-xs text-emerald transition-colors hover:bg-emerald/[0.07]"
             >
               <Plus className="size-3.5" />
-              Add Capital to a server
+              Add Couples Hub to a server
             </a>
           </div>
         </Popover.Content>

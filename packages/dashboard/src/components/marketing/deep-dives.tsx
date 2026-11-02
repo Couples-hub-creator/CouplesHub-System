@@ -293,7 +293,7 @@ export function DeepDives() {
           Three things worth getting right
         </h2>
         <p className="mt-4 max-w-[48ch] text-[15px] leading-relaxed text-mist-dim">
-          Most bots do a little of everything. Capital goes deep on the parts that decide whether a
+          Most bots do a little of everything. Couples Hub goes deep on the parts that decide whether a
           server thrives or dies quietly.
         </p>
       </Reveal>

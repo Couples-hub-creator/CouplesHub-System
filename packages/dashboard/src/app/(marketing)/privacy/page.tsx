@@ -18,13 +18,13 @@ const SECTIONS: PolicySection[] = [
   },
   {
     heading: 'What we collect',
-    paragraphs: ['Depending on how you use Capital, the database may hold:'],
+    paragraphs: ['Depending on how you use Couples Hub, the database may hold:'],
     list: [
       'Discord account data: user ID, username, display name, avatar hash and, if Discord returns it, email address.',
       'Server data: server ID, name, icon, and the list of servers you can manage (fetched from Discord at sign-in and cached briefly).',
       'Configuration: prefixes, language, timezone, module switches, channel and role IDs, welcome messages, auto-mod rules, level rewards and AI settings.',
       'Activity: moderation cases, XP and levels, command and music log entries, scheduled task runs, and a record of changes made in the dashboard.',
-      'Premium state: plan, status, period dates and AI usage counters. Payment card details are never stored by Capital; a payment provider handles them when checkout is connected.',
+      'Premium state: plan, status, period dates and AI usage counters. Payment card details are never stored by Couples Hub; a payment provider handles them when checkout is connected.',
     ],
   },
   {
@@ -81,7 +81,7 @@ const SECTIONS: PolicySection[] = [
   {
     heading: 'Children',
     paragraphs: [
-      'Discord requires users to be at least 13 years old, or older where local law requires it. Capital is not directed at children and does not knowingly collect data from anyone below Discord’s minimum age.',
+      'Discord requires users to be at least 13 years old, or older where local law requires it. Couples Hub is not directed at children and does not knowingly collect data from anyone below Discord’s minimum age.',
     ],
   },
   {
@@ -98,7 +98,7 @@ export default function PrivacyPage() {
     <PolicyPage
       title="Privacy policy"
       updated="31 October 2026"
-      intro="Capital stores what it needs to run your server and nothing that it does not. This page lists exactly what that means."
+      intro="Couples Hub stores what it needs to run your server and nothing that it does not. This page lists exactly what that means."
       sections={SECTIONS}
     />
   );

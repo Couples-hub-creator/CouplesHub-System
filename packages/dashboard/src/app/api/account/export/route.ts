@@ -72,7 +72,7 @@ export async function GET() {
   return new NextResponse(JSON.stringify(payload, null, 2), {
     headers: {
       'Content-Type': 'application/json; charset=utf-8',
-      'Content-Disposition': 'attachment; filename="capital-account.json"',
+      'Content-Disposition': 'attachment; filename="couples-hub-account.json"',
       'Cache-Control': 'no-store',
     },
   });

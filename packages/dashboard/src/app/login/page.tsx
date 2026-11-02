@@ -6,7 +6,7 @@ import { LoginScreen } from '@/components/auth/login-screen';
 
 export const metadata: Metadata = {
   title: 'Sign in',
-  description: 'Sign in to Capital with Discord to open your server dashboard.',
+  description: 'Sign in to Couples Hub with Discord to open your server dashboard.',
   robots: { index: false, follow: false },
 };
 

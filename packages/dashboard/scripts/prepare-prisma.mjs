@@ -23,7 +23,7 @@ copyFileSync(source, target);
 // `prisma generate` reads the datasource block but does not connect. A
 // placeholder keeps the build working when DATABASE_URL is not set yet.
 if (!process.env.DATABASE_URL) {
-  process.env.DATABASE_URL = 'postgresql://user:password@localhost:5432/capital';
+  process.env.DATABASE_URL = 'postgresql://user:password@localhost:5432/coupleshub';
 }
 
 execSync('npx prisma generate --schema prisma/schema.prisma', {

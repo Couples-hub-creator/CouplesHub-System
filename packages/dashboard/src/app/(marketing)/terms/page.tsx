@@ -12,14 +12,14 @@ const SECTIONS: PolicySection[] = [
   {
     heading: 'Agreement',
     paragraphs: [
-      'By adding Capital to a Discord server, using its commands, or signing in to the dashboard, you agree to these terms. If you do not agree, remove the bot and stop using the dashboard.',
+      'By adding Couples Hub to a Discord server, using its commands, or signing in to the dashboard, you agree to these terms. If you do not agree, remove the bot and stop using the dashboard.',
       'You must also follow Discord’s Terms of Service and Community Guidelines. Where those rules and these terms differ, Discord’s rules win.',
     ],
   },
   {
-    heading: 'What Capital does',
+    heading: 'What Couples Hub does',
     paragraphs: [
-      'Capital is a Discord bot with a web dashboard. It plays music, runs moderation and auto-moderation, tracks levels, welcomes members, schedules tasks, assigns roles and can answer messages with an AI assistant when a server enables it.',
+      'Couples Hub is a Discord bot with a web dashboard. It plays music, runs moderation and auto-moderation, tracks levels, welcomes members, schedules tasks, assigns roles and can answer messages with an AI assistant when a server enables it.',
       'The dashboard lets people with Manage Server permission configure those features for their own server. The bot does the work inside Discord; the dashboard stores configuration and reads aggregate activity.',
     ],
   },
@@ -33,7 +33,7 @@ const SECTIONS: PolicySection[] = [
   },
   {
     heading: 'Acceptable use',
-    paragraphs: ['Do not use Capital to:'],
+    paragraphs: ['Do not use Couples Hub to:'],
     list: [
       'Harass, threaten, or target people, or to evade a moderation action.',
       'Break Discord’s rules, or any law that applies to you.',
@@ -53,7 +53,7 @@ const SECTIONS: PolicySection[] = [
   {
     heading: 'Availability and changes',
     paragraphs: [
-      'Capital is provided as-is. Features can change, break, or be removed. We aim to keep the service running but do not promise uninterrupted availability.',
+      'Couples Hub is provided as-is. Features can change, break, or be removed. We aim to keep the service running but do not promise uninterrupted availability.',
       'The status page reports what is observable at the moment you load it. It is not a contractual uptime guarantee.',
     ],
   },
@@ -67,7 +67,7 @@ const SECTIONS: PolicySection[] = [
   {
     heading: 'Termination',
     paragraphs: [
-      'You can stop using Capital at any time by removing the bot and deleting your dashboard data from the account page. Server administrators can delete all server data from the danger zone in settings.',
+      'You can stop using Couples Hub at any time by removing the bot and deleting your dashboard data from the account page. Server administrators can delete all server data from the danger zone in settings.',
       'We may suspend access if these terms are broken, if the service is being abused, or if continuing would harm other users or the service.',
     ],
   },
@@ -81,7 +81,7 @@ const SECTIONS: PolicySection[] = [
   {
     heading: 'Changes to these terms',
     paragraphs: [
-      'These terms can be updated as the product changes. The date at the top of this page shows the current version. Continuing to use Capital after an update means you accept the updated terms.',
+      'These terms can be updated as the product changes. The date at the top of this page shows the current version. Continuing to use Couples Hub after an update means you accept the updated terms.',
     ],
   },
 ];
@@ -91,7 +91,7 @@ export default function TermsPage() {
     <PolicyPage
       title="Terms of service"
       updated="31 October 2026"
-      intro="The short version: use Capital within Discord’s rules, only configure servers you manage, and do not abuse the service. The detail is below."
+      intro="The short version: use Couples Hub within Discord’s rules, only configure servers you manage, and do not abuse the service. The detail is below."
       sections={SECTIONS}
     />
   );

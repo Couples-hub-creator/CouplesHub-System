@@ -5,7 +5,7 @@ import { prisma } from '@/lib/prisma';
 
 export const dynamic = 'force-dynamic';
 
-/** Guilds the signed-in user can manage, annotated with whether Capital is present. */
+/** Guilds the signed-in user can manage, annotated with whether Couples Hub is present. */
 export const GET = withHandler(async () => {
   await requireSession();
   const guilds = await getManageableGuilds({ strict: true });

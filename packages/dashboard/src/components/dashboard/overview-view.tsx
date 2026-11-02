@@ -277,7 +277,7 @@ export function OverviewView({ guildId, guildName }: { guildId: string; guildNam
 
             {/* Setup + health */}
             <div className="space-y-4">
-              <SectionCard title="Setup" description="Finish these to get the most out of Capital" icon={<CheckCircle2 />}>
+              <SectionCard title="Setup" description="Finish these to get the most out of Couples Hub" icon={<CheckCircle2 />}>
                 <div className="flex items-center gap-4">
                   <ProgressRing value={(data.setup.completed / data.setup.total) * 100} size={62} />
                   <div className="min-w-0 flex-1">

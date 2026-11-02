@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { cn } from '@/lib/utils';
+import { siteConfig } from '@/config/site';
 
 /**
- * The Capital mark: a faceted crown built from three chevrons and a
+ * The Couples Hub mark: a faceted crown built from three chevrons and a
  * gemstone base. Geometric, not clip-art. Renders crisply at 16px.
  */
 export function CrownMark({ className, animated = false }: { className?: string; animated?: boolean }) {
@@ -57,7 +58,7 @@ export function BrandLockup({
     <a
       href={href}
       className={cn('group inline-flex items-center gap-2.5 rounded-sm', className)}
-      aria-label="Capital home"
+      aria-label={`${siteConfig.name} home`}
     >
       <span
         className={cn(
@@ -68,8 +69,8 @@ export function BrandLockup({
         <CrownMark className="size-[70%]" animated />
       </span>
       {showWordmark && (
-        <span className={cn('font-display font-semibold tracking-[-0.02em] text-mist', textSize)}>
-          Capital
+        <span className={cn('whitespace-nowrap font-display font-semibold tracking-[-0.02em] text-mist', textSize)}>
+          {siteConfig.name}
         </span>
       )}
     </a>

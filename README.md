@@ -1,4 +1,4 @@
-# Capital
+# Couples Hub
 
 A Discord bot and its dashboard. The dashboard covers music, radio, moderation, auto-mod, leveling, welcome messages, roles, logs, analytics, scheduling and AI chat. The bot currently ships the music and moderation handlers; the remaining dashboard modules persist their settings in PostgreSQL for the bot-side handlers to consume.
 
@@ -43,7 +43,7 @@ docs/          Bot control API and real-time contract
 ### 1. Discord application
 
 1. Open the [Discord Developer Portal](https://discord.com/developers/applications).
-2. Create an application named Capital.
+2. Create an application named Couples Hub.
 3. Enable Message Content, Server Members and Presence intents.
 4. Create the bot and copy its token.
 5. Add the OAuth2 redirect URI:

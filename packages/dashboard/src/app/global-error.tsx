@@ -32,7 +32,7 @@ export default function GlobalError({
               color: '#19D68F',
             }}
           >
-            Capital
+            Couples Hub
           </p>
           <h1 style={{ margin: '12px 0 0', fontSize: 28, lineHeight: 1.15, fontWeight: 600 }}>
             The app could not start.

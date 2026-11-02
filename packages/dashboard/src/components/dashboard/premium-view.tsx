@@ -195,7 +195,7 @@ export function PremiumView({ guildId, guildName }: { guildId: string; guildName
               description={
                 data.billingConfigured
                   ? 'Payments are handled by the connected provider. Receipts include a link to the billing portal.'
-                  : 'No payment provider is connected on this deployment yet. Premium can still be granted manually by the Capital team.'
+                  : 'No payment provider is connected on this deployment yet. Premium can still be granted manually by the Couples Hub team.'
               }
             >
               <Badge tone={data.billingConfigured ? 'emerald' : 'warning'}>

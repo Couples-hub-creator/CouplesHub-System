@@ -1,4 +1,4 @@
-# DECISIONS.md — Capital "Crown Jewel" Rebuild
+# DECISIONS.md — Couples Hub "Crown Jewel" Rebuild
 
 ## AUDIT RESULTS
 
@@ -10,7 +10,7 @@
 - **Dashboard ↔ bot**: shared PostgreSQL (source of truth) + Pusher for real-time push (already a dependency). TanStack Query polling as fallback when Pusher is not configured. No WebSocket server inside Next.js (Vercel serverless), per brief.
 
 ### Problems found (fixed in this rebuild)
-1. **Brand inconsistency**: layout says "CAPITAL", old DECISIONS said "CouplesHub" → **one brand constant `siteConfig.name = "Capital"` in `src/config/site.ts`; every other name removed.**
+1. **Brand**: the product ships as **Couples Hub**; `siteConfig.name = "Couples Hub"` in `src/config/site.ts` is the single source of truth. The old "Capital" name is retired.
 2. **Text collision in hero chip** — hero rebuilt as 3D scene + live player; the chip pattern removed.
 3. **Dead gaps + flat hero** — hero is now an R3F emerald gem scene beside a live Now Playing card; one viewport at 1440x900.
 4. **8 identical flat feature cards** — bento grid, each card with its own live mini-visual.
@@ -54,7 +54,7 @@ Radius by hierarchy: 8 / 14 / 22 / 32. No purple/blue gradients. 3–4% film gra
 ```
 HERO (1440x900, fits one viewport)
 ┌──────────────────────────────────────────────────────────────────┐
-│ ( crown Capital )   Features Commands Pricing Docs Status   [Add]│ ← floating glass bar
+│ ( crown Couples Hub ) Features Commands Pricing Docs Status [Add]│ ← floating glass bar
 │ ┌───────────────────────────────┐ ┌────────────────────────────┐ │
 │ │ Live status chip              │ │                            │ │
 │ │ DISPLAY: "Every server        │ │   R3F faceted emerald gem  │ │
@@ -107,7 +107,7 @@ DASHBOARD SHELL
 - **Discord issuer (RFC 9207)**: Discord now appends `iss=https://discord.com` to OAuth callbacks. The Discord provider sets `issuer: 'https://discord.com'` so openid-client validates it instead of throwing `issuer must be configured on the issuer`.
 - **Guild install**: `permissions=8` (Administrator) with `identify guilds bot applications.commands`, `response_type=code`, `integration_type=0`, redirecting to the NextAuth callback. `?guild=` still preselects a server. Middleware catches the install return (`guild_id` + `code`, no NextAuth `state`) and sends it to `/login?installed=1` so it shows a success notice instead of an OAuthCallback error.
 - **Real-time**: Pusher private channel `private-guild-${guildId}` with events `player:update`, `queue:update`, `case:created`, `settings:updated`. Subscriptions are authorised at `POST /api/realtime/[guildId]` after a permission re-check. With Pusher unset, TanStack Query polling is the fallback. No WebSocket server in Next.js.
-- **Bot control**: server-side HMAC calls (`X-Capital-Timestamp`, `X-Capital-Signature`) to `BOT_API_URL`; when unset, the player shows an honest "not connected" state. Contract in `docs/bot-integration.md`.
+- **Bot control**: server-side HMAC calls (`X-CouplesHub-Timestamp`, `X-CouplesHub-Signature`) to `BOT_API_URL`; when unset, the player shows an honest "not connected" state. Contract in `docs/bot-integration.md`.
 - **Demo data**: `NEXT_PUBLIC_DEMO_MODE` exists in the env schema, but no fabricated stats, testimonials or logos ship in this build. Every screen uses real data or an explicit empty state. `siteConfig.testimonials` is empty and the section stays hidden.
 - **i18n**: English-only copy lives in the components and `src/config/site.ts` / `src/config/commands.ts`. No translation layer in this build.
 - **Env**: parsed with zod in `src/lib/env.ts`; both the root `.env.example` and `packages/dashboard/.env.example` ship every key, including Pusher public keys, `BOT_API_URL`/`BOT_API_SECRET`, `NEXT_PUBLIC_SITE_URL` and the optional billing keys.
@@ -158,11 +158,11 @@ DASHBOARD SHELL
 ### Live environment pass (2026-11-01)
 - Credentials are wired into the root `.env` (bot) and `packages/dashboard/.env.local` (dashboard); both are gitignored. Production values live in `.env.vercel`.
 - Discord bot token verified against the API: logged in as `Couples HUB#0289`, serving 1 guild, and registered 21 slash commands globally.
-- Pusher credentials verified by triggering a test event on `test-capital`; the API returned success.
+- Pusher credentials verified by triggering a test event on `test-coupleshub`; the API returned success.
 - Dashboard auth verified: `/api/auth/providers` exposes Discord with the correct callback, `/api/auth/session` decodes a signed JWT, and `/login` renders “Continue with Discord”.
 - Dashboard `dev` is pinned to port 3001 so it matches `NEXTAUTH_URL` and the documented callback; `start` keeps Next's default port for the Docker/Caddy internal network.
-- Bot fixes found during the live pass: Shoukaku v4 needs `host:port` without a `ws://` prefix; command/event loading uses CommonJS `require` so `node --import tsx` works on Windows; the bot now upserts a `Guild` row on ready and on join so the dashboard’s presence indicator is accurate.
-- The Discord application is still named `Couples HUB`, and its only registered redirect URI is `https://dashboard-couples-hub.vercel.app/api/auth/callback/discord`. Add `http://localhost:3001/api/auth/callback/discord` in the Developer Portal before testing OAuth locally. Rename the application and Vercel domain separately if the old brand should disappear everywhere.
+- Bot fixes found during the live pass: Shoukaku v4 needs `host:port` without a `ws://` prefix; command/event loading uses CommonJS `require` so `node --import tsx` works on Windows; the bot upserts a `Guild` row on ready and on join, and the dashboard's presence indicator uses the bot's live guild list with the database as fallback.
+- The Discord application is still named `Couples HUB` (uppercase). Rename it to `Couples Hub` in the Developer Portal if the exact casing matters. Its only registered redirect URI is `https://dashboard-couples-hub.vercel.app/api/auth/callback/discord`. Add `http://localhost:3001/api/auth/callback/discord` in the Developer Portal before testing OAuth locally.
 - `DATABASE_URL` was not included in the supplied credentials. It must be set in `packages/dashboard/.env.local` for local data and in Vercel for production. Without it, public pages work but dashboard data does not.
 - No PostgreSQL server, Docker, Lavalink jar or Vercel CLI is installed on this machine. The live database, music and deploy paths were therefore not exercised here; the bot and dashboard were tested against the real Discord gateway and auth endpoints.
 - Known bot coverage: music and moderation commands only. Auto-mod, leveling, welcome, roles, logs, analytics, schedule and AI chat settings persist but do not have bot-side handlers yet. Dashboard player controls stay offline until the bot HTTP control API is implemented.

@@ -244,7 +244,7 @@ export function Hero({ stats }: { stats: { servers: number; members: number; upt
             transition={{ duration: 0.6, delay: 0.16, ease: [0.22, 1, 0.36, 1] }}
             className="mt-5 max-w-[34rem] text-[15px] leading-relaxed text-mist-dim sm:text-base"
           >
-            Music, moderation and community in one dashboard. Capital keeps your server running to your
+            Music, moderation and community in one dashboard. Couples Hub keeps your server running to your
             standard while you are offline, asleep, or doing literally anything else.
           </motion.p>
 

@@ -159,7 +159,7 @@ function DangerDialog({
           <DialogTitle>{isDelete ? 'Delete all server data?' : 'Reset module settings?'}</DialogTitle>
           <DialogDescription>
             {isDelete
-              ? 'Every case, log, task, station, playlist, premium record and setting Capital holds for this server is removed. This cannot be undone.'
+              ? 'Every case, log, task, station, playlist, premium record and setting Couples Hub holds for this server is removed. This cannot be undone.'
               : 'Every module goes back to on, and all custom auto-mod rules are deleted. Cases, logs and member data are untouched.'}
           </DialogDescription>
         </DialogHeader>
@@ -257,7 +257,7 @@ export function SettingsView({ guildId, guildName }: { guildId: string; guildNam
 
             <SettingRow
               label="Language"
-              description="The language Capital replies in for this server."
+              description="The language Couples Hub replies in for this server."
               htmlFor="language"
             >
               <Picker
@@ -356,7 +356,7 @@ export function SettingsView({ guildId, guildName }: { guildId: string; guildNam
                 Delete server data
               </p>
               <p className="mt-0.5 text-[11px] text-mist-dim">
-                Remove everything Capital stored for {guildName}. The bot stays in the server.
+                Remove everything Couples Hub stored for {guildName}. The bot stays in the server.
               </p>
             </div>
             <Button variant="danger" size="sm" onClick={() => setDangerAction('delete-guild-data')}>

@@ -21,7 +21,7 @@ import { cn } from '@/lib/utils';
 import { CommandPalette } from '@/components/dashboard/command-palette';
 import { GuildSwitcher } from '@/components/dashboard/guild-switcher';
 
-const COLLAPSE_KEY = 'capital.sidebar.collapsed';
+const COLLAPSE_KEY = 'coupleshub.sidebar.collapsed';
 
 export function DashboardShell({
   guildId,

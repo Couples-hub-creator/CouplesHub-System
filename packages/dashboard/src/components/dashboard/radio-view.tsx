@@ -166,7 +166,7 @@ export function RadioView({ guildId }: { guildId: string }) {
         <>
           <SectionCard
             title="Always on"
-            description="Capital stays in the channel and keeps the stream alive between tracks."
+            description="Couples Hub stays in the channel and keeps the stream alive between tracks."
             icon={<Signal />}
             action={
               <Badge tone={data?.twentyFourSeven ? 'emerald' : 'neutral'}>
@@ -177,7 +177,7 @@ export function RadioView({ guildId }: { guildId: string }) {
           >
             <SettingRow
               label="Enable 24/7 mode"
-              description="When on, Capital reconnects after a disconnect and never leaves on empty."
+              description="When on, Couples Hub reconnects after a disconnect and never leaves on empty."
             >
               <Switch
                 checked={data?.twentyFourSeven ?? false}
@@ -189,7 +189,7 @@ export function RadioView({ guildId }: { guildId: string }) {
 
             <SettingRow
               label="Channel"
-              description="The voice channel Capital should hold."
+              description="The voice channel Couples Hub should hold."
               htmlFor="247-channel"
             >
               <Picker

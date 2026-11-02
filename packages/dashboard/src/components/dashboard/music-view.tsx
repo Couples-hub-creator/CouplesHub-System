@@ -244,7 +244,7 @@ export function MusicView({ guildId }: { guildId: string }) {
     <div className="mx-auto w-full max-w-shell space-y-5">
       <PageHeader
         title="Player"
-        description="Playback, queue and filters. Changes apply to the voice channel Capital is in."
+        description="Playback, queue and filters. Changes apply to the voice channel Couples Hub is in."
         icon={<Music4 />}
         action={
           <Badge tone={state?.playing ? 'emerald' : 'neutral'}>
@@ -258,7 +258,7 @@ export function MusicView({ guildId }: { guildId: string }) {
         <Notice tone="warning" title="The player is not reachable">
           {state?.reason === 'BOT_API_UNAVAILABLE'
             ? 'This deployment has no bot control API configured, so playback cannot be driven from here. Set BOT_API_URL and BOT_API_SECRET to enable it.'
-            : 'Capital is not in a voice channel in this server right now. Join one with /play, then reload.'}
+            : 'Couples Hub is not in a voice channel in this server right now. Join one with /play, then reload.'}
         </Notice>
       )}
 
@@ -275,7 +275,7 @@ export function MusicView({ guildId }: { guildId: string }) {
               compact
               icon={<Music4 />}
               title="Nothing is playing"
-              description="Paste a link or search for a track below. Capital joins your voice channel and starts the queue."
+              description="Paste a link or search for a track below. Couples Hub joins your voice channel and starts the queue."
             />
           ) : (
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
@@ -508,7 +508,7 @@ export function MusicView({ guildId }: { guildId: string }) {
             compact
             icon={<ListMusic />}
             title="The queue is empty"
-            description="Add a track above. The queue is controlled from here while Capital is in voice."
+            description="Add a track above. The queue is controlled from here while Couples Hub is in voice."
           />
         ) : (
           <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={onDragEnd}>
