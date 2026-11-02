@@ -25,6 +25,7 @@ import { Badge } from '@/components/ui/badge';
 import { EmptyState, ErrorState } from '@/components/ui/empty-state';
 import { PageHeader } from '@/components/ui/page-header';
 import { Picker } from '@/components/dashboard/kit';
+import { ModuleConfigPanel } from '@/components/dashboard/module-config-panel';
 import { cn, formatRelativeTime, truncate } from '@/lib/utils';
 
 const TYPES = [
@@ -314,6 +315,21 @@ export function LogsView({ guildId }: { guildId: string }) {
           )}
         </TabsContent>
       </Tabs>
+
+      <ModuleConfigPanel
+        guildId={guildId}
+        moduleId="logging"
+        title="Logging policy"
+        description="Message content, bot filtering, ignored channels and retention. The channel routing above stays in the legacy logging settings."
+        excludeKeys={[
+          'messageLogs',
+          'memberLogs',
+          'moderationLogs',
+          'voiceLogs',
+          'roleLogs',
+          'channelLogs',
+        ]}
+      />
     </div>
   );
 }

@@ -41,6 +41,7 @@ import { PageHeader } from '@/components/ui/page-header';
 import { SaveBar } from '@/components/ui/save-bar';
 import { FormSkeleton, KpiCard, Notice, Picker, SectionCard, SettingRow } from '@/components/dashboard/kit';
 import { useDiscordMeta, useGuildSettings } from '@/lib/hooks/use-settings';
+import { ModuleConfigPanel } from '@/components/dashboard/module-config-panel';
 import { cn, formatRelativeTime, truncate } from '@/lib/utils';
 
 type ModerationSettings = {
@@ -544,6 +545,14 @@ export function ModerationView({ guildId }: { guildId: string }) {
           </>
         )}
       </SectionCard>
+
+      <ModuleConfigPanel
+        guildId={guildId}
+        moduleId="moderation"
+        title="Moderation policy"
+        description="Warning expiry, punishment DMs, appeals and case visibility. The case defaults above stay in the legacy moderation settings."
+        excludeKeys={['maxWarnsBeforeBan', 'banDeleteDays', 'defaultMuteDuration']}
+      />
 
       <SaveBar
         visible={settings.dirty}

@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import Link from 'next/link';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'sonner';
@@ -478,6 +479,12 @@ export function MusicView({ guildId }: { guildId: string }) {
               onClick={() => control.mutate({ action: 'leave' })}
             >
               Disconnect
+            </Button>
+            <Button variant="ghost" size="sm" className="mt-1.5 w-full" asChild>
+              <Link href={`/dashboard/${guildId}/radio`}>
+                <Radio className="size-3.5" />
+                Radio stations and 24/7
+              </Link>
             </Button>
           </SectionCard>
         </div>

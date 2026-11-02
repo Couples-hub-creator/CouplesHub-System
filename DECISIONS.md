@@ -277,6 +277,33 @@ modules into real bot features and closes the gap to MEE6/Dyno/Carl-bot depth.
 - Scope is global unless `DISCORD_GUILD_ID` is set, which is intended for
   development guilds.
 
+## Dashboard module pages
+
+- `/modules` is a searchable catalog grid, not an inline editor. Every module
+  card links to `modulePageHref`, which resolves dedicated modules to their
+  hand-built page and everything else to `/modules/[moduleId]`.
+- `/modules/[moduleId]` is a server component that fetches the signed catalog,
+  redirects dedicated modules, and renders `ModuleDetailView` for the rest.
+- Dedicated pages keep their legacy `SaveBar` for legacy fields and render the
+  remaining UI-schema fields through `ModuleConfigPanel`. The excluded-key lists
+  are explicit per page so a field can never be written by both stores.
+- `roles` and `schedule` have no legacy settings; their whole schema renders
+  through `ModuleConfigPanel`.
+- The schedule page replaces task cards with a real table (task, kind, schedule,
+  next run, last run, status, actions) and keeps the task dialog for edits.
+- `music` has no generic config. Its player page links to `/radio` for stations
+  and 24/7 settings instead of duplicating them.
+- The card designer previews through the bot's real renderer:
+  `GET /api/guilds/[guildId]/render/[type]` validates the type, rate-limits at
+  120/min per user and guild, and signs `POST /render/:type` to the bot. This
+  avoids a second canvas implementation in the dashboard.
+- Ticket and giveaway tables read `/tickets` and `/giveaways` proxies to the bot
+  API. They show explicit unavailable states when the bot API is not configured
+  rather than inventing rows.
+- Module pages reuse `useModuleConfig` and `ModuleSchemaForm`; there is one
+  schema renderer, so new module fields appear on both generic and dedicated
+  pages without dashboard changes.
+
 ## Assumptions
 
 - The bot and dashboard stay separate processes over one PostgreSQL database;

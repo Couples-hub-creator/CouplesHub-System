@@ -2,7 +2,6 @@
 
 import * as React from 'react';
 import { UserPlus, UserMinus, Image as ImageIcon, Sparkles, Hash } from 'lucide-react';
-import { Switch } from '@/components/ui/switch';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
@@ -17,6 +16,8 @@ import {
   SettingRow,
 } from '@/components/dashboard/kit';
 import { useDiscordMeta, useGuildSettings } from '@/lib/hooks/use-settings';
+import { ModuleConfigPanel } from '@/components/dashboard/module-config-panel';
+import { CardDesigner } from '@/components/dashboard/card-designer';
 
 type WelcomeSettings = {
   welcomeChannel: string | null;
@@ -176,17 +177,6 @@ export function WelcomeView({ guildId, guildName }: { guildId: string; guildName
                 </div>
               </div>
 
-              <SettingRow
-                label="Generated card"
-                description="Renders the member name over a gradient image instead of plain text."
-              >
-                <Switch
-                  checked={draft.welcomeImage}
-                  onCheckedChange={(checked) => settings.update({ welcomeImage: checked })}
-                  aria-label="Generate a welcome card"
-                />
-              </SettingRow>
-
               <SettingRow label="Accent colour" description="Used by the card and the embed stripe." htmlFor="welcome-color">
                 <div className="flex items-center gap-2">
                   <input
@@ -312,6 +302,37 @@ export function WelcomeView({ guildId, guildName }: { guildId: string; guildName
           </div>
         </div>
       )}
+
+      <ModuleConfigPanel
+        guildId={guildId}
+        moduleId="welcome"
+        title="More welcome settings"
+        description="DMs, boosts, auto-role timing and deletion. The greeting fields above stay in the legacy welcome settings; everything here is stored in the module config."
+        excludeKeys={[
+          'welcomeChannel',
+          'welcomeMessage',
+          'welcomeImage',
+          'leaveChannel',
+          'leaveMessage',
+          'autoRoles',
+          'embedColor',
+          'cardTemplate',
+        ]}
+      >
+        {(config, update) => (
+          <CardDesigner
+            guildId={guildId}
+            guildName={guildName}
+            moduleId="welcome"
+            template={String(config.cardTemplate ?? 'aurora')}
+            onTemplateChange={(value) => update({ cardTemplate: value })}
+            cardEnabled={Boolean(draft?.welcomeImage)}
+            onCardEnabledChange={(value) => settings.update({ welcomeImage: value })}
+            cardEnabledLabel="Generate welcome cards"
+            sampleMessage={draft?.welcomeMessage}
+          />
+        )}
+      </ModuleConfigPanel>
 
       <SaveBar
         visible={settings.dirty}

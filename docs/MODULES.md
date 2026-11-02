@@ -38,6 +38,28 @@ The legacy `src/commands` folder contributes 21 more top-level commands:
 Every module also respects its `enabled` flag: the legacy `Guild` toggle is
 checked first, then the generic `ModuleConfig.enabled` value.
 
+## Dashboard pages
+
+`/dashboard/[guildId]/modules` is a searchable catalog of all 24 modules. Every
+card opens a page:
+
+- **Dedicated pages** — `music`, `moderation`, `leveling`, `welcome`, `logging`,
+  `ai`, `automod`, `roles`, `schedule`. These keep their hand-built controls
+  (player, case table, card designer, rule cards, task table) and render any
+  remaining UI-schema fields through `ModuleConfigPanel`. The panel writes the
+  generic `ModuleConfig`; the legacy `SaveBar` keeps the legacy fields. Each
+  field has one writer.
+- **Generic detail page** — every other module renders
+  `/dashboard/[guildId]/modules/[moduleId]`, a form generated from the module's
+  `ui.sections` plus live tables for `tickets` and `giveaways`.
+- **Card designer** — welcome, goodbye, boost, rank and level-up cards preview
+  through the bot's real render endpoint, so the canvas matches production.
+- **Music** — the player page links to `/radio` for stations and 24/7 settings.
+
+The catalog is served by the signed bot endpoint
+`GET /guilds/:guildId/modules/catalog`; the dashboard never hardcodes module
+metadata. See `docs/DASHBOARD_CONTRACT.md` for the route-level contract.
+
 ---
 
 ## Automation

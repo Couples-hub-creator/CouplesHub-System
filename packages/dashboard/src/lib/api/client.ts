@@ -286,3 +286,38 @@ export interface RolesResponse {
   reactionRoles: ReactionRoleRow[];
   buttonRoles: ButtonRoleRow[];
 }
+
+export interface TicketRow {
+  id: string;
+  guildId: string;
+  userId: string;
+  channelId: string;
+  category: string;
+  status: string;
+  claimedBy: string | null;
+  createdAt: string;
+  closedAt: string | null;
+}
+
+export interface TicketsResponse {
+  tickets: TicketRow[];
+}
+
+export interface GiveawayRow {
+  id: string;
+  guildId: string;
+  channelId: string;
+  messageId: string;
+  prize: string;
+  winners: number;
+  endTime: string;
+  hostedBy: string;
+  requirements: unknown;
+  ended: boolean;
+  createdAt: string;
+  _count: { participants: number };
+}
+
+export interface GiveawaysResponse {
+  giveaways: GiveawayRow[];
+}

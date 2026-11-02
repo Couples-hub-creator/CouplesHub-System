@@ -31,6 +31,8 @@ import { PageHeader } from '@/components/ui/page-header';
 import { SaveBar } from '@/components/ui/save-bar';
 import { FormSkeleton, MultiPicker, Notice, Picker, SectionCard, SettingRow } from '@/components/dashboard/kit';
 import { useDiscordMeta, useGuildSettings } from '@/lib/hooks/use-settings';
+import { ModuleConfigPanel } from '@/components/dashboard/module-config-panel';
+import { CardDesigner } from '@/components/dashboard/card-designer';
 import { cn, formatFullNumber, initials } from '@/lib/utils';
 
 type LevelingSettings = {
@@ -105,7 +107,7 @@ function RewardRow({
   );
 }
 
-export function LevelingView({ guildId }: { guildId: string }) {
+export function LevelingView({ guildId, guildName }: { guildId: string; guildName: string }) {
   const settings = useGuildSettings<LevelingSettings>(guildId, 'leveling');
   const { channels, roles } = useDiscordMeta(guildId);
   const [newLevel, setNewLevel] = React.useState('5');
@@ -478,6 +480,39 @@ export function LevelingView({ guildId }: { guildId: string }) {
           </Notice>
         </SectionCard>
       </div>
+
+      <ModuleConfigPanel
+        guildId={guildId}
+        moduleId="leveling"
+        title="More leveling settings"
+        description="XP multipliers, voice rewards, anti-abuse limits and the live rank card. The earning and reward fields above stay in the legacy leveling settings."
+        excludeKeys={[
+          'xpPerMessage',
+          'xpPerVoiceMinute',
+          'messageCooldown',
+          'voiceCooldown',
+          'levelUpMessage',
+          'levelUpTemplate',
+          'roleRewards',
+          'ignoredChannels',
+          'ignoredRoles',
+          'cardTemplate',
+          'rankCard',
+        ]}
+      >
+        {(config, update) => (
+          <CardDesigner
+            guildId={guildId}
+            guildName={guildName}
+            moduleId="leveling"
+            template={String(config.cardTemplate ?? 'aurora')}
+            onTemplateChange={(value) => update({ cardTemplate: value })}
+            cardEnabled={Boolean(config.rankCard)}
+            onCardEnabledChange={(value) => update({ rankCard: value })}
+            cardEnabledLabel="Use generated rank cards"
+          />
+        )}
+      </ModuleConfigPanel>
 
       <SaveBar
         visible={settings.dirty}

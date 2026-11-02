@@ -64,7 +64,8 @@ Exceeding a limit returns `429 RATE_LIMITED`.
 | `/servers` | Guild picker |
 | `/dashboard/[guildId]` | Redirects to overview |
 | `/dashboard/[guildId]/overview` | Live stats, member count, module state |
-| `/dashboard/[guildId]/modules` | Generic schema-driven module console |
+| `/dashboard/[guildId]/modules` | Searchable module catalog; every module links to its page |
+| `/dashboard/[guildId]/modules/[moduleId]` | Schema-driven module detail page (dedicated modules redirect) |
 | `/dashboard/[guildId]/music` | Player, queue, 24/7 controls |
 | `/dashboard/[guildId]/radio` | Stations, favorites, 24/7 radio |
 | `/dashboard/[guildId]/moderation` | Cases and moderation settings |
@@ -95,6 +96,9 @@ All paths are under `/api/guilds/[guildId]`.
 | GET | `/logs` | Recent `LogEntry` rows |
 | GET | `/modules` | Proxy of the bot module catalog |
 | PATCH | `/modules/[moduleId]` | Generic module config save |
+| GET | `/render/[type]` | Signed PNG proxy for the card designer (`welcome`, `goodbye`, `boost`, `rank`, `levelup`) |
+| GET | `/tickets` | Ticket table data from the bot API |
+| GET | `/giveaways` | Giveaway table data from the bot API |
 | GET/POST | `/music` | Player state and controls |
 | GET | `/premium` | Plan, limits and premium module availability |
 | GET/POST/PATCH/DELETE | `/radio` | Stations, favorites, 24/7 state |
@@ -183,6 +187,43 @@ UNKNOWN_GUILD`.
 
 `actorName` is not sent by the dashboard; `ConfigAudit.actorId` is the Discord
 user id, which the bot resolves through cache when displaying history.
+
+### Module pages
+
+Every module has a page. `/modules` is a searchable catalog grouped by category;
+each card links to `modulePageHref(guildId, moduleId)`.
+
+- Modules with a hand-built page (`music`, `moderation`, `leveling`, `welcome`,
+  `logging`, `ai`, `automod`, `roles`, `schedule`) keep it. `/modules/[moduleId]`
+  redirects to that page so old links still land somewhere useful.
+- Every other module renders `/modules/[moduleId]`, which shows the full
+  UI-schema form from the signed catalog plus live data tables where the module
+  has rows (`tickets`, `giveaways`).
+- Dedicated pages render the fields their legacy form does not own through
+  `ModuleConfigPanel`. The excluded keys stay on the legacy `SaveBar`, so each
+  field has exactly one writer. `roles` and `schedule` have no legacy fields and
+  render the whole schema through the panel.
+- `music` has no generic config; its page is the player and links to `/radio` for
+  stations and 24/7 settings.
+
+### Card designer
+
+`CardDesigner` calls
+`GET /api/guilds/[guildId]/render/[type]?template=…&username=…&message=…` with
+the sample values as query parameters. The route signs a
+`POST /render/:type` request to the bot with `{ template, sample }`. The bot
+returns a PNG rendered by the real card engine, so the preview uses the same
+canvas, fonts, RTL shaping and wrapping as production. Preview requests are
+debounced (320 ms) and limited to 120 per minute per user and guild. Templates
+and card types are listed in `src/lib/modules/catalog.ts` and mirror
+`packages/bot/src/core/cards/templates.ts`.
+
+### Data tables
+
+`TicketsTable` and `GiveawaysTable` read `/tickets` and `/giveaways`, which proxy
+the bot's signed `/guilds/:guildId/tickets` and `/guilds/:guildId/giveaways`
+endpoints. Both show explicit unavailable states when `BOT_API_URL` or
+`BOT_API_SECRET` is missing; they never invent rows.
 
 ## Bot control API proxy
 

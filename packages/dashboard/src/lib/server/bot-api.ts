@@ -115,6 +115,61 @@ export async function callBotApi<T>(
   return (await res.json()) as T;
 }
 
+/**
+ * Binary variant for endpoints that return a PNG instead of JSON. The same
+ * HMAC signature and replay window apply; only the response parsing differs.
+ */
+export async function callBotApiBinary(
+  method: 'GET' | 'POST',
+  path: string,
+  body?: unknown,
+): Promise<ArrayBuffer> {
+  if (!BOT_API_URL || !BOT_API_SECRET) {
+    throw new ApiError(
+      503,
+      'The bot control API is not configured on this deployment, so card previews cannot be rendered.',
+      'BOT_API_UNAVAILABLE',
+    );
+  }
+
+  const payload = body ? JSON.stringify(body) : '';
+  const { timestamp, digest } = signature(method, path, payload);
+
+  let res: Response;
+  try {
+    res = await fetch(`${BOT_API_URL.replace(/\/$/, '')}${path}`, {
+      method,
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CouplesHub-Timestamp': timestamp,
+        'X-CouplesHub-Signature': digest,
+      },
+      body: payload || undefined,
+      cache: 'no-store',
+      signal: AbortSignal.timeout(15_000),
+    });
+  } catch {
+    throw new ApiError(
+      502,
+      'The bot is not reachable right now, so the card could not be rendered.',
+      'BOT_UNREACHABLE',
+    );
+  }
+
+  if (!res.ok) {
+    let message = 'The bot could not render that card. Try another template.';
+    try {
+      const payload = (await res.json()) as { error?: string; message?: string };
+      if (payload.message) message = payload.message;
+    } catch {
+      // The renderer failed before it produced JSON; keep the generic message.
+    }
+    throw new ApiError(502, message, 'BOT_RENDER_FAILED');
+  }
+
+  return res.arrayBuffer();
+}
+
 export function isBotApiConfigured() {
   return Boolean(BOT_API_URL && BOT_API_SECRET);
 }

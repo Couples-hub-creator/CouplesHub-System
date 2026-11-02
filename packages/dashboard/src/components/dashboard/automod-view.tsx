@@ -30,6 +30,7 @@ import { EmptyState, ErrorState } from '@/components/ui/empty-state';
 import { PageHeader } from '@/components/ui/page-header';
 import { SaveBar } from '@/components/ui/save-bar';
 import { MultiPicker, Notice, Picker, SectionCard } from '@/components/dashboard/kit';
+import { ModuleConfigPanel } from '@/components/dashboard/module-config-panel';
 import { useDiscordMeta } from '@/lib/hooks/use-settings';
 import { cn } from '@/lib/utils';
 
@@ -526,6 +527,14 @@ export function AutoModView({ guildId }: { guildId: string }) {
           Discord did not return the channel list, so the ignore lists are empty. Reload to try again.
         </Notice>
       )}
+
+      <ModuleConfigPanel
+        guildId={guildId}
+        moduleId="automod"
+        title="AutoMod policy"
+        description="Raid protection, exemptions, allowed domains and punishment DMs. The rule cards above are stored in the AutoMod rule table."
+        excludeKeys={['rules']}
+      />
 
       <SaveBar
         visible={dirty}

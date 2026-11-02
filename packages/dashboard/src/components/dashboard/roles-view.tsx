@@ -34,6 +34,7 @@ import { Badge } from '@/components/ui/badge';
 import { EmptyState, ErrorState } from '@/components/ui/empty-state';
 import { PageHeader } from '@/components/ui/page-header';
 import { Picker, SectionCard } from '@/components/dashboard/kit';
+import { ModuleConfigPanel } from '@/components/dashboard/module-config-panel';
 import { useDiscordMeta } from '@/lib/hooks/use-settings';
 import { cn } from '@/lib/utils';
 
@@ -517,6 +518,13 @@ export function RolesView({ guildId }: { guildId: string }) {
           </SectionCard>
         </TabsContent>
       </Tabs>
+
+      <ModuleConfigPanel
+        guildId={guildId}
+        moduleId="roles"
+        title="Role menu limits"
+        description="How many mappings this server may keep and whether verified members are required before a role is handed out."
+      />
 
       <MappingDialog guildId={guildId} open={dialogOpen} onOpenChange={setDialogOpen} kind={tab} />
     </div>

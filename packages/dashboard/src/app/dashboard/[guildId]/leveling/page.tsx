@@ -6,6 +6,6 @@ export const metadata: Metadata = { title: 'Leveling', robots: { index: false, f
 export const dynamic = 'force-dynamic';
 
 export default async function LevelingPage({ params }: { params: { guildId: string } }) {
-  await requireGuildAccess(params.guildId);
-  return <LevelingView guildId={params.guildId} />;
+  const access = await requireGuildAccess(params.guildId);
+  return <LevelingView guildId={params.guildId} guildName={access.guild.name} />;
 }

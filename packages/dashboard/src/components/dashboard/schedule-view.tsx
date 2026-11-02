@@ -9,7 +9,6 @@ import {
   CalendarDays,
   CheckCircle2,
   Clock,
-  History,
   MessageSquare,
   Pencil,
   Play,
@@ -35,6 +34,8 @@ import { Badge } from '@/components/ui/badge';
 import { EmptyState, ErrorState } from '@/components/ui/empty-state';
 import { PageHeader } from '@/components/ui/page-header';
 import { Picker, Notice, SectionCard } from '@/components/dashboard/kit';
+import { ModuleConfigPanel } from '@/components/dashboard/module-config-panel';
+import { Table, TBody, TD, TH, THead, TR } from '@/components/ui/table';
 import { useDiscordMeta } from '@/lib/hooks/use-settings';
 import { cn, formatRelativeTime, truncate } from '@/lib/utils';
 
@@ -57,6 +58,14 @@ const KIND_ICON: Record<string, React.ReactNode> = {
   message: <MessageSquare className="size-4" />,
   event: <CalendarDays className="size-4" />,
 };
+
+const KIND_LABEL: Record<string, string> = Object.fromEntries(
+  KINDS.map((kind) => [kind.value, kind.label]),
+);
+
+const RECURRENCE_LABEL: Record<string, string> = Object.fromEntries(
+  RECURRENCES.map((recurrence) => [recurrence.value, recurrence.label]),
+);
 
 const FALLBACK_ZONES = [
   'UTC',
@@ -517,114 +526,159 @@ export function ScheduleView({ guildId }: { guildId: string }) {
           }
         />
       ) : (
-        <div className="space-y-2.5">
-          {tasks.map((task) => {
-            const lastRun = task.runs[0];
-            return (
-              <SectionCard
-                key={task.id}
-                title={task.name}
-                description={truncate(task.payload, 90)}
-                icon={KIND_ICON[task.kind] ?? <CalendarClock />}
-                action={
-                  canEdit ? (
-                    <div className="flex items-center gap-1.5">
-                      <Switch
-                        checked={task.enabled}
-                        disabled={action.isPending}
-                        onCheckedChange={() => action.mutate({ id: task.id, action: 'toggle' })}
-                        aria-label={`${task.enabled ? 'Pause' : 'Enable'} ${task.name}`}
-                      />
-                      <Button
-                        variant="ghost"
-                        size="icon-sm"
-                        aria-label={`Run ${task.name} now`}
-                        disabled={action.isPending}
-                        onClick={() => action.mutate({ id: task.id, action: 'run-now' })}
-                      >
-                        <Play className="size-3.5" />
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="icon-sm"
-                        aria-label={`Edit ${task.name}`}
-                        onClick={() => {
-                          setEditing(task);
-                          setDialogOpen(true);
-                        }}
-                      >
-                        <Pencil className="size-3.5" />
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="icon-sm"
-                        aria-label={`Delete ${task.name}`}
-                        onClick={() => setDeleting(task)}
-                      >
-                        <Trash2 className="size-3.5" />
-                      </Button>
-                    </div>
-                  ) : (
-                    <Badge tone="champagne">Premium</Badge>
-                  )
-                }
-              >
-                <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-[11px] text-mist-faint">
-                  <span className="inline-flex items-center gap-1.5">
-                    <History className="size-3.5" />
-                    {task.recurrence === 'once'
-                      ? `Once · ${task.runAt ? new Date(task.runAt).toLocaleString() : 'no date'}`
-                      : task.recurrence === 'cron'
-                        ? `Cron · ${task.cron}`
-                        : task.recurrence}
-                  </span>
-                  {channelName(task.channelId) && (
-                    <span className="inline-flex items-center gap-1.5">
-                      <MessageSquare className="size-3.5" />
-                      #{channelName(task.channelId)}
-                    </span>
-                  )}
-                  <span className="inline-flex items-center gap-1.5">
-                    <Clock className="size-3.5" />
-                    {task.enabled
-                      ? task.nextRunAt
-                        ? `Next ${formatRelativeTime(task.nextRunAt)}`
-                        : 'Waiting for the scheduler'
-                      : 'Paused'}
-                  </span>
-                  <span className="text-mist-faint/70">{task.timezone}</span>
-
-                  {lastRun && (
-                    <span className="ml-auto inline-flex items-center gap-1.5">
-                      {lastRun.status === 'success' ? (
-                        <CheckCircle2 className="size-3.5 text-emerald" />
-                      ) : lastRun.status === 'failed' ? (
-                        <XCircle className="size-3.5 text-danger" />
-                      ) : (
-                        <Clock className="size-3.5 text-warning" />
+        <SectionCard
+          title="Scheduled tasks"
+          description="Recurring messages, commands and events the bot runs on its own clock."
+          icon={<CalendarClock />}
+          action={<Badge tone="neutral">{tasks.length} tasks</Badge>}
+        >
+          <Table>
+            <THead>
+              <TR>
+                <TH>Task</TH>
+                <TH>Kind</TH>
+                <TH>Schedule</TH>
+                <TH>Next run</TH>
+                <TH>Last run</TH>
+                <TH>Status</TH>
+                <TH className="text-right">Actions</TH>
+              </TR>
+            </THead>
+            <TBody>
+              {tasks.map((task) => {
+                const lastRun = task.runs[0];
+                const channel = channelName(task.channelId);
+                return (
+                  <TR key={task.id}>
+                    <TD className="max-w-[22rem]">
+                      <p className="truncate font-medium text-mist">{task.name}</p>
+                      <p className="mt-0.5 truncate text-[11px] text-mist-faint">
+                        {truncate(task.payload, 70)}
+                      </p>
+                      {channel && (
+                        <p className="mt-0.5 inline-flex items-center gap-1 text-[11px] text-mist-faint">
+                          <MessageSquare className="size-3" />#{channel}
+                        </p>
                       )}
-                      Last run {formatRelativeTime(lastRun.ranAt)}
-                    </span>
-                  )}
-                </div>
-
-                {task.runs.length > 0 && (
-                  <div className="mt-2.5 flex flex-wrap gap-1.5 border-t border-hairline pt-2.5">
-                    {task.runs.slice(0, 3).map((run) => (
-                      <Badge
-                        key={run.id}
-                        tone={run.status === 'success' ? 'emerald' : run.status === 'failed' ? 'danger' : 'warning'}
-                      >
-                        {run.status} · {formatRelativeTime(run.ranAt)}
+                    </TD>
+                    <TD>
+                      <span className="inline-flex items-center gap-1.5 text-xs">
+                        {KIND_ICON[task.kind] ?? <CalendarClock className="size-4" />}
+                        {KIND_LABEL[task.kind] ?? task.kind}
+                      </span>
+                    </TD>
+                    <TD>
+                      <span className="text-xs text-mist">
+                        {task.recurrence === 'once'
+                          ? task.runAt
+                            ? new Date(task.runAt).toLocaleString()
+                            : 'No date'
+                          : task.recurrence === 'cron'
+                            ? <code className="font-mono text-[11px]">{task.cron}</code>
+                            : RECURRENCE_LABEL[task.recurrence] ?? task.recurrence}
+                      </span>
+                      <p className="mt-0.5 text-[11px] text-mist-faint">{task.timezone}</p>
+                    </TD>
+                    <TD>
+                      {task.enabled ? (
+                        <span className="inline-flex items-center gap-1.5 text-xs">
+                          <Clock className="size-3.5 text-mist-faint" />
+                          {task.nextRunAt
+                            ? formatRelativeTime(task.nextRunAt)
+                            : 'Waiting for scheduler'}
+                        </span>
+                      ) : (
+                        <span className="text-xs text-mist-faint">Paused</span>
+                      )}
+                    </TD>
+                    <TD>
+                      {lastRun ? (
+                        <>
+                          <span className="inline-flex items-center gap-1.5 text-xs">
+                            {lastRun.status === 'success' ? (
+                              <CheckCircle2 className="size-3.5 text-emerald" />
+                            ) : lastRun.status === 'failed' ? (
+                              <XCircle className="size-3.5 text-danger" />
+                            ) : (
+                              <Clock className="size-3.5 text-warning" />
+                            )}
+                            {formatRelativeTime(lastRun.ranAt)}
+                          </span>
+                          {task.runs.length > 1 && (
+                            <p className="mt-0.5 text-[11px] text-mist-faint">
+                              {task.runs.length} recorded runs
+                            </p>
+                          )}
+                        </>
+                      ) : (
+                        <span className="text-xs text-mist-faint">Never</span>
+                      )}
+                    </TD>
+                    <TD>
+                      <Badge tone={task.enabled ? 'emerald' : 'neutral'}>
+                        {task.enabled ? 'Active' : 'Paused'}
                       </Badge>
-                    ))}
-                  </div>
-                )}
-              </SectionCard>
-            );
-          })}
-        </div>
+                    </TD>
+                    <TD>
+                      <div className="flex items-center justify-end gap-1.5">
+                        {canEdit ? (
+                          <>
+                            <Switch
+                              checked={task.enabled}
+                              disabled={action.isPending}
+                              onCheckedChange={() =>
+                                action.mutate({ id: task.id, action: 'toggle' })
+                              }
+                              aria-label={`${task.enabled ? 'Pause' : 'Enable'} ${task.name}`}
+                            />
+                            <Button
+                              variant="ghost"
+                              size="icon-sm"
+                              aria-label={`Run ${task.name} now`}
+                              disabled={action.isPending}
+                              onClick={() => action.mutate({ id: task.id, action: 'run-now' })}
+                            >
+                              <Play className="size-3.5" />
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="icon-sm"
+                              aria-label={`Edit ${task.name}`}
+                              onClick={() => {
+                                setEditing(task);
+                                setDialogOpen(true);
+                              }}
+                            >
+                              <Pencil className="size-3.5" />
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="icon-sm"
+                              aria-label={`Delete ${task.name}`}
+                              onClick={() => setDeleting(task)}
+                            >
+                              <Trash2 className="size-3.5" />
+                            </Button>
+                          </>
+                        ) : (
+                          <Badge tone="champagne">Premium</Badge>
+                        )}
+                      </div>
+                    </TD>
+                  </TR>
+                );
+              })}
+            </TBody>
+          </Table>
+        </SectionCard>
       )}
+
+      <ModuleConfigPanel
+        guildId={guildId}
+        moduleId="schedule"
+        title="Scheduler settings"
+        description="Task limits, the default timezone for new tasks and whether completed one-time tasks are removed."
+      />
 
       {canEdit && (
         <TaskDialog
