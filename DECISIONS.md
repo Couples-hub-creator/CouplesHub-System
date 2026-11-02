@@ -193,3 +193,122 @@ DASHBOARD SHELL
 - After the live environment pass: `npx.cmd tsc --noEmit`, `npx.cmd next lint` and `npx.cmd next build` are clean with `packages/dashboard/.env.local` loaded. `GET /api/auth/providers` returns the Discord provider with `http://localhost:3001/api/auth/callback/discord`; a signed NextAuth JWT is accepted by `/api/auth/session`; `/login` renders the Discord button and the Terms/Privacy links.
 - The bot starts from both `node dist/index.js` and `node --import tsx src/index.ts`, logs in, syncs its guild row, and registers 21 commands. Lavalink and PostgreSQL were not running, so those connections correctly reported errors without crashing the gateway.
 - Pusher server credentials were exercised with a test trigger and returned success.
+
+---
+
+# Production all-in-one build (2026-11-02)
+
+Branch: `feat/production-all-in-one-bot`. This pass turns the dashboard-only
+modules into real bot features and closes the gap to MEE6/Dyno/Carl-bot depth.
+
+## Delivery decisions
+
+- **Module contract over monolith.** Every feature is `src/modules/<id>/module.ts`
+  with a manifest, optional Zod config, commands, events, interactions, actions
+  and lifecycle hooks. The loader isolates failures: one broken module cannot
+  stop the gateway or the other 23.
+- **Generic config alongside legacy tables.** `ModuleConfig` + `ConfigAudit`
+  store new module settings and history. Legacy tables (`MusicSettings`,
+  `ModerationSettings`, `LevelingSettings`, `WelcomeSettings`,
+  `LoggingSettings`, `AutoModRule`, `ScheduleTask`, `AiChatSettings`) remain
+  authoritative where dedicated dashboard pages already edit them. Module
+  services merge both; no destructive migration.
+- **Scheduler in PostgreSQL.** `SystemJob` with atomic claim, retries,
+  idempotency keys and stale-lock recovery. Giveaways, reminders, birthdays,
+  schedule tasks and retention jobs survive restarts and multi-replica bots.
+- **Card engine.** `@napi-rs/canvas` with declarative specs, SSRF-guarded image
+  fetching, RTL shaping, worker pool and disk cache. Eight welcome and eight rank
+  templates ship; `POST /render/:type` exposes the same renderer to the
+  dashboard.
+- **Localization is platform-level.** EN/AR/FR message catalogs plus a flat
+  AR/FR slash-command catalog (452 keys per language). `Command.toJSON()` applies
+  localizations; canonical names stay English so routing and
+  `interaction.options.get()` are stable.
+- **Payload budget guard.** Discord rejects a command over 8 000 bytes. The
+  localizer tries full localization, then strips option descriptions, then
+  option names, always keeping the command itself localized. `/automod` is the
+  only command that currently uses the second stage. A test asserts that
+  commands which fit are never degraded.
+- **Signed bot API is the only bridge.** `/health` is public; every other route
+  is HMAC-SHA256 signed over `METHOD\nPATH\nTIMESTAMP\nBODY`, with a five-minute
+  replay window, 1 MB body cap and `timingSafeEqual`. The dashboard never trusts
+  a client-supplied guild id.
+- **Catalog-driven dashboard.** `GET /guilds/:id/modules/catalog` returns
+  manifest, `supportsConfig`, defaults, current config and `configured`.
+  `PATCH /api/guilds/[guildId]/modules/[moduleId]` proxies a save through the
+  bot, enforces premium server-side and writes `DashboardAudit`. Complex modules
+  keep dedicated pages (`music`, `moderation`, `leveling`, `welcome`, `logging`,
+  `ai`, `automod`, `roles`, `schedule`).
+- **Real-time is wired, not decorative.** Mutating dashboard routes publish
+  `settings:updated`, `player:update`, `queue:update` or `case:created` after
+  success. The client hook listens for the same names and invalidates the
+  matching query keys. Without Pusher, polling remains the fallback.
+- **Safe defaults for destructive automation.** Anti-nuke is alert-only and
+  anti-bot is opt-in. Raid protection defaults to `alert`. Verification defaults
+  to a math challenge; one-click mode is optional. Every destructive command
+  checks permissions and hierarchy, logs, and offers undo where Discord allows.
+- **Economy robbery cooldown in cache.** There is no per-user cooldown column;
+  a cache key enforces the window without a schema change that would only serve
+  one command.
+- **Poll votes are unique per option.** `@@unique([pollId, userId, option])`
+  supports multi-select; `Poll.ended` allows safe endings.
+- **Radio 24/7 persistence.** `MusicSettings.lastRadioStationId` and
+  `radioTextChannelId` let the module reconnect on `clientReady` and after a bot
+  voice disconnect.
+- **AI personality compatibility.** Canonical values are
+  `balanced|friendly|witty|professional|chaotic`; legacy dashboard values
+  `concise` and `sarcastic` map to `professional` and `witty`. `monthlyQuota`
+  defaults to 1000 and is enforced server-side.
+- **Redis is optional.** When `REDIS_URL` is set, cache invalidation crosses
+  processes. When it is absent or unreachable, the bot logs a warning and uses
+  the in-process cache; no feature is lost.
+- **No placeholders.** Every registered module has a real handler. Modules whose
+  provider key is absent report themselves unconfigured instead of pretending
+  to work. The dashboard Modules page honestly reports an unavailable bot API
+  when `BOT_API_URL`/`BOT_API_SECRET` are missing.
+
+## Command budget
+
+- 62 top-level commands: 21 legacy (`moderation` 10, `music` 10, `help` 1) plus
+  41 module commands.
+- Under Discord's 100-command cap with 38 slots reserved for future modules.
+- Registration hashes the final payload array into
+  `PlatformState.commands:<scope>` and skips the bulk overwrite when unchanged.
+- Scope is global unless `DISCORD_GUILD_ID` is set, which is intended for
+  development guilds.
+
+## Assumptions
+
+- The bot and dashboard stay separate processes over one PostgreSQL database;
+  the bot is not deployed to Vercel.
+- The dashboard's generic module console is the canonical editor for modules
+  without a dedicated page; complex/legacy modules keep their dedicated pages.
+- `BOT_API_URL` and `BOT_API_SECRET` are set together in production. Without
+  them, live player and generic module editing are unavailable by design.
+- Premium checks use the existing `PremiumSubscription` model; no payment
+  provider is wired in this pass.
+- Server clock skew between dashboard and bot is under five minutes. Both
+  containers use `TZ` but signatures use Unix milliseconds, so timezone does not
+  affect verification.
+
+## Verification in this pass
+
+- `npm.cmd test --workspace=packages/bot` — 10 tests pass (duration parsing,
+  module manifests, command budget, localization coverage, limits, uniqueness).
+- `npm.cmd run build --workspace=packages/bot` — clean.
+- `npm.cmd run lint --workspace=packages/bot` — clean.
+- Dashboard build/lint and Docker Compose validation are run after the docs and
+  real-time wiring land.
+- Live smoke tests still require Lavalink and a test guild; the local
+  environment has no Lavalink jar running. Music commands report the offline
+  state without crashing the gateway.
+
+## Open items
+
+- Rotate the exposed Discord token and client secret, then update `.env`,
+  Vercel and the Developer Portal.
+- Add `DATABASE_URL` to Vercel Production.
+- Rename the Discord application from `Couples HUB` to `Couples Hub` in the
+  Developer Portal if exact casing matters.
+- Run the live smoke checklist in `docs/TESTING.md` against a test guild with
+  Lavalink online.

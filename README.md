@@ -1,58 +1,99 @@
 # Couples Hub
 
-A Discord bot and its dashboard. The dashboard covers music, radio, moderation, auto-mod, leveling, welcome messages, roles, logs, analytics, scheduling and AI chat. The bot currently ships the music and moderation handlers; the remaining dashboard modules persist their settings in PostgreSQL for the bot-side handlers to consume.
+An all-in-one Discord bot and dashboard: music and 24/7 radio, moderation and
+auto-mod, leveling, economy, welcome cards, tickets, giveaways, polls,
+reminders, suggestions, temporary voice, role menus, starboard, invites,
+birthdays, verification, custom commands, AFK, a scheduler, and premium AI chat.
 
-This repository is a monorepo:
+Twenty-four modules load at startup and every one is configurable from the
+dashboard. Settings live in PostgreSQL; the bot exposes a small HMAC-signed HTTP
+API for live player state, card rendering and privileged mutations.
 
 ```
 packages/
-  bot/         Discord bot (discord.js + shoukaku/Lavalink)
+  bot/         Discord bot (discord.js 14 + shoukaku / Lavalink v4)
   dashboard/   Next.js 14 dashboard and marketing site
-docs/          Bot control API and real-time contract
+docs/          Architecture, module catalog, contracts and testing
 ```
 
 ## What is in this build
 
-### Dashboard
-
-- Marketing site: landing, commands, pricing, docs, status, terms, privacy.
-- Discord OAuth2 sign-in with server selection.
-- Fourteen server modules: overview, music, radio, moderation, auto-mod, leveling, schedule, AI chat, welcome, roles, logs, analytics, settings and premium.
-- Real data only. Screens use PostgreSQL rows or an explicit empty state. No fabricated statistics, testimonials or logos.
-- Loading, empty and error states with retry; optimistic settings saves with rollback; zod validation on every mutation; rate limits on mutation routes.
-- Pusher private-channel updates when configured; TanStack Query polling when it is not.
-- Premium is enforced server-side for AI settings, scheduling and auto-mod rules beyond the free limit of three.
-
 ### Bot
 
-- Lavalink v4 music playback with play, pause, resume, skip, stop, queue, now playing, loop, seek and volume commands.
-- Moderation commands (warn, timeout, kick, ban, unban, purge, lock, unlock, slowmode) backed by PostgreSQL cases.
-- Guild rows are synced on startup and on join, so the dashboard can show whether the bot is installed.
-- The dashboard writes settings to the shared PostgreSQL database. The remaining modules (auto-mod, leveling, welcome, roles, logs, analytics, schedule and AI chat) store their configuration, but the bot-side handlers for those modules are not part of this package yet.
-- Live player controls require the optional HMAC-signed bot API described in `docs/bot-integration.md`; the dashboard shows an honest offline state when it is not running.
+- **24 modules**, each with a manifest, typed Zod config, permissions,
+  dashboard UI schema, commands, events and actions.
+- **62 slash commands** under Discord's 100-command cap, with a payload guard,
+  SHA-256 manifest hashing and skip-on-unchanged registration.
+- **Localization:** English, Arabic and French command names and descriptions,
+  RTL-aware card text, locale-aware messages.
+- **Music:** Lavalink v4 playback, queue management, filters and `/radio` with
+  favorites and 24/7 reconnection across restarts.
+- **Moderation:** cases with undo, warnings, timeouts, bans, purges, locks, slow
+  mode, DM notices and appeal links.
+- **Auto-mod:** spam, caps, mentions, links, invites, bad words, Zalgo, raid
+  protection and strike escalation.
+- **Security:** alert-only anti-nuke by default, opt-in anti-bot, account-age
+  gates, lockdown and snapshot restore.
+- **Engagement:** XP and voice leveling, rank cards, role rewards, economy with
+  daily/work/pay/rob.
+- **Community:** welcome/goodbye/boost cards, tickets with transcripts,
+  giveaways, polls, suggestions, starboard, temporary voice, role menus,
+  reaction roles, invites, birthdays.
+- **Utility:** reminders, AFK, custom commands, server/user/role/channel info,
+  avatar and banner.
+- **Scheduler:** PostgreSQL-backed `SystemJob` queue with retries, idempotency
+  keys and stale-lock recovery.
+- **Card engine:** SSRF-guarded image fetching, `@napi-rs/canvas`, worker pool,
+  disk cache and eight welcome plus eight rank templates.
+- **Observability:** Winston logs, audit entries, `/health`, Lavalink and
+  database status.
+
+### Dashboard
+
+- Marketing site, Discord OAuth2 sign-in and server picker.
+- Dedicated pages for overview, music, radio, moderation, auto-mod, leveling,
+  welcome, roles, logs, analytics, AI chat, schedule, settings and premium.
+- A generic **Modules** console driven by the bot's signed catalog endpoint, so
+  every module with a config is editable without a new page.
+- Real data only: PostgreSQL rows or an explicit empty state. No fabricated
+  statistics, testimonials or logos.
+- Zod validation on every mutation, rate limits, same-origin checks, audit rows
+  and typed confirmation for destructive actions.
+- Pusher private-channel updates when configured; TanStack Query polling when
+  not.
+- Premium enforced server-side for AI chat, scheduling and AutoMod rules beyond
+  the free limit.
 
 ## Requirements
 
 - Node.js 20+
-- PostgreSQL
-- Lavalink v4 (for music)
-- A Discord application with a bot token and OAuth2 credentials
+- PostgreSQL 14+
+- Lavalink v4 (music only)
+- Discord application with bot token and OAuth2 credentials
+- Optional: Redis (multi-replica cache invalidation), Pusher, OpenAI-compatible
+  AI provider
 
 ## Setup
 
 ### 1. Discord application
 
-1. Open the [Discord Developer Portal](https://discord.com/developers/applications).
-2. Create an application named Couples Hub.
-3. Enable Message Content, Server Members and Presence intents.
-4. Create the bot and copy its token.
-5. Add the OAuth2 redirect URI:
+1. Create an application at the
+   [Discord Developer Portal](https://discord.com/developers/applications).
+2. Enable **Message Content**, **Server Members** and **Guild Moderation**
+   intents. Presence is not requested.
+3. Create the bot and copy its token.
+4. Add the OAuth2 redirect URI:
    - Local: `http://localhost:3001/api/auth/callback/discord`
    - Production: `https://your-domain.example/api/auth/callback/discord`
+5. Invite the bot with `bot` and `applications.commands` scopes.
 
 ### 2. Environment
 
-Copy `.env.example` to `.env` for the bot and root tooling. Copy `packages/dashboard/.env.example` to `packages/dashboard/.env.local` for the dashboard. Fill in at least:
+Copy `.env.example` to `.env` for the bot and root tooling. Copy
+`packages/dashboard/.env.example` to `packages/dashboard/.env.local` for local
+dashboard development.
+
+Minimum:
 
 ```env
 DISCORD_TOKEN=
@@ -62,75 +103,91 @@ DISCORD_CLIENT_SECRET=
 NEXTAUTH_SECRET=
 NEXTAUTH_URL=http://localhost:3001
 NEXT_PUBLIC_SITE_URL=http://localhost:3001
-# Any PostgreSQL works. On Neon, DATABASE_URL is the pooled string and
-# DATABASE_URL_UNPOOLED is the direct string used by Prisma CLI/migrations.
 DATABASE_URL=postgresql://postgres:postgres@localhost:5432/discord_bot?schema=public
 DATABASE_URL_UNPOOLED=postgresql://postgres:postgres@localhost:5432/discord_bot?schema=public
 LAVALINK_HOST=localhost
 LAVALINK_PORT=2333
 LAVALINK_PASSWORD=
+BOT_API_SECRET=
 ```
 
-Optional: Pusher keys, `BOT_API_URL`/`BOT_API_SECRET`, and billing keys. The dashboard reports those features as not configured instead of pretending they work.
+`BOT_API_SECRET` must be the same 32+ byte value on both processes. Generate it
+with `openssl rand -hex 32`.
+
+Optional: `REDIS_URL`, Pusher keys, `OPENAI_API_KEY` / `OPENAI_BASE_URL` /
+`OPENAI_MODEL`, billing keys and `DISCORD_GUILD_ID` for instant guild-scoped
+command registration in development. Features whose keys are missing report
+themselves as unconfigured instead of pretending to work.
 
 ### 3. Database
 
 ```bash
+npm install
 npm run db:generate
 npm run db:push
 ```
 
-There is no migrations directory; `db push` applies the additive schema. Run it again after schema changes. The root `db:*` scripts load the root `.env` through `scripts/prisma.mjs`, so the bot and Prisma CLI share one connection configuration.
+There is no migrations directory; `db push` applies the additive schema. The
+root `db:*` scripts load `.env` through `scripts/prisma.mjs`, so the bot,
+dashboard and Prisma CLI share one configuration.
 
-On Neon, `DATABASE_URL` is the pooled connection string used by the app and `DATABASE_URL_UNPOOLED` is the direct connection string. Prisma's `directUrl` sends CLI commands such as `db push` through the direct URL while the bot and dashboard use the pooled URL.
+On Neon, `DATABASE_URL` is the pooled runtime string and
+`DATABASE_URL_UNPOOLED` is the direct string used by Prisma CLI commands through
+`directUrl`.
 
-```bash
-# The repo is linked to Neon project Couples Hub, branch production.
-neon deploy -y          # applies neon.ts and pulls DATABASE_URL, DATABASE_URL_UNPOOLED, NEON_BRANCH
-npm run db:push         # applies packages/bot/prisma/schema.prisma
-```
-
-### 4. Install and start
+### 4. Start
 
 ```bash
-npm install
-docker-compose up -d postgres lavalink
-```
+# Postgres, Lavalink and Redis
+docker compose up -d postgres lavalink redis
 
-Bot:
+# Bot
+npm run dev:bot
 
-```bash
-cd packages/bot
-npm run dev
-```
-
-Dashboard:
-
-```bash
-cd packages/dashboard
-npm run dev
+# Dashboard (separate terminal)
+npm run dev:dashboard
 ```
 
 Open `http://localhost:3001`.
 
+The bot API listens on `127.0.0.1:4000` by default. Set `BOT_API_URL` in the
+dashboard environment to `http://localhost:4000` for local development. Without
+it, the player and module console show an explicit unavailable state.
+
 ## Verification
 
-From `packages/dashboard`:
-
 ```bash
-npx.cmd tsc --noEmit
-npx.cmd next lint
-npx.cmd next build
+npm.cmd test --workspace=packages/bot
+npm.cmd run build --workspaces
+npm.cmd run lint --workspaces
+docker compose config
 ```
 
-On Windows PowerShell, use `npm.cmd` and `npx.cmd`; the `.ps1` shims may be blocked by execution policy.
+Bot tests cover duration parsing, module manifests, command uniqueness and the
+command budget, every localization key, and Discord's name/description/payload
+limits. See `docs/TESTING.md` for the live smoke checklist.
+
+On Windows PowerShell use `npm.cmd`; the `.ps1` shims may be blocked by
+execution policy.
 
 ## Deployment
 
-- Dashboard: Vercel or any Node host. Set the root directory to `packages/dashboard` and add the environment variables from `packages/dashboard/.env.example`. Set `DATABASE_URL` to the Neon pooled URL in Production; `DATABASE_URL_UNPOOLED` is only needed for CLI migrations, not runtime. The build generates the Prisma client from the bot schema; `DATABASE_URL` is only required at runtime.
-- Bot: a long-running VPS or container with Lavalink. Use PM2 or a process manager.
-- Database: one PostgreSQL instance shared by the bot and dashboard. This project uses Neon Postgres (`Couples Hub`, project `green-feather-55766439`, branch `production`, AWS US East 1). The runtime uses pooled `DATABASE_URL`; Prisma CLI uses direct `DATABASE_URL_UNPOOLED` via `directUrl`.
-- Real-time: Pusher, not a WebSocket server inside Next.js. Without Pusher the dashboard polls.
+- **Dashboard:** Vercel or any Node host. Root directory `packages/dashboard`.
+  Set `DATABASE_URL` to the pooled Neon URL, plus NextAuth, Discord and bot API
+  variables. The build copies the bot Prisma schema and regenerates the client.
+- **Bot:** long-running VPS or container with Lavalink. Use `Dockerfile.bot` and
+  `docker-compose.yml`, or a process manager such as PM2.
+- **Database:** one PostgreSQL instance shared by both processes. The Compose
+  file includes Postgres, Redis, Lavalink, bot, dashboard and Caddy.
+- **Real-time:** Pusher private channels. Without Pusher the dashboard polls.
+
+Docker:
+
+```bash
+cp .env.example .env
+docker compose build
+docker compose up -d
+```
 
 ## Routes
 
@@ -138,13 +195,24 @@ Public: `/`, `/commands`, `/pricing`, `/docs`, `/status`, `/terms`, `/privacy`.
 
 Access: `/login`, `/servers`, `/account`.
 
-Dashboard: `/dashboard/[guildId]/overview`, plus `music`, `radio`, `moderation`, `automod`, `leveling`, `schedule`, `ai-chat`, `welcome`, `roles`, `logs`, `analytics`, `settings` and `premium`.
+Dashboard: `/dashboard/[guildId]/overview`, plus `modules`, `music`, `radio`,
+`moderation`, `automod`, `leveling`, `schedule`, `ai-chat`, `welcome`, `roles`,
+`logs`, `analytics`, `settings` and `premium`.
 
 ## Documentation
 
-- `docs/bot-integration.md` — bot control API, HMAC headers, player actions and Pusher events.
+- `docs/ARCHITECTURE.md` — runtime topology, core services, module lifecycle,
+  data model and failure behaviour.
+- `docs/MODULES.md` — all 24 modules with commands, events, actions and config
+  defaults.
+- `docs/COMMAND_BUDGET.md` — the 62/100 command budget, payload limits and the
+  localization guard.
+- `docs/DASHBOARD_CONTRACT.md` — dashboard pages, API routes, envelopes, rate
+  limits and the generic module contract.
+- `docs/bot-integration.md` — signed bot API, endpoints, errors and real-time
+  events.
+- `docs/TESTING.md` — automated checks and the manual smoke checklist.
 - `DECISIONS.md` — architecture decisions, assumptions and the build record.
-- `/design-system` — internal, noindex component and token reference.
 
 ## License
 
