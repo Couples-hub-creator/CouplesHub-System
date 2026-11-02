@@ -2,6 +2,7 @@ import { z } from 'zod';
 import { withHandler, readJson } from '@/lib/server/api';
 import { requireGuildAccess, ensureGuild, ApiError } from '@/lib/server/auth';
 import { rateLimit } from '@/lib/server/rate-limit';
+import { publish } from '@/lib/server/realtime';
 import { prisma } from '@/lib/prisma';
 import { buttonRoleSchema, reactionRoleSchema } from '@/lib/validation';
 
@@ -63,6 +64,7 @@ export const POST = withHandler<Ctx>(async (request, { params }) => {
         target: created.id,
       },
     });
+    await publish(params.guildId, 'settings:updated', { module: 'roles', kind: 'reaction' });
     return { reactionRole: { ...created, createdAt: created.createdAt.toISOString() } };
   }
 
@@ -84,6 +86,7 @@ export const POST = withHandler<Ctx>(async (request, { params }) => {
       target: created.id,
     },
   });
+  await publish(params.guildId, 'settings:updated', { module: 'roles', kind: 'button' });
   return { buttonRole: { ...created, createdAt: created.createdAt.toISOString() } };
 });
 
@@ -120,6 +123,8 @@ export const DELETE = withHandler<Ctx>(async (request, { params }) => {
       target: id,
     },
   });
+
+  await publish(params.guildId, 'settings:updated', { module: 'roles', kind, deleted: id });
 
   return { deleted: id };
 });

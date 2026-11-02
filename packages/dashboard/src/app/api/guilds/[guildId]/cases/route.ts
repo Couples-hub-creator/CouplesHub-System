@@ -1,6 +1,7 @@
 import { withHandler, readJson } from '@/lib/server/api';
 import { requireGuildAccess, ensureGuild, ApiError } from '@/lib/server/auth';
 import { rateLimit } from '@/lib/server/rate-limit';
+import { publish } from '@/lib/server/realtime';
 import { prisma } from '@/lib/prisma';
 import { caseCreateSchema } from '@/lib/validation';
 
@@ -138,6 +139,13 @@ export const POST = withHandler<Ctx>(async (request, { params }) => {
       target: input.userId,
       detail: { reason: input.reason, caseNumber },
     },
+  });
+
+  await publish(params.guildId, 'case:created', {
+    id: created.id,
+    caseNumber,
+    type: input.type,
+    userId: input.userId,
   });
 
   return {

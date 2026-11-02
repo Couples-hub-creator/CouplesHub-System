@@ -3,6 +3,7 @@ import { requireGuildAccess, ensureGuild, ApiError } from '@/lib/server/auth';
 import { rateLimit } from '@/lib/server/rate-limit';
 import { prisma } from '@/lib/prisma';
 import { isPremiumGuild, FREE_AUTOMOD_RULES } from '@/lib/server/premium';
+import { publish } from '@/lib/server/realtime';
 import { autoModBulkSchema } from '@/lib/validation';
 
 export const dynamic = 'force-dynamic';
@@ -104,6 +105,8 @@ export const PUT = withHandler<Ctx>(async (request, { params }) => {
     where: { guildId: params.guildId },
     orderBy: { createdAt: 'asc' },
   });
+
+  await publish(params.guildId, 'settings:updated', { module: 'automod', count: rules.length });
 
   return { rules };
 });

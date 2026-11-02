@@ -1,6 +1,7 @@
 import { withHandler, readJson } from '@/lib/server/api';
 import { requireGuildAccess, ApiError } from '@/lib/server/auth';
 import { rateLimit } from '@/lib/server/rate-limit';
+import { publish } from '@/lib/server/realtime';
 import { callBotApi, isBotApiConfigured, DISCONNECTED, type MusicState } from '@/lib/server/bot-api';
 import { musicActionSchema } from '@/lib/validation';
 import { prisma } from '@/lib/prisma';
@@ -46,6 +47,9 @@ export const POST = withHandler<Ctx>(async (request, { params }) => {
     value: 'value' in body ? body.value : undefined,
     actorId: access.userDiscordId,
   });
+
+  await publish(params.guildId, 'player:update', { action: body.action });
+  await publish(params.guildId, 'queue:update', { action: body.action });
 
   return { ok: true, result };
 });

@@ -3,6 +3,7 @@ import { requireGuildAccess, ApiError } from '@/lib/server/auth';
 import { callBotApi } from '@/lib/server/bot-api';
 import { requirePremium } from '@/lib/server/premium';
 import { rateLimit } from '@/lib/server/rate-limit';
+import { publish } from '@/lib/server/realtime';
 import { prisma } from '@/lib/prisma';
 import { moduleConfigSchema } from '@/lib/validation';
 
@@ -40,7 +41,6 @@ export const PATCH = withHandler<Ctx>(async (request, { params }) => {
     {
       config: input.config,
       actorId: access.userDiscordId,
-      actorName: access.userDiscordId,
     },
   );
 
@@ -51,6 +51,8 @@ export const PATCH = withHandler<Ctx>(async (request, { params }) => {
       action: `module.${params.moduleId}.update`,
     },
   });
+
+  await publish(params.guildId, 'settings:updated', { module: params.moduleId });
 
   return saved;
 });

@@ -1,6 +1,7 @@
 import { withHandler, readJson } from '@/lib/server/api';
 import { requireGuildAccess, ensureGuild, ApiError } from '@/lib/server/auth';
 import { rateLimit } from '@/lib/server/rate-limit';
+import { publish } from '@/lib/server/realtime';
 import { prisma } from '@/lib/prisma';
 import { stationSchema, radioPatchSchema } from '@/lib/validation';
 
@@ -59,6 +60,8 @@ export const POST = withHandler<Ctx>(async (request, { params }) => {
     },
   });
 
+  await publish(params.guildId, 'settings:updated', { module: 'radio', action: 'station-create' });
+
   return { station };
 });
 
@@ -83,6 +86,7 @@ export const PATCH = withHandler<Ctx>(async (request, { params }) => {
         twentyFourSevenChannel: body.channelId ?? null,
       },
     });
+    await publish(params.guildId, 'settings:updated', { module: 'radio', action: 'toggle-247' });
     return { twentyFourSeven: music.twentyFourSeven, twentyFourSevenChannel: music.twentyFourSevenChannel };
   }
 
@@ -97,6 +101,8 @@ export const PATCH = withHandler<Ctx>(async (request, { params }) => {
     where: { id: station.id },
     data: { favorite: body.favorite ?? station.favorite },
   });
+
+  await publish(params.guildId, 'settings:updated', { module: 'radio', action: 'station-update' });
 
   return { station: updated };
 });
@@ -113,5 +119,6 @@ export const DELETE = withHandler<Ctx>(async (request, { params }) => {
   if (!station) throw new ApiError(404, 'That station does not exist in this server.', 'NOT_FOUND');
 
   await prisma.radioStation.delete({ where: { id: station.id } });
+  await publish(params.guildId, 'settings:updated', { module: 'radio', action: 'station-delete' });
   return { deleted: station.id };
 });

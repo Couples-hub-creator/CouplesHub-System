@@ -106,7 +106,7 @@ export async function callBotApi<T>(
   }
 
   if (!res.ok) {
-    if (res.status === 404) {
+    if (res.status === 404 && path.includes('/player')) {
       throw new ApiError(409, 'Couples Hub is not in that voice channel right now.', 'NOT_CONNECTED');
     }
     throw new ApiError(502, 'The bot did not accept that request. Try again.', 'BOT_API_ERROR');

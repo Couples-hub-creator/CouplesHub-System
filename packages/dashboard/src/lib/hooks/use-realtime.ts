@@ -4,7 +4,14 @@ import * as React from 'react';
 import Pusher from 'pusher-js';
 import { useQueryClient } from '@tanstack/react-query';
 
-const EVENTS = ['player:update', 'queue:update', 'case:created', 'settings:updated'];
+const EVENTS = [
+  'player:update',
+  'queue:update',
+  'case:created',
+  'settings:updated',
+  'activity:new',
+  'stats:update',
+];
 
 /**
  * Subscribes to this server's private Pusher channel when Pusher is configured.

@@ -1,6 +1,7 @@
 import { withHandler, readJson } from '@/lib/server/api';
 import { requireGuildAccess, ensureGuild, ApiError } from '@/lib/server/auth';
 import { rateLimit } from '@/lib/server/rate-limit';
+import { publish } from '@/lib/server/realtime';
 import { prisma } from '@/lib/prisma';
 import { dangerSchema } from '@/lib/validation';
 
@@ -68,6 +69,8 @@ export const POST = withHandler<Ctx>(async (request, { params }) => {
     // stations, premium and dashboard audits.
     await prisma.guild.delete({ where: { guildId: params.guildId } });
   }
+
+  await publish(params.guildId, 'settings:updated', { module: 'danger', action: input.action });
 
   return { done: true, action: input.action };
 });

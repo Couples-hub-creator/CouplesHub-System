@@ -1,6 +1,7 @@
 import { withHandler, readJson } from '@/lib/server/api';
 import { requireGuildAccess, ensureGuild, ApiError } from '@/lib/server/auth';
 import { rateLimit } from '@/lib/server/rate-limit';
+import { publish } from '@/lib/server/realtime';
 import { nextRun } from '@/lib/server/schedule';
 import { requirePremium } from '@/lib/server/premium';
 import { prisma } from '@/lib/prisma';
@@ -80,6 +81,8 @@ export const POST = withHandler<Ctx>(async (request, { params }) => {
     },
   });
 
+  await publish(params.guildId, 'settings:updated', { module: 'schedule', taskId: task.id });
+
   return {
     task: {
       ...task,
@@ -132,6 +135,8 @@ export const PATCH = withHandler<Ctx>(async (request, { params }) => {
       },
     });
 
+    await publish(params.guildId, 'settings:updated', { module: 'schedule', taskId: task.id });
+
     return {
       task: {
         ...updated,
@@ -150,6 +155,7 @@ export const PATCH = withHandler<Ctx>(async (request, { params }) => {
       where: { id: task.id },
       data: { enabled, nextRunAt: next },
     });
+    await publish(params.guildId, 'settings:updated', { module: 'schedule', taskId: task.id });
     return { task: { ...updated, enabled } };
   }
 
@@ -157,6 +163,7 @@ export const PATCH = withHandler<Ctx>(async (request, { params }) => {
     const run = await prisma.scheduleRun.create({
       data: { taskId: task.id, status: 'queued', detail: 'Queued from the dashboard' },
     });
+    await publish(params.guildId, 'settings:updated', { module: 'schedule', taskId: task.id });
     return { run: { ...run, ranAt: run.ranAt.toISOString() } };
   }
 
@@ -176,5 +183,6 @@ export const DELETE = withHandler<Ctx>(async (request, { params }) => {
   if (!task) throw new ApiError(404, 'That task does not exist in this server.', 'NOT_FOUND');
 
   await prisma.scheduleTask.delete({ where: { id: task.id } });
+  await publish(params.guildId, 'settings:updated', { module: 'schedule', taskId: task.id });
   return { deleted: task.id };
 });

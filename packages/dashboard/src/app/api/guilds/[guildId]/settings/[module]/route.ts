@@ -2,6 +2,7 @@ import { withHandler, readJson } from '@/lib/server/api';
 import { requireGuildAccess, ensureGuild, ApiError } from '@/lib/server/auth';
 import { requirePremium } from '@/lib/server/premium';
 import { rateLimit } from '@/lib/server/rate-limit';
+import { publish } from '@/lib/server/realtime';
 import { prisma } from '@/lib/prisma';
 import {
   generalSettingsSchema,
@@ -299,6 +300,8 @@ export const PATCH = withHandler<Ctx>(async (request, { params }) => {
       action: `settings.${module}.update`,
     },
   });
+
+  await publish(guildId, 'settings:updated', { module: moduleKey });
 
   return readModule(guildId, moduleKey);
 });
