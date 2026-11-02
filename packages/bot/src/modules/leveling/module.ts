@@ -1,4 +1,4 @@
-import type { Message, VoiceState } from 'discord.js';
+import type { Message } from 'discord.js';
 import type { BotClient } from '../../structures/BotClient';
 import type { BotModule } from '../../core/modules/types';
 import { logger } from '../../core/logger';

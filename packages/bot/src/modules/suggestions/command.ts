@@ -1,5 +1,4 @@
 import {
-  EmbedBuilder,
   PermissionFlagsBits,
   SlashCommandBuilder,
   type ChatInputCommandInteraction,
@@ -20,8 +19,7 @@ export class SuggestCommand extends Command {
   public data = new SlashCommandBuilder()
     .setName('suggest')
     .setDescription('Submit a suggestion')
-    .addStringOption((option) => option.setName('content').setDescription('Your suggestion').setRequired(true).setMaxLength(2000))
-    .addBooleanOption((option) => option.setName('anonymous').setDescription('Hide your name')) as any;
+    .addStringOption((option) => option.setName('content').setDescription('Your suggestion').setRequired(true).setMaxLength(2000)) as any;
 
   public async execute(interaction: ChatInputCommandInteraction): Promise<void> {
     await interaction.deferReply({ ephemeral: true });
@@ -47,7 +45,6 @@ export class SuggestCommand extends Command {
       update: {},
       create: { userId: interaction.user.id, guildId: interaction.guildId },
     });
-    const anonymous = interaction.options.getBoolean('anonymous') ?? config.anonymous;
     const suggestion = await client.prisma.suggestion.create({
       data: {
         guildId: interaction.guildId,

@@ -10,7 +10,7 @@ import {
   VoiceState,
 } from 'discord.js';
 import type { BotClient } from '../../structures/BotClient';
-import type { BotModule, ModuleContext } from '../../core/modules/types';
+import type { BotModule } from '../../core/modules/types';
 import { createLogService, cacheMessage, takeCachedMessage, sanitizeMentions, type LogService } from '../../core/logging';
 import { logger } from '../../core/logger';
 import { loadLoggingConfig, loggingConfigDef, type LoggingConfig } from './config';

@@ -54,7 +54,7 @@ function secondaryText(text: string, x: number, y: number, size = 22, color = '#
 const welcomeTemplates: Record<string, { name: string; build: TemplateFactory }> = {
   aurora: {
     name: 'Aurora',
-    build: (sample) =>
+    build: () =>
       base(
         { type: 'gradient', from: '#071a2b', to: '#0f766e', angle: 120 },
         [
@@ -69,7 +69,7 @@ const welcomeTemplates: Record<string, { name: string; build: TemplateFactory }>
   },
   sunset: {
     name: 'Sunset',
-    build: (sample) =>
+    build: () =>
       base(
         { type: 'gradient', from: '#2b0b18', to: '#b45309', angle: 20 },
         [
@@ -84,7 +84,7 @@ const welcomeTemplates: Record<string, { name: string; build: TemplateFactory }>
   },
   forest: {
     name: 'Forest',
-    build: (sample) =>
+    build: () =>
       base(
         { type: 'gradient', from: '#052e1b', to: '#14532d', angle: 90 },
         [
@@ -99,7 +99,7 @@ const welcomeTemplates: Record<string, { name: string; build: TemplateFactory }>
   },
   neon: {
     name: 'Neon',
-    build: (sample) =>
+    build: () =>
       base(
         { type: 'color', color: '#05070d' },
         [
@@ -115,7 +115,7 @@ const welcomeTemplates: Record<string, { name: string; build: TemplateFactory }>
   },
   minimal: {
     name: 'Minimal',
-    build: (sample) =>
+    build: () =>
       base(
         { type: 'color', color: '#f8fafc' },
         [
@@ -130,7 +130,7 @@ const welcomeTemplates: Record<string, { name: string; build: TemplateFactory }>
   },
   galaxy: {
     name: 'Galaxy',
-    build: (sample) =>
+    build: () =>
       base(
         { type: 'gradient', from: '#0b0524', to: '#1e1b4b', angle: 135 },
         [
@@ -149,7 +149,7 @@ const welcomeTemplates: Record<string, { name: string; build: TemplateFactory }>
   },
   royal: {
     name: 'Royal',
-    build: (sample) =>
+    build: () =>
       base(
         { type: 'gradient', from: '#1e1033', to: '#4c1d95', angle: 110 },
         [
@@ -163,7 +163,7 @@ const welcomeTemplates: Record<string, { name: string; build: TemplateFactory }>
   },
   paper: {
     name: 'Paper',
-    build: (sample) =>
+    build: () =>
       base(
         { type: 'color', color: '#f5f5f4' },
         [
@@ -181,7 +181,7 @@ const welcomeTemplates: Record<string, { name: string; build: TemplateFactory }>
 const rankTemplates: Record<string, { name: string; build: TemplateFactory }> = {
   aurora: {
     name: 'Aurora',
-    build: (sample) =>
+    build: () =>
       base(
         { type: 'gradient', from: '#071a2b', to: '#0f766e', angle: 120 },
         [
@@ -197,7 +197,7 @@ const rankTemplates: Record<string, { name: string; build: TemplateFactory }> = 
   },
   ember: {
     name: 'Ember',
-    build: (sample) =>
+    build: () =>
       base(
         { type: 'gradient', from: '#1c0a06', to: '#9a3412', angle: 25 },
         [
@@ -212,7 +212,7 @@ const rankTemplates: Record<string, { name: string; build: TemplateFactory }> = 
   },
   ice: {
     name: 'Ice',
-    build: (sample) =>
+    build: () =>
       base(
         { type: 'gradient', from: '#082f49', to: '#0e7490', angle: 100 },
         [
@@ -227,7 +227,7 @@ const rankTemplates: Record<string, { name: string; build: TemplateFactory }> = 
   },
   royal: {
     name: 'Royal',
-    build: (sample) =>
+    build: () =>
       base(
         { type: 'gradient', from: '#1e1033', to: '#4c1d95', angle: 110 },
         [
@@ -242,7 +242,7 @@ const rankTemplates: Record<string, { name: string; build: TemplateFactory }> = 
   },
   minimal: {
     name: 'Minimal',
-    build: (sample) =>
+    build: () =>
       base(
         { type: 'color', color: '#f8fafc' },
         [
@@ -257,7 +257,7 @@ const rankTemplates: Record<string, { name: string; build: TemplateFactory }> = 
   },
   forest: {
     name: 'Forest',
-    build: (sample) =>
+    build: () =>
       base(
         { type: 'gradient', from: '#052e1b', to: '#14532d', angle: 90 },
         [
@@ -272,7 +272,7 @@ const rankTemplates: Record<string, { name: string; build: TemplateFactory }> = 
   },
   sunset: {
     name: 'Sunset',
-    build: (sample) =>
+    build: () =>
       base(
         { type: 'gradient', from: '#2b0b18', to: '#b45309', angle: 20 },
         [
@@ -287,7 +287,7 @@ const rankTemplates: Record<string, { name: string; build: TemplateFactory }> = 
   },
   neon: {
     name: 'Neon',
-    build: (sample) =>
+    build: () =>
       base(
         { type: 'color', color: '#05070d' },
         [

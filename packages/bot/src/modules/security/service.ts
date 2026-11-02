@@ -1,11 +1,7 @@
 import {
   AuditLogEvent,
-  ChannelType,
   Guild,
   GuildMember,
-  PermissionFlagsBits,
-  type GuildBasedChannel,
-  type Role,
   type TextChannel,
 } from 'discord.js';
 import type { BotClient } from '../../structures/BotClient';

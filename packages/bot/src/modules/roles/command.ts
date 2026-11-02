@@ -9,7 +9,7 @@ import {
 import { Command } from '../../structures/Command';
 import type { BotClient } from '../../structures/BotClient';
 import { loadRolesConfig } from './config';
-import { canManageRole, refreshRoleMenu, roleButtons } from './service';
+import { canManageRole, refreshRoleMenu } from './service';
 
 export class RoleMenuCommand extends Command {
   public category = 'roles' as const;

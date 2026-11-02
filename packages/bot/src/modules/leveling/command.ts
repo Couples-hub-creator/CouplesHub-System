@@ -9,7 +9,7 @@ import { Command } from '../../structures/Command';
 import { t } from '../../core/i18n';
 import { localeOf } from '../../core/permissions';
 import { loadLevelingConfig, saveLevelingConfig, type LevelingConfig } from './config';
-import { getLevelingService, leveling } from './service';
+import { getLevelingService } from './service';
 
 export class LevelCommand extends Command {
   public category = 'leveling' as const;

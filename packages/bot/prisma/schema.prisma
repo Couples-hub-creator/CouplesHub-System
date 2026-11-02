@@ -108,6 +108,8 @@ model MusicSettings {
   autoPlay          Boolean  @default(false)
   twentyFourSeven   Boolean  @default(false)
   twentyFourSevenChannel String?
+  lastRadioStationId String?
+  radioTextChannelId String?
   djRole            String?
   djOnly            Boolean  @default(false)
   voteSkipRequired  Int      @default(3)

@@ -4,7 +4,6 @@ import {
   ButtonStyle,
   EmbedBuilder,
   type Guild,
-  type Message,
   type TextChannel,
 } from 'discord.js';
 import type { BotClient } from '../../structures/BotClient';

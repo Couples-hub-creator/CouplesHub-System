@@ -1,7 +1,7 @@
 import type { MessageReaction, PartialMessageReaction, User } from 'discord.js';
 import type { BotModule } from '../../core/modules/types';
 import { ReactionRoleCommand, RoleMenuCommand } from './command';
-import { loadRolesConfig, rolesConfigDef } from './config';
+import { rolesConfigDef } from './config';
 import { handleReactionRole, toggleRole } from './service';
 
 const roles: BotModule = {
