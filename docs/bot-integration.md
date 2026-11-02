@@ -265,8 +265,9 @@ Unknown module → `404 UNKNOWN_MODULE`.
 
 The bot:
 
-1. Merges defaults, validates with the module's Zod schema.
-2. Writes `ModuleConfig` with the schema version.
+1. Validates the full config object with the module's Zod schema.
+2. Requires the guild parent row, then writes `ModuleConfig` with the schema
+   version.
 3. Writes `ConfigAudit` (`before`, `after`, actor).
 4. Invalidates `cfg:<guildId>:<moduleId>`.
 5. Returns `{ moduleId, version, config }`.

@@ -119,9 +119,10 @@ ModuleConfig   (guildId, moduleId, version, data JSON)
 ConfigAudit    (guildId, moduleId, actorId, actorName, before, after)
 ```
 
-`ConfigStore.get()` returns defaults merged with the stored row, validates
-against the module schema and caches the result. `set()` validates, writes the
-row, writes an audit entry and invalidates `cfg:<guildId>:<moduleId>`.
+`ConfigStore.get()` returns the stored row when it exists, otherwise the
+schema-validated defaults, and caches the result. `set()` validates the full
+submitted config, requires the guild parent row, writes the row, writes an audit
+entry and invalidates `cfg:<guildId>:<moduleId>`.
 
 Legacy settings tables (`MusicSettings`, `ModerationSettings`,
 `LevelingSettings`, `WelcomeSettings`, `LoggingSettings`, `AutoModRule`,

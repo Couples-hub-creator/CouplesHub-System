@@ -174,10 +174,12 @@ Server-side flow:
 6. Write `DashboardAudit` row `module.<id>.update`.
 7. Return the bot's `{ config }` response.
 
-The bot validates the body against the module's Zod schema, merges defaults,
-writes `ModuleConfig`, writes `ConfigAudit` with before/after values and
-invalidates the config cache. Invalid values return `400 VALIDATION_ERROR` with
-field details.
+The bot validates the body against the module's Zod schema, requires the guild
+parent row, writes `ModuleConfig`, writes `ConfigAudit` with before/after values
+and invalidates the config cache. The dashboard submits the full config object
+from the catalog, so defaults are already included. Invalid values return `400
+VALIDATION_ERROR` with field details; a missing guild row returns `404
+UNKNOWN_GUILD`.
 
 `actorName` is not sent by the dashboard; `ConfigAudit.actorId` is the Discord
 user id, which the bot resolves through cache when displaying history.
@@ -223,6 +225,7 @@ Every call writes a `DashboardAudit` row before the mutation runs.
 | `UNAUTHORIZED` | No session |
 | `MISSING_PERMISSION` | Session exists, Discord permission missing |
 | `UNKNOWN_MODULE` | Module or settings section not found |
+| `UNKNOWN_GUILD` | No guild parent row exists for the config write |
 | `NO_MODULE_CONFIG` | Module has no generic config |
 | `VALIDATION_ERROR` | Request body failed Zod validation |
 | `CONFIRMATION_MISMATCH` | Typed confirmation did not match |
