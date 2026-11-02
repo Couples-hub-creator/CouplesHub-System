@@ -1,0 +1,100 @@
+{
+  "common": {
+    "yes": "نعم",
+    "no": "لا",
+    "enabled": "مفعّل",
+    "disabled": "معطّل",
+    "notConfigured": "غير مُعد",
+    "unknown": "غير معروف",
+    "none": "لا شيء",
+    "cancel": "إلغاء",
+    "confirm": "تأكيد",
+    "saved": "تم الحفظ.",
+    "loading": "جارٍ العمل…",
+    "noPermission": "ليس لديك صلاحية لاستخدام هذا الأمر.",
+    "botNoPermission": "أحتاج صلاحية {permission} للقيام بذلك.",
+    "hierarchy": "يجب أن تكون رتبتي الأعلى فوق أعلى رتبة عند {target}.",
+    "userHierarchy": "يجب أن تكون رتبتك الأعلى فوق أعلى رتبة عند {target}.",
+    "guildOnly": "هذا الأمر يعمل داخل السيرفر فقط.",
+    "cooldown": "انتظر {seconds} ثانية قبل استخدام الأمر مرة أخرى.",
+    "error": "حدث خطأ. حاول مرة أخرى بعد قليل.",
+    "databaseUnavailable": "قاعدة البيانات غير متاحة حاليًا. حاول لاحقًا.",
+    "premiumRequired": "هذه الميزة تتطلب Couples Hub Premium.",
+    "notInVoice": "ادخل قناة صوتية أولًا.",
+    "nothingPlaying": "لا يوجد شيء قيد التشغيل حاليًا.",
+    "differentVoice": "أنا موجود بالفعل في قناة صوتية أخرى."
+  },
+  "help": {
+    "title": "أوامر Couples Hub",
+    "description": "اختر فئة لعرض الأوامر.",
+    "category": "الفئة",
+    "search": "ابحث عن أمر",
+    "noResults": "لا توجد أوامر تطابق البحث."
+  },
+  "welcome": {
+    "title": "الترحيب",
+    "test": "اختبار بطاقة الترحيب",
+    "sent": "تم إرسال اختبار الترحيب.",
+    "channelMissing": "حدّد قناة الترحيب أولًا.",
+    "cardAlt": "بطاقة ترحيب لـ {user}"
+  },
+  "logging": {
+    "title": "السجلات",
+    "messageDelete": "تم حذف رسالة",
+    "messageEdit": "تم تعديل رسالة",
+    "memberJoin": "انضم عضو",
+    "memberLeave": "غادر عضو",
+    "voiceJoin": "دخل قناة صوتية",
+    "voiceLeave": "غادر قناة صوتية",
+    "channelCreate": "تم إنشاء قناة",
+    "channelDelete": "تم حذف قناة",
+    "roleCreate": "تم إنشاء رتبة",
+    "roleDelete": "تم حذف رتبة",
+    "banAdd": "تم حظر عضو",
+    "banRemove": "تم إلغاء حظر عضو",
+    "executor": "المنفّذ",
+    "target": "الهدف",
+    "channel": "القناة",
+    "reason": "السبب"
+  },
+  "moderation": {
+    "case": "الحالة #{number}",
+    "warned": "تم تسجيل تحذير لـ {user} بالحالة #{number}.",
+    "banned": "تم حظر {user}. الحالة #{number}.",
+    "kicked": "تم طرد {user}. الحالة #{number}.",
+    "timedOut": "تم إسكات {user} لمدة {duration}. الحالة #{number}.",
+    "unbanned": "تم إلغاء حظر {user}.",
+    "reason": "السبب: {reason}",
+    "dm": "تم {action} في {server}. السبب: {reason}. الحالة: #{number}",
+    "noCases": "لا توجد حالات.",
+    "caseNotFound": "هذه الحالة غير موجودة."
+  },
+  "leveling": {
+    "rank": "{user} في المستوى {level} ولديه {xp} نقطة خبرة.",
+    "levelUp": "تهانينا {user}، وصلت إلى المستوى {level}!",
+    "leaderboard": "لوحة متصدري الخبرة",
+    "disabled": "نظام المستويات معطّل في هذا السيرفر."
+  },
+  "automod": {
+    "spam": "توقف عن الإرسال المتكرر.",
+    "duplicate": "لا تكرر نفس الرسالة.",
+    "caps": "قلل استخدام الأحرف الكبيرة.",
+    "mentions": "عدد الإشارات كبير جدًا.",
+    "links": "الروابط غير مسموحة هنا.",
+    "invites": "دعوات ديسكورد غير مسموحة هنا.",
+    "badword": "هذه الألفاظ غير مسموحة هنا.",
+    "zalgo": "النص مشوّه أكثر من اللازم.",
+    "attachments": "عدد المرفقات كبير جدًا.",
+    "strike": "حصلت على إنذار بسبب {rule}. مجموع الإنذارات: {strikes}.",
+    "punished": "تم {action} بسبب تكرار المخالفات."
+  },
+  "security": {
+    "lockdown": "تم تفعيل قفل السيرفر.",
+    "unlock": "تم رفع قفل السيرفر.",
+    "panic": "تم تفعيل وضع الطوارئ. تمت إزالة الصلاحيات الخطرة وقفل القنوات.",
+    "raidMode": "تم تفعيل وضع الغارات لمدة {minutes} دقيقة.",
+    "raidModeOff": "تم إيقاف وضع الغارات.",
+    "quarantine": "تم عزل العضو.",
+    "release": "تم تحرير العضو من العزل."
+  }
+}

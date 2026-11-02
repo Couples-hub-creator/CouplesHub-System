@@ -1,0 +1,100 @@
+{
+  "common": {
+    "yes": "Yes",
+    "no": "No",
+    "enabled": "Enabled",
+    "disabled": "Disabled",
+    "notConfigured": "Not configured",
+    "unknown": "Unknown",
+    "none": "None",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "saved": "Saved.",
+    "loading": "Working…",
+    "noPermission": "You do not have permission to use this command.",
+    "botNoPermission": "I need the {permission} permission to do that.",
+    "hierarchy": "My highest role must be above {target}'s highest role.",
+    "userHierarchy": "Your highest role must be above {target}'s highest role.",
+    "guildOnly": "This command can only be used in a server.",
+    "cooldown": "Please wait {seconds} more seconds before using this command.",
+    "error": "Something went wrong. Try again in a moment.",
+    "databaseUnavailable": "The database is unavailable right now. Try again shortly.",
+    "premiumRequired": "This feature requires Couples Hub Premium.",
+    "notInVoice": "Join a voice channel first.",
+    "nothingPlaying": "Nothing is playing right now.",
+    "differentVoice": "I am already playing in a different voice channel."
+  },
+  "help": {
+    "title": "Couples Hub commands",
+    "description": "Pick a category to see the commands.",
+    "category": "Category",
+    "search": "Search commands",
+    "noResults": "No commands match that search."
+  },
+  "welcome": {
+    "title": "Welcome",
+    "test": "Test welcome card",
+    "sent": "Welcome test sent.",
+    "channelMissing": "Set a welcome channel first.",
+    "cardAlt": "Welcome card for {user}"
+  },
+  "logging": {
+    "title": "Logs",
+    "messageDelete": "Message deleted",
+    "messageEdit": "Message edited",
+    "memberJoin": "Member joined",
+    "memberLeave": "Member left",
+    "voiceJoin": "Joined voice",
+    "voiceLeave": "Left voice",
+    "channelCreate": "Channel created",
+    "channelDelete": "Channel deleted",
+    "roleCreate": "Role created",
+    "roleDelete": "Role deleted",
+    "banAdd": "Member banned",
+    "banRemove": "Member unbanned",
+    "executor": "Executor",
+    "target": "Target",
+    "channel": "Channel",
+    "reason": "Reason"
+  },
+  "moderation": {
+    "case": "Case #{number}",
+    "warned": "Warning recorded for {user} as case #{number}.",
+    "banned": "Banned {user}. Case #{number}.",
+    "kicked": "Kicked {user}. Case #{number}.",
+    "timedOut": "Timed out {user} for {duration}. Case #{number}.",
+    "unbanned": "Unbanned {user}.",
+    "reason": "Reason: {reason}",
+    "dm": "You were {action} in {server}. Reason: {reason}. Case: #{number}",
+    "noCases": "No cases found.",
+    "caseNotFound": "That case does not exist."
+  },
+  "leveling": {
+    "rank": "{user} is level {level} with {xp} XP.",
+    "levelUp": "Congratulations {user}, you reached level {level}!",
+    "leaderboard": "XP leaderboard",
+    "disabled": "Leveling is disabled on this server."
+  },
+  "automod": {
+    "spam": "Stop spamming.",
+    "duplicate": "Do not repeat the same message.",
+    "caps": "Reduce the amount of caps.",
+    "mentions": "Too many mentions.",
+    "links": "Links are not allowed here.",
+    "invites": "Discord invites are not allowed here.",
+    "badword": "That language is not allowed here.",
+    "zalgo": "That text is too distorted.",
+    "attachments": "Too many attachments.",
+    "strike": "You received a strike for {rule}. Total strikes: {strikes}.",
+    "punished": "You were {action} for repeated rule breaks."
+  },
+  "security": {
+    "lockdown": "Server lockdown enabled.",
+    "unlock": "Server lockdown lifted.",
+    "panic": "Security panic mode enabled. Dangerous permissions were stripped and channels were locked.",
+    "raidMode": "Raid mode enabled for {minutes} minutes.",
+    "raidModeOff": "Raid mode disabled.",
+    "quarantine": "Member quarantined.",
+    "release": "Member released from quarantine."
+  }
+}

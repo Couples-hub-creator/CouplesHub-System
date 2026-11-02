@@ -2,6 +2,7 @@ import { BotClient } from '../structures/BotClient';
 import { Command } from '../structures/Command';
 import { REST, Routes } from 'discord.js';
 import { logger } from '../utils/logger';
+import { createHash } from 'crypto';
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -19,6 +20,7 @@ export async function loadCommands(client: BotClient): Promise<void> {
       // eslint-disable-next-line @typescript-eslint/no-var-requires
       const CommandClass = require(filePath).default;
       const command: Command = new CommandClass();
+      command.moduleId = folder.name;
 
       if (command?.data && typeof command.execute === 'function') {
         client.commands.set(command.data.name, command);
@@ -31,7 +33,15 @@ export async function loadCommands(client: BotClient): Promise<void> {
 }
 
 export async function registerCommands(client: BotClient): Promise<void> {
-  const commands = Array.from(client.commands.values()).map((command) => command.toJSON());
+  const allCommands = Array.from(client.commands.values()).map((command) => command.toJSON());
+  const commands = allCommands.filter((command) => {
+    const size = Buffer.byteLength(JSON.stringify(command), 'utf8');
+    if (size > 8_000) {
+      logger.error(`Command payload for /${command.name} is ${size} bytes; Discord's limit is 8000. Skipping it.`);
+      return false;
+    }
+    return true;
+  });
 
   const token = process.env.DISCORD_TOKEN;
   const clientId = process.env.DISCORD_CLIENT_ID;
@@ -42,23 +52,36 @@ export async function registerCommands(client: BotClient): Promise<void> {
     logger.warn('No slash commands were loaded; skipping Discord registration.');
     return;
   }
+  if (commands.length > 100) {
+    throw new Error(`Command budget exceeded: ${commands.length} top-level commands (Discord allows 100).`);
+  }
+
+  const scope = process.env.DISCORD_GUILD_ID ? `guild:${process.env.DISCORD_GUILD_ID}` : 'global';
+  const manifestHash = createHash('sha256').update(JSON.stringify(commands)).digest('hex');
+  const stateKey = `commands:${scope}`;
+  const stored = await client.prisma.platformState.findUnique({ where: { key: stateKey } }).catch(() => null);
+  if (stored && (stored.value as { hash?: string })?.hash === manifestHash) {
+    logger.info(`Slash command manifest unchanged (${commands.length} commands); skipping bulk overwrite.`);
+    return;
+  }
+
   const rest = new REST().setToken(token);
-
   try {
-    logger.info(`Started refreshing ${commands.length} application (/) commands.`);
-
+    logger.info(`Refreshing ${commands.length} application (/) commands for ${scope}.`);
     if (process.env.DISCORD_GUILD_ID) {
-      // Register commands for a specific guild (for development)
       await rest.put(
-        Routes.applicationGuildCommands(process.env.DISCORD_CLIENT_ID!, process.env.DISCORD_GUILD_ID),
-        { body: commands }
+        Routes.applicationGuildCommands(clientId, process.env.DISCORD_GUILD_ID),
+        { body: commands },
       );
-      logger.info(`Successfully registered ${commands.length} commands for guild ${process.env.DISCORD_GUILD_ID}`);
     } else {
-      // Register commands globally
-      await rest.put(Routes.applicationCommands(process.env.DISCORD_CLIENT_ID!), { body: commands });
-      logger.info(`Successfully registered ${commands.length} commands globally`);
+      await rest.put(Routes.applicationCommands(clientId), { body: commands });
     }
+    await client.prisma.platformState.upsert({
+      where: { key: stateKey },
+      update: { value: { hash: manifestHash, count: commands.length } },
+      create: { key: stateKey, value: { hash: manifestHash, count: commands.length } },
+    });
+    logger.info(`Successfully registered ${commands.length} commands for ${scope}`);
   } catch (error) {
     logger.error('Error registering commands:', error);
     throw error;

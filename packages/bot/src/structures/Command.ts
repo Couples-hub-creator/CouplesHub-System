@@ -14,12 +14,18 @@ export type CommandCategory =
   | 'leveling'
   | 'economy'
   | 'tickets'
-  | 'roles'
+  | 'giveaways'
   | 'community'
+  | 'roles'
   | 'logging'
   | 'extras'
   | 'fun'
-  | 'utility';
+  | 'utility'
+  | 'security'
+  | 'automation'
+  | 'ai'
+  | 'premium'
+  | 'owner';
 
 export interface CommandOptions {
   category: CommandCategory;
@@ -39,6 +45,10 @@ export abstract class Command {
   public permissions?: CommandOptions['permissions'];
   public devOnly: boolean = false;
   public guildOnly: boolean = true;
+  public moduleId: string = 'legacy';
+  public aliases: string[] = [];
+  public premium: boolean = false;
+  public helpKey?: string;
 
   public abstract execute(interaction: ChatInputCommandInteraction): Promise<void>;
   public autocomplete?(interaction: AutocompleteInteraction): Promise<void>;

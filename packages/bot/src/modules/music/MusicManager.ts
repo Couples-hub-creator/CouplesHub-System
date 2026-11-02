@@ -3,6 +3,19 @@ import { VoiceBasedChannel, TextChannel } from 'discord.js';
 import { Player } from 'shoukaku';
 import { logger } from '../../utils/logger';
 
+export const FILTERS: Record<string, string> = {
+  bassboost: 'Bass boost',
+  nightcore: 'Nightcore',
+  vaporwave: 'Vaporwave',
+  slowmode: 'Slowed',
+  '8d': '8D audio',
+  karaoke: 'Karaoke',
+  tremolo: 'Tremolo',
+  vibrato: 'Vibrato',
+  distortion: 'Distortion',
+  lowpass: 'Low pass',
+};
+
 export interface Track {
   encoded: string;
   info: {
@@ -56,6 +69,7 @@ export class Queue {
   public loop: 'off' | 'track' | 'queue' = 'off';
   public shuffle: boolean = false;
   public paused: boolean = false;
+  public filters: string[] = [];
   public muted: boolean = false;
   public textChannel: TextChannel;
   public voiceChannel: VoiceBasedChannel;
@@ -188,16 +202,49 @@ export class Queue {
   }
 
   public setVolume(volume: number): void {
-    this.volume = Math.max(0, Math.min(100, volume));
+    this.volume = Math.max(0, Math.min(200, Math.floor(volume)));
     if (this.player) {
-      this.player.setGlobalVolume(this.volume);
+      void this.player.setGlobalVolume(this.volume);
     }
   }
 
   public seek(position: number): void {
     if (this.player && this.currentTrack) {
-      this.player.seekTo(position * 1000);
+      void this.player.seekTo(position * 1000);
     }
+  }
+
+  public async toggleFilter(name: string, enabled: boolean): Promise<string[]> {
+    const normalized = name.toLowerCase().replace(/[^a-z0-9]/g, '');
+    if (!FILTERS[normalized]) throw new Error(`Unknown filter: ${name}`);
+    this.filters = enabled
+      ? Array.from(new Set([...this.filters, normalized]))
+      : this.filters.filter((item) => item !== normalized);
+    if (this.player) await this.player.setFilters(this.filterOptions());
+    return [...this.filters];
+  }
+
+  private filterOptions(): Record<string, unknown> {
+    const options: Record<string, unknown> = { volume: this.volume / 100 };
+    if (this.filters.includes('bassboost')) {
+      options.equalizer = [
+        { band: 0, gain: 0.6 },
+        { band: 1, gain: 0.45 },
+        { band: 2, gain: 0.3 },
+      ];
+    }
+    if (this.filters.includes('nightcore')) options.timescale = { speed: 1.2, pitch: 1.2, rate: 1 };
+    if (this.filters.includes('vaporwave')) options.timescale = { speed: 0.8, pitch: 0.8, rate: 1 };
+    if (this.filters.includes('slowmode')) options.timescale = { speed: 0.7, pitch: 1, rate: 0.7 };
+    if (this.filters.includes('8d')) options.rotation = { rotationHz: 0.2 };
+    if (this.filters.includes('karaoke')) options.karaoke = { level: 1, monoLevel: 1, filterBand: 220, filterWidth: 100 };
+    if (this.filters.includes('tremolo')) options.tremolo = { frequency: 4, depth: 0.75 };
+    if (this.filters.includes('vibrato')) options.vibrato = { frequency: 4, depth: 0.75 };
+    if (this.filters.includes('distortion')) {
+      options.distortion = { sinOffset: 0, sinScale: 1, cosOffset: 0, cosScale: 1, tanOffset: 0, tanScale: 1, offset: 0, scale: 1 };
+    }
+    if (this.filters.includes('lowpass')) options.lowPass = { smoothing: 20 };
+    return options;
   }
 
   public setLoop(mode: 'off' | 'track' | 'queue'): void {

@@ -65,6 +65,17 @@ model Guild {
   playlists         SavedPlaylist[]
   premium           PremiumSubscription?
   dashboardAudits   DashboardAudit[]
+  moduleConfigs     ModuleConfig[]
+  configAudits      ConfigAudit[]
+  commandPermissions CommandPermission[]
+  verificationSessions VerificationSession[]
+  strikes           Strike[]
+  inviteRecords     InviteRecord[]
+  xpEvents          XpEvent[]
+  birthdays         Birthday[]
+  afkStatuses       AfkStatus[]
+  securitySnapshots SecuritySnapshot[]
+  backups           Backup[]
 }
 
 model User {
@@ -147,10 +158,19 @@ model Infraction {
   active      Boolean  @default(true)
   caseNumber  Int
   createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
   expiresAt   DateTime?
+  evidence    String?
+  notes       String?
+  deletedAt   DateTime?
+  metadata    Json     @default("{}")
 
   user        User     @relation(fields: [userId, guildId], references: [userId, guildId], onDelete: Cascade)
   guild       Guild    @relation(fields: [guildId], references: [guildId], onDelete: Cascade)
+
+  @@index([guildId, createdAt])
+  @@index([guildId, userId])
+  @@index([guildId, type, active])
 }
 
 model WelcomeSettings {
@@ -267,6 +287,7 @@ model Poll {
   question    String
   options     Json
   endTime     DateTime?
+  ended       Boolean  @default(false)
   multiSelect Boolean  @default(false)
   createdBy   String
   createdAt   DateTime @default(now())
@@ -286,15 +307,19 @@ model PollVote {
   poll     Poll     @relation(fields: [pollId], references: [id], onDelete: Cascade)
   user     User     @relation(fields: [userId, guildId], references: [userId, guildId], onDelete: Cascade)
 
-  @@unique([pollId, userId])
+  @@unique([pollId, userId, option])
 }
 
 model Suggestion {
   id          String   @id @default(cuid())
   guildId     String
   userId      String
+  channelId   String?
+  messageId   String?
   content     String
   status      String   @default("pending")
+  reviewedBy  String?
+  reviewNote  String?
   createdAt   DateTime @default(now())
 
   guild       Guild    @relation(fields: [guildId], references: [guildId], onDelete: Cascade)
@@ -347,12 +372,16 @@ model ExtraSettings {
 model StarboardMessage {
   id          String   @id @default(cuid())
   guildId     String
+  channelId   String?
+  authorId    String?
   originalId  String
   starboardId String
   starCount   Int      @default(0)
   createdAt   DateTime @default(now())
 
   guild       Guild    @relation(fields: [guildId], references: [guildId], onDelete: Cascade)
+
+  @@unique([guildId, originalId])
 }
 
 model BirthdaySettings {
@@ -380,7 +409,7 @@ model TempVoiceChannel {
   id          String   @id @default(cuid())
   guildId     String
   ownerId     String
-  channelId   String
+  channelId   String   @unique
   createdAt   DateTime @default(now())
 
   guild       Guild    @relation(fields: [guildId], references: [guildId], onDelete: Cascade)
@@ -555,4 +584,200 @@ model DashboardAudit {
   guild        Guild    @relation(fields: [guildId], references: [guildId], onDelete: Cascade)
 
   @@index([guildId, createdAt])
+}
+
+// -------------------------------------------------------------
+// Platform foundation
+// -------------------------------------------------------------
+
+model ModuleConfig {
+  id          String   @id @default(cuid())
+  guildId     String
+  moduleId    String
+  version     Int      @default(1)
+  data        Json     @default("{}")
+  updatedBy   String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  guild       Guild    @relation(fields: [guildId], references: [guildId], onDelete: Cascade)
+
+  @@unique([guildId, moduleId])
+  @@index([guildId])
+}
+
+model ConfigAudit {
+  id          String   @id @default(cuid())
+  guildId     String
+  moduleId    String
+  actorId     String?
+  actorName   String?
+  action      String
+  before      Json?
+  after       Json?
+  createdAt   DateTime @default(now())
+
+  guild       Guild    @relation(fields: [guildId], references: [guildId], onDelete: Cascade)
+
+  @@index([guildId, createdAt])
+  @@index([guildId, moduleId, createdAt])
+}
+
+model SystemJob {
+  id             String    @id @default(cuid())
+  type           String
+  guildId        String?
+  payload        Json      @default("{}")
+  runAt          DateTime
+  status         String    @default("pending") // pending | running | done | failed | cancelled
+  attempts       Int       @default(0)
+  maxAttempts    Int       @default(5)
+  lockedAt       DateTime?
+  lastError      String?
+  idempotencyKey String?   @unique
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  @@index([status, runAt])
+  @@index([guildId, status])
+}
+
+model CommandPermission {
+  id               String   @id @default(cuid())
+  guildId          String
+  commandName      String
+  allowRoleIds     String[] @default([])
+  denyRoleIds      String[] @default([])
+  allowChannelIds  String[] @default([])
+  denyChannelIds   String[] @default([])
+  updatedAt        DateTime @updatedAt
+
+  guild            Guild    @relation(fields: [guildId], references: [guildId], onDelete: Cascade)
+
+  @@unique([guildId, commandName])
+}
+
+model VerificationSession {
+  id          String   @id @default(cuid())
+  guildId     String
+  userId      String
+  token       String
+  challenge   String?
+  answerHash  String?
+  attempts    Int      @default(0)
+  verifiedAt  DateTime?
+  expiresAt   DateTime
+  createdAt   DateTime @default(now())
+
+  guild       Guild    @relation(fields: [guildId], references: [guildId], onDelete: Cascade)
+
+  @@unique([guildId, userId])
+  @@index([guildId, expiresAt])
+}
+
+model Strike {
+  id          String   @id @default(cuid())
+  guildId     String
+  userId      String
+  rule        String
+  weight      Int      @default(1)
+  reason      String?
+  expiresAt   DateTime?
+  createdAt   DateTime @default(now())
+
+  guild       Guild    @relation(fields: [guildId], references: [guildId], onDelete: Cascade)
+
+  @@index([guildId, userId, createdAt])
+  @@index([guildId, expiresAt])
+}
+
+model InviteRecord {
+  id          String   @id @default(cuid())
+  guildId     String
+  inviteCode  String
+  inviterId   String
+  inviteeId   String
+  joinedAt    DateTime @default(now())
+  leftAt      DateTime?
+  fake        Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  guild       Guild    @relation(fields: [guildId], references: [guildId], onDelete: Cascade)
+
+  @@index([guildId, inviterId])
+  @@index([guildId, inviteeId])
+}
+
+model XpEvent {
+  id          String   @id @default(cuid())
+  guildId     String
+  userId      String
+  amount      Int
+  source      String   // text | voice | bonus | admin
+  createdAt   DateTime @default(now())
+
+  guild       Guild    @relation(fields: [guildId], references: [guildId], onDelete: Cascade)
+
+  @@index([guildId, userId, createdAt])
+  @@index([guildId, createdAt])
+}
+
+model Birthday {
+  id          String   @id @default(cuid())
+  guildId     String
+  userId      String
+  month       Int
+  day         Int
+  year        Int?
+  timezone    String   @default("UTC")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  guild       Guild    @relation(fields: [guildId], references: [guildId], onDelete: Cascade)
+
+  @@unique([guildId, userId])
+  @@index([guildId, month, day])
+}
+
+model AfkStatus {
+  id          String   @id @default(cuid())
+  guildId     String
+  userId      String
+  message     String?
+  createdAt   DateTime @default(now())
+
+  guild       Guild    @relation(fields: [guildId], references: [guildId], onDelete: Cascade)
+
+  @@unique([guildId, userId])
+}
+
+model SecuritySnapshot {
+  id          String   @id @default(cuid())
+  guildId     String
+  kind        String
+  data        Json     @default("{}")
+  createdAt   DateTime @default(now())
+
+  guild       Guild    @relation(fields: [guildId], references: [guildId], onDelete: Cascade)
+
+  @@index([guildId, kind, createdAt])
+}
+
+model Backup {
+  id          String   @id @default(cuid())
+  guildId     String
+  name        String
+  data        Json     @default("{}")
+  createdBy   String?
+  createdAt   DateTime @default(now())
+
+  guild       Guild    @relation(fields: [guildId], references: [guildId], onDelete: Cascade)
+
+  @@index([guildId, createdAt])
+}
+
+model PlatformState {
+  key       String   @id
+  value     Json     @default("{}")
+  updatedAt DateTime @updatedAt
 }

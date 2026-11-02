@@ -1,0 +1,100 @@
+{
+  "common": {
+    "yes": "Oui",
+    "no": "Non",
+    "enabled": "Activé",
+    "disabled": "Désactivé",
+    "notConfigured": "Non configuré",
+    "unknown": "Inconnu",
+    "none": "Aucun",
+    "cancel": "Annuler",
+    "confirm": "Confirmer",
+    "saved": "Enregistré.",
+    "loading": "En cours…",
+    "noPermission": "Vous n'avez pas la permission d'utiliser cette commande.",
+    "botNoPermission": "J'ai besoin de la permission {permission} pour faire cela.",
+    "hierarchy": "Mon rôle le plus haut doit être au-dessus de celui de {target}.",
+    "userHierarchy": "Votre rôle le plus haut doit être au-dessus de celui de {target}.",
+    "guildOnly": "Cette commande fonctionne uniquement dans un serveur.",
+    "cooldown": "Attendez encore {seconds} secondes avant de réutiliser cette commande.",
+    "error": "Une erreur est survenue. Réessayez dans un instant.",
+    "databaseUnavailable": "La base de données est indisponible. Réessayez bientôt.",
+    "premiumRequired": "Cette fonctionnalité nécessite Couples Hub Premium.",
+    "notInVoice": "Rejoignez d'abord un salon vocal.",
+    "nothingPlaying": "Rien n'est en lecture actuellement.",
+    "differentVoice": "Je suis déjà dans un autre salon vocal."
+  },
+  "help": {
+    "title": "Commandes Couples Hub",
+    "description": "Choisissez une catégorie pour voir les commandes.",
+    "category": "Catégorie",
+    "search": "Rechercher une commande",
+    "noResults": "Aucune commande ne correspond."
+  },
+  "welcome": {
+    "title": "Bienvenue",
+    "test": "Tester la carte de bienvenue",
+    "sent": "Test de bienvenue envoyé.",
+    "channelMissing": "Configurez d'abord un salon de bienvenue.",
+    "cardAlt": "Carte de bienvenue pour {user}"
+  },
+  "logging": {
+    "title": "Journaux",
+    "messageDelete": "Message supprimé",
+    "messageEdit": "Message modifié",
+    "memberJoin": "Membre arrivé",
+    "memberLeave": "Membre parti",
+    "voiceJoin": "Salon vocal rejoint",
+    "voiceLeave": "Salon vocal quitté",
+    "channelCreate": "Salon créé",
+    "channelDelete": "Salon supprimé",
+    "roleCreate": "Rôle créé",
+    "roleDelete": "Rôle supprimé",
+    "banAdd": "Membre banni",
+    "banRemove": "Bannissement levé",
+    "executor": "Auteur",
+    "target": "Cible",
+    "channel": "Salon",
+    "reason": "Raison"
+  },
+  "moderation": {
+    "case": "Cas #{number}",
+    "warned": "Avertissement enregistré pour {user}, cas #{number}.",
+    "banned": "{user} banni. Cas #{number}.",
+    "kicked": "{user} expulsé. Cas #{number}.",
+    "timedOut": "{user} mis en timeout pour {duration}. Cas #{number}.",
+    "unbanned": "Bannissement de {user} levé.",
+    "reason": "Raison : {reason}",
+    "dm": "Vous avez été {action} dans {server}. Raison : {reason}. Cas : #{number}",
+    "noCases": "Aucun cas trouvé.",
+    "caseNotFound": "Ce cas n'existe pas."
+  },
+  "leveling": {
+    "rank": "{user} est niveau {level} avec {xp} XP.",
+    "levelUp": "Félicitations {user}, vous avez atteint le niveau {level} !",
+    "leaderboard": "Classement XP",
+    "disabled": "Le leveling est désactivé sur ce serveur."
+  },
+  "automod": {
+    "spam": "Arrêtez le spam.",
+    "duplicate": "Ne répétez pas le même message.",
+    "caps": "Réduisez les majuscules.",
+    "mentions": "Trop de mentions.",
+    "links": "Les liens ne sont pas autorisés ici.",
+    "invites": "Les invitations Discord ne sont pas autorisées ici.",
+    "badword": "Ce langage n'est pas autorisé ici.",
+    "zalgo": "Ce texte est trop déformé.",
+    "attachments": "Trop de pièces jointes.",
+    "strike": "Vous avez reçu un avertissement pour {rule}. Total : {strikes}.",
+    "punished": "Vous avez été {action} pour infractions répétées."
+  },
+  "security": {
+    "lockdown": "Verrouillage du serveur activé.",
+    "unlock": "Verrouillage du serveur levé.",
+    "panic": "Mode panique activé. Les permissions dangereuses ont été retirées et les salons verrouillés.",
+    "raidMode": "Mode raid activé pendant {minutes} minutes.",
+    "raidModeOff": "Mode raid désactivé.",
+    "quarantine": "Membre mis en quarantaine.",
+    "release": "Membre libéré de la quarantaine."
+  }
+}
