@@ -62,7 +62,10 @@ DISCORD_CLIENT_SECRET=
 NEXTAUTH_SECRET=
 NEXTAUTH_URL=http://localhost:3001
 NEXT_PUBLIC_SITE_URL=http://localhost:3001
+# Any PostgreSQL works. On Neon, DATABASE_URL is the pooled string and
+# DATABASE_URL_UNPOOLED is the direct string used by Prisma CLI/migrations.
 DATABASE_URL=postgresql://postgres:postgres@localhost:5432/discord_bot?schema=public
+DATABASE_URL_UNPOOLED=postgresql://postgres:postgres@localhost:5432/discord_bot?schema=public
 LAVALINK_HOST=localhost
 LAVALINK_PORT=2333
 LAVALINK_PASSWORD=
@@ -73,12 +76,19 @@ Optional: Pusher keys, `BOT_API_URL`/`BOT_API_SECRET`, and billing keys. The das
 ### 3. Database
 
 ```bash
-cd packages/bot
-npx prisma generate
-npx prisma db push
+npm run db:generate
+npm run db:push
 ```
 
-There is no migrations directory; `db push` applies the additive schema. Run it again after schema changes.
+There is no migrations directory; `db push` applies the additive schema. Run it again after schema changes. The root `db:*` scripts load the root `.env` through `scripts/prisma.mjs`, so the bot and Prisma CLI share one connection configuration.
+
+On Neon, `DATABASE_URL` is the pooled connection string used by the app and `DATABASE_URL_UNPOOLED` is the direct connection string. Prisma's `directUrl` sends CLI commands such as `db push` through the direct URL while the bot and dashboard use the pooled URL.
+
+```bash
+# The repo is linked to Neon project Couples Hub, branch production.
+neon deploy -y          # applies neon.ts and pulls DATABASE_URL, DATABASE_URL_UNPOOLED, NEON_BRANCH
+npm run db:push         # applies packages/bot/prisma/schema.prisma
+```
 
 ### 4. Install and start
 
@@ -117,9 +127,9 @@ On Windows PowerShell, use `npm.cmd` and `npx.cmd`; the `.ps1` shims may be bloc
 
 ## Deployment
 
-- Dashboard: Vercel or any Node host. Set the root directory to `packages/dashboard` and add the environment variables from `packages/dashboard/.env.example`. The build generates the Prisma client from the bot schema; `DATABASE_URL` is only required at runtime.
+- Dashboard: Vercel or any Node host. Set the root directory to `packages/dashboard` and add the environment variables from `packages/dashboard/.env.example`. Set `DATABASE_URL` to the Neon pooled URL in Production; `DATABASE_URL_UNPOOLED` is only needed for CLI migrations, not runtime. The build generates the Prisma client from the bot schema; `DATABASE_URL` is only required at runtime.
 - Bot: a long-running VPS or container with Lavalink. Use PM2 or a process manager.
-- Database: one PostgreSQL instance shared by the bot and dashboard.
+- Database: one PostgreSQL instance shared by the bot and dashboard. This project uses Neon Postgres (`Couples Hub`, project `green-feather-55766439`, branch `production`, AWS US East 1). The runtime uses pooled `DATABASE_URL`; Prisma CLI uses direct `DATABASE_URL_UNPOOLED` via `directUrl`.
 - Real-time: Pusher, not a WebSocket server inside Next.js. Without Pusher the dashboard polls.
 
 ## Routes

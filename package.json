@@ -12,14 +12,18 @@
     "build": "npm run build --workspaces",
     "lint": "npm run lint --workspaces",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
-    "db:generate": "cd packages/bot && npx prisma generate",
-    "db:migrate": "cd packages/bot && npx prisma migrate dev",
-    "db:push": "cd packages/bot && npx prisma db push",
-    "db:studio": "cd packages/bot && npx prisma studio"
+    "db:generate": "node scripts/prisma.mjs generate",
+    "db:migrate": "node scripts/prisma.mjs migrate dev",
+    "db:push": "node scripts/prisma.mjs db push",
+    "db:studio": "node scripts/prisma.mjs studio"
   },
   "devDependencies": {
     "concurrently": "^8.2.2",
     "prettier": "^3.1.1",
     "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "@neon/config": "^1.10.0",
+    "@neon/env": "^1.6.8"
   }
 }

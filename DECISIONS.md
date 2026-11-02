@@ -163,16 +163,23 @@ DASHBOARD SHELL
 - Dashboard `dev` is pinned to port 3001 so it matches `NEXTAUTH_URL` and the documented callback; `start` keeps Next's default port for the Docker/Caddy internal network.
 - Bot fixes found during the live pass: Shoukaku v4 needs `host:port` without a `ws://` prefix; command/event loading uses CommonJS `require` so `node --import tsx` works on Windows; the bot upserts a `Guild` row on ready and on join, and the dashboard's presence indicator uses the bot's live guild list with the database as fallback.
 - The Discord application is still named `Couples HUB` (uppercase). Rename it to `Couples Hub` in the Developer Portal if the exact casing matters. Its only registered redirect URI is `https://dashboard-couples-hub.vercel.app/api/auth/callback/discord`. Add `http://localhost:3001/api/auth/callback/discord` in the Developer Portal before testing OAuth locally.
-- `DATABASE_URL` was not included in the supplied credentials. It must be set in `packages/dashboard/.env.local` for local data and in Vercel for production. Without it, public pages work but dashboard data does not.
-- No PostgreSQL server, Docker, Lavalink jar or Vercel CLI is installed on this machine. The live database, music and deploy paths were therefore not exercised here; the bot and dashboard were tested against the real Discord gateway and auth endpoints.
+- **Resolved 2026-11-02:** Neon Postgres is provisioned and `DATABASE_URL` is wired into the root `.env`, `packages/dashboard/.env.local`, and the standalone bot `.env`. Vercel Production still needs the same pooled URL added in project settings.
+- No local PostgreSQL, Docker, Lavalink jar or Vercel CLI is installed on this machine. Neon replaces local Postgres; Lavalink and the Vercel env-var path remain unexercised here. The bot and dashboard were tested against the real Discord gateway, Neon, and auth endpoints.
 - Known bot coverage: music and moderation commands only. Auto-mod, leveling, welcome, roles, logs, analytics, schedule and AI chat settings persist but do not have bot-side handlers yet. Dashboard player controls stay offline until the bot HTTP control API is implemented.
+
+### Neon database pass (2026-11-02)
+- Neon project `Couples Hub` (org `org-damp-base-95621616`, project `green-feather-55766439`), branch `production` (`br-cool-hat-bbbyv7f2`), region `aws-us-east-1`. `neon.ts` is committed; `.neon` is gitignored.
+- `neon deploy -y` applied the branch policy and pulled `DATABASE_URL` (pooled), `DATABASE_URL_UNPOOLED` (direct), and `NEON_BRANCH` into the root `.env`.
+- Prisma now sets `directUrl = env("DATABASE_URL_UNPOOLED")`; the app uses the pooled `DATABASE_URL`. `packages/dashboard/scripts/prepare-prisma.mjs` falls back to `DATABASE_URL` when the direct URL is absent at build time.
+- `prisma db push` created the schema on `neondb`/`public`; the bot synced 3 guilds. Verification: `/status` reports Database Operational (`SELECT 1`), `/api/stats` returns `{"data":{"stats":{"servers":3,...}}}`, and `npm run build` passes for both workspaces.
+- Vercel Production still has no `DATABASE_URL` and no Vercel CLI auth/token is available locally, so the live domain continues to show the database notice until the pooled URL is added in Vercel project settings.
 
 ### Operational notes
 - Run `prisma db push` from `packages/bot` before starting the dashboard; the new columns and tables are additive but required.
 - `npm.ps1` is blocked on this machine; use `npm.cmd` / `npx.cmd`.
 - The git remote still points at the old `CouplesHub-System` repository. It is metadata only and is not linked from the site.
 - Add the localhost OAuth redirect in the Discord Developer Portal; the application currently lists only the production callback.
-- Set `DATABASE_URL` in Vercel before deploying. `.env.vercel` intentionally leaves it blank because the production connection string was not supplied.
+- Set `DATABASE_URL` (pooled) and, for CLI migrations, `DATABASE_URL_UNPOOLED` (direct) in Vercel Production. The values come from the Neon branch `production`; do not commit them.
 - The dashboard build runs `scripts/prepare-prisma.mjs`, which copies the bot schema and runs `prisma generate` before `next build`. Vercel installs can skip package postinstall hooks; without this step the build typechecks against an ungenerated client and fails.
 
 ### Final verification (this build)
