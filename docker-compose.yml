@@ -32,6 +32,19 @@ services:
     depends_on:
       - postgres
 
+  redis:
+    image: redis:7-alpine
+    container_name: discord-bot-redis
+    restart: unless-stopped
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   bot:
     build:
       context: .
@@ -43,39 +56,71 @@ services:
       DISCORD_CLIENT_ID: ${DISCORD_CLIENT_ID:?Set DISCORD_CLIENT_ID in .env}
       DISCORD_GUILD_ID: ${DISCORD_GUILD_ID:-}
       DATABASE_URL: postgresql://postgres:postgres@postgres:5432/discord_bot?schema=public
+      REDIS_URL: redis://redis:6379
       LAVALINK_HOST: lavalink
       LAVALINK_PORT: 2333
       LAVALINK_PASSWORD: ${LAVALINK_PASSWORD:?Set LAVALINK_PASSWORD in .env}
+      BOT_API_HOST: 0.0.0.0
+      BOT_API_PORT: 4000
+      BOT_API_SECRET: ${BOT_API_SECRET:?Set BOT_API_SECRET in .env}
+      SCHEDULER_POLL_MS: ${SCHEDULER_POLL_MS:-5000}
+      CARD_WORKERS: ${CARD_WORKERS:-2}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      OPENAI_BASE_URL: ${OPENAI_BASE_URL:-https://api.openai.com/v1}
+      OPENAI_MODEL: ${OPENAI_MODEL:-gpt-4o-mini}
+      TZ: ${TZ:-UTC}
     depends_on:
       postgres:
         condition: service_healthy
       lavalink:
         condition: service_started
-    volumes:
-      - ./packages/bot:/app/packages/bot
-      - /app/packages/bot/node_modules
-      - /app/node_modules
+      redis:
+        condition: service_healthy
+    expose:
+      - "4000"
 
   dashboard:
     build:
       context: .
       dockerfile: Dockerfile.dashboard
+      args:
+        NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-http://localhost:3000}
+        NEXT_PUBLIC_DISCORD_CLIENT_ID: ${NEXT_PUBLIC_DISCORD_CLIENT_ID:-}
+        NEXT_PUBLIC_PUSHER_KEY: ${NEXT_PUBLIC_PUSHER_KEY:-}
+        NEXT_PUBLIC_PUSHER_CLUSTER: ${NEXT_PUBLIC_PUSHER_CLUSTER:-}
+        NEXT_PUBLIC_INVITE_URL: ${NEXT_PUBLIC_INVITE_URL:-}
+        NEXT_PUBLIC_SUPPORT_URL: ${NEXT_PUBLIC_SUPPORT_URL:-}
     container_name: discord-bot-dashboard
     restart: unless-stopped
     environment:
       DISCORD_CLIENT_ID: ${DISCORD_CLIENT_ID:?Set DISCORD_CLIENT_ID in .env}
       DISCORD_CLIENT_SECRET: ${DISCORD_CLIENT_SECRET:?Set DISCORD_CLIENT_SECRET in .env}
+      DISCORD_TOKEN: ${DISCORD_TOKEN:?Set DISCORD_TOKEN in .env}
       NEXTAUTH_SECRET: ${NEXTAUTH_SECRET:?Set NEXTAUTH_SECRET in .env}
       NEXTAUTH_URL: ${NEXTAUTH_URL:-http://localhost:3000}
+      NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-http://localhost:3000}
+      NEXT_PUBLIC_DISCORD_CLIENT_ID: ${NEXT_PUBLIC_DISCORD_CLIENT_ID:-}
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/discord_bot?schema=public
+      BOT_API_URL: http://bot:4000
+      BOT_API_SECRET: ${BOT_API_SECRET:?Set BOT_API_SECRET in .env}
+      PUSHER_APP_ID: ${PUSHER_APP_ID:-}
+      PUSHER_KEY: ${PUSHER_KEY:-}
+      PUSHER_SECRET: ${PUSHER_SECRET:-}
+      PUSHER_CLUSTER: ${PUSHER_CLUSTER:-}
+      NEXT_PUBLIC_PUSHER_KEY: ${NEXT_PUBLIC_PUSHER_KEY:-}
+      NEXT_PUBLIC_PUSHER_CLUSTER: ${NEXT_PUBLIC_PUSHER_CLUSTER:-}
+      NEXT_PUBLIC_INVITE_URL: ${NEXT_PUBLIC_INVITE_URL:-}
+      NEXT_PUBLIC_SUPPORT_URL: ${NEXT_PUBLIC_SUPPORT_URL:-}
+      STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY:-}
+      LEMON_SQUEEZY_API_KEY: ${LEMON_SQUEEZY_API_KEY:-}
+      TZ: ${TZ:-UTC}
     ports:
       - "3000:3000"
     depends_on:
-      - postgres
-      - bot
-    volumes:
-      - ./packages/dashboard:/app/packages/dashboard
-      - /app/packages/dashboard/node_modules
-      - /app/node_modules
+      postgres:
+        condition: service_healthy
+      bot:
+        condition: service_started
 
   caddy:
     image: caddy:2-alpine
@@ -93,5 +138,6 @@ services:
 
 volumes:
   postgres_data:
+  redis_data:
   caddy_data:
   caddy_config:

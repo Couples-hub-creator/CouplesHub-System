@@ -169,13 +169,14 @@ export const aiChatSettingsSchema = z.object({
   enabled: z.boolean(),
   channels: z.array(snowflake).max(25),
   triggerMode: z.enum(['mention', 'always']),
-  personality: z.enum(['balanced', 'concise', 'friendly', 'sarcastic', 'professional', 'custom']),
+  personality: z.enum(['balanced', 'friendly', 'witty', 'professional', 'chaotic']),
   systemPrompt: z.string().max(2000).optional(),
   creativity: z.number().int().min(0).max(100),
   replyLength: z.enum(['short', 'medium', 'long']),
   memoryEnabled: z.boolean(),
   memoryDepth: z.number().int().min(0).max(50),
   rateLimitPerHour: z.number().int().min(1).max(100),
+  monthlyQuota: z.number().int().min(1).max(1_000_000),
   blockedTopics: z.array(z.string().min(1).max(48)).max(50),
 });
 
@@ -226,6 +227,10 @@ export const buttonRoleSchema = z.object({
 export const dangerSchema = z.object({
   confirmation: z.string(),
   action: z.enum(['reset-modules', 'delete-guild-data']),
+});
+
+export const moduleConfigSchema = z.object({
+  config: z.record(z.string(), z.unknown()),
 });
 
 export type GeneralSettingsInput = z.infer<typeof generalSettingsSchema>;

@@ -33,7 +33,11 @@ export async function loadAiConfig(client: BotClient, guildId: string): Promise<
       legacy.personality as AiConfig['personality'],
     )
       ? (legacy.personality as AiConfig['personality'])
-      : generic.personality,
+      : legacy.personality === 'concise'
+        ? 'professional'
+        : legacy.personality === 'sarcastic'
+          ? 'witty'
+          : generic.personality,
     systemPrompt: legacy.systemPrompt ?? generic.systemPrompt,
     creativity: legacy.creativity,
     replyLength: (['short', 'medium', 'long'] as const).includes(legacy.replyLength as AiConfig['replyLength'])

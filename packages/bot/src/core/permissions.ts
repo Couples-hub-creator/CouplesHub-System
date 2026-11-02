@@ -99,10 +99,18 @@ export async function assertBotPermissions(interaction: ChatInputCommandInteract
 
 export async function assertModuleEnabled(client: BotClient, guildId: string, moduleId: string): Promise<void> {
   const toggle = MODULE_TOGGLES[moduleId];
-  if (!toggle) return;
-  const guild = await ensureGuildRow(client, guildId);
-  if (guild[toggle] === false) {
-    throw new AppError('MODULE_DISABLED', `${moduleId} is disabled on this server.`, 403);
+  if (toggle) {
+    const guild = await ensureGuildRow(client, guildId);
+    if (guild[toggle] === false) {
+      throw new AppError('MODULE_DISABLED', `${moduleId} is disabled on this server.`, 403);
+    }
+  }
+  const definition = client.moduleConfigDefs.get(moduleId);
+  if (definition) {
+    const config = (await client.configStore.get(guildId, definition)) as { enabled?: unknown };
+    if (config.enabled === false) {
+      throw new AppError('MODULE_DISABLED', `${moduleId} is disabled on this server.`, 403);
+    }
   }
 }
 

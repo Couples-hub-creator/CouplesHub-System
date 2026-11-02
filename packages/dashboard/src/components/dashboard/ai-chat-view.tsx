@@ -31,13 +31,14 @@ type AiSettings = {
   enabled: boolean;
   channels: string[];
   triggerMode: 'mention' | 'always';
-  personality: 'balanced' | 'concise' | 'friendly' | 'sarcastic' | 'professional' | 'custom';
+  personality: 'balanced' | 'friendly' | 'witty' | 'professional' | 'chaotic';
   systemPrompt: string;
   creativity: number;
   replyLength: 'short' | 'medium' | 'long';
   memoryEnabled: boolean;
   memoryDepth: number;
   rateLimitPerHour: number;
+  monthlyQuota: number;
   blockedTopics: string[];
 };
 
@@ -54,20 +55,14 @@ const PERSONALITIES: {
     sample: 'The queue is empty. Add a track with /play and I will start it.',
   },
   {
-    value: 'concise',
-    name: 'Concise',
-    description: 'Cuts every sentence that is not doing work.',
-    sample: 'Queue empty. /play to start.',
-  },
-  {
     value: 'friendly',
     name: 'Friendly',
     description: 'Warm, casual, happy to explain twice.',
     sample: 'Nothing queued yet. Drop a link with /play and I will get it going.',
   },
   {
-    value: 'sarcastic',
-    name: 'Sarcastic',
+    value: 'witty',
+    name: 'Witty',
     description: 'Dry humour, never cruel.',
     sample: 'An empty queue. Bold strategy. /play adds a track.',
   },
@@ -78,10 +73,10 @@ const PERSONALITIES: {
     sample: 'The queue is currently empty. Use /play to add a track.',
   },
   {
-    value: 'custom',
-    name: 'Custom',
-    description: 'You write the instructions. The prompt below is used verbatim.',
-    sample: 'Whatever your prompt describes.',
+    value: 'chaotic',
+    name: 'Chaotic',
+    description: 'Lively and unpredictable, still useful.',
+    sample: 'The queue is a blank canvas. Give /play something to work with.',
   },
 ];
 
@@ -268,7 +263,7 @@ export function AiChatView({ guildId }: { guildId: string }) {
 
             <div className="mt-3">
               <label htmlFor="ai-prompt" className="mb-1 block text-xs font-medium text-mist-dim">
-                {draft.personality === 'custom' ? 'Instructions' : 'Extra instructions (optional)'}
+                Extra instructions (optional)
               </label>
               <Textarea
                 id="ai-prompt"
@@ -367,7 +362,7 @@ export function AiChatView({ guildId }: { guildId: string }) {
 
             <SettingRow
               label="Replies per hour"
-              description="Per channel. Anything over the limit is ignored until the hour rolls over."
+              description="Per member. Anything over the limit is ignored until the hour rolls over."
               htmlFor="ai-rate"
             >
               <Input
@@ -378,6 +373,24 @@ export function AiChatView({ guildId }: { guildId: string }) {
                 value={draft.rateLimitPerHour}
                 onChange={(event) =>
                   settings.update({ rateLimitPerHour: Number(event.target.value) || 1 })
+                }
+                className="h-9 text-sm"
+              />
+            </SettingRow>
+
+            <SettingRow
+              label="Monthly server quota"
+              description="Total replies across the server each calendar month. The bot stops at this ceiling."
+              htmlFor="ai-quota"
+            >
+              <Input
+                id="ai-quota"
+                type="number"
+                min={1}
+                max={1000000}
+                value={draft.monthlyQuota}
+                onChange={(event) =>
+                  settings.update({ monthlyQuota: Number(event.target.value) || 1 })
                 }
                 className="h-9 text-sm"
               />

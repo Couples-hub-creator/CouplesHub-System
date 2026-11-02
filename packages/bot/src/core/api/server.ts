@@ -326,6 +326,24 @@ async function route(
     return;
   }
 
+  if (rest === 'modules/catalog' && method === 'GET') {
+    const rows = await client.configStore.list(guildId);
+    const stored = new Map(rows.map((row) => [row.moduleId, row]));
+    const modules = Array.from(client.modules.values()).map((module) => {
+      const definition = client.moduleConfigDefs.get(module.manifest.id);
+      const row = stored.get(module.manifest.id);
+      return {
+        ...module.manifest,
+        supportsConfig: Boolean(definition),
+        defaults: definition?.defaults ?? null,
+        config: row?.data ?? definition?.defaults ?? null,
+        configured: Boolean(row),
+      };
+    });
+    sendJson(res, 200, { modules });
+    return;
+  }
+
   const configMatch = /^modules\/([a-z0-9_-]+)\/config$/.exec(rest);
   if (configMatch) {
     const moduleId = configMatch[1];

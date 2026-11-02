@@ -161,6 +161,7 @@ async function readModule(guildId: string, module: Module) {
         memoryEnabled: settings.memoryEnabled,
         memoryDepth: settings.memoryDepth,
         rateLimitPerHour: settings.rateLimitPerHour,
+        monthlyQuota: settings.monthlyQuota,
         blockedTopics: settings.blockedTopics,
       };
     }

@@ -69,7 +69,7 @@ function signature(method: string, path: string, body: string) {
  * "not connected" state instead of pretending the player works.
  */
 export async function callBotApi<T>(
-  method: 'GET' | 'POST',
+  method: 'GET' | 'POST' | 'PUT',
   path: string,
   body?: unknown,
 ): Promise<T> {

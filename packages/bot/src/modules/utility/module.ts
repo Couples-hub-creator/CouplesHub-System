@@ -1,4 +1,5 @@
 import type { BotModule } from '../../core/modules/types';
+import { utilityConfigDef } from './config';
 import {
   AvatarCommand,
   BannerCommand,
@@ -29,12 +30,12 @@ const utility: BotModule = {
           title: 'Utility',
           fields: [
             { key: 'enabled', type: 'toggle', label: 'Enable utility commands' },
-            { key: 'ephemeral', type: 'toggle', label: 'Reply privately by default' },
           ],
         },
       ],
     },
   },
+  config: utilityConfigDef,
   commands: [
     ServerInfoCommand,
     UserInfoCommand,
