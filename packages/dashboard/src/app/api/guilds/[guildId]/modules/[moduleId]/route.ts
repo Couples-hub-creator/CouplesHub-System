@@ -1,5 +1,5 @@
 import { withHandler, readJson } from '@/lib/server/api';
-import { requireGuildAccess, ApiError } from '@/lib/server/auth';
+import { requireGuildAccess, ensureGuild, ApiError } from '@/lib/server/auth';
 import { callBotApi } from '@/lib/server/bot-api';
 import { requirePremium } from '@/lib/server/premium';
 import { rateLimit } from '@/lib/server/rate-limit';
@@ -34,6 +34,8 @@ export const PATCH = withHandler<Ctx>(async (request, { params }) => {
     throw new ApiError(400, 'That module is configured on its dedicated page.', 'NO_MODULE_CONFIG');
   }
   if (entry.premium) await requirePremium(params.guildId);
+
+  await ensureGuild(params.guildId);
 
   const saved = await callBotApi<{ config: Record<string, unknown> }>(
     'PUT',

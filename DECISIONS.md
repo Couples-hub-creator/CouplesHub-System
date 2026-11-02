@@ -293,12 +293,20 @@ modules into real bot features and closes the gap to MEE6/Dyno/Carl-bot depth.
 
 ## Verification in this pass
 
-- `npm.cmd test --workspace=packages/bot` — 10 tests pass (duration parsing,
-  module manifests, command budget, localization coverage, limits, uniqueness).
-- `npm.cmd run build --workspace=packages/bot` — clean.
-- `npm.cmd run lint --workspace=packages/bot` — clean.
-- Dashboard build/lint and Docker Compose validation are run after the docs and
-  real-time wiring land.
+- `npm.cmd test --workspace=packages/bot` â€” 14 tests pass (duration parsing,
+  config read/save semantics, module manifests, command budget, localization
+  coverage, limits, uniqueness).
+- `npm.cmd run build --workspaces` â€” clean for bot and dashboard.
+- `npm.cmd run lint --workspaces` â€” clean.
+- Signed bot API smoke test against the real database without a gateway login:
+  `/health` 200 with `database: true`; `/guilds/:id/modules/catalog` 200 with
+  24 modules and 23 configurable; bad signature 401; missing config returns
+  defaults without a write; signed `PUT` saved `threshold: 5`, set
+  `enabled: true`, and wrote exactly one `ConfigAudit` row. The temporary guild
+  row and its config/audit rows were deleted afterwards.
+- Docker Compose validation could not run locally because Docker is not
+  installed on this machine; the Compose file and Dockerfiles are unchanged in
+  this pass and remain part of the deployment checklist.
 - Live smoke tests still require Lavalink and a test guild; the local
   environment has no Lavalink jar running. Music commands report the offline
   state without crashing the gateway.

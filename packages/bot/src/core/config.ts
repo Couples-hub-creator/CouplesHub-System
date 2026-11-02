@@ -42,17 +42,12 @@ export class ConfigStore {
     });
 
     if (!row) {
-      const created = await this.prisma.moduleConfig.create({
-        data: {
-          guildId,
-          moduleId: definition.moduleId,
-          version: definition.version,
-          data: clone(definition.defaults) as Prisma.InputJsonValue,
-        },
-      });
-      const value = definition.schema.parse(created.data);
-      await this.cache.set(key, value, 300_000);
-      return value;
+      // Reading a config must not create a row. Defaults are returned and cached;
+      // the row is created on the first real save, which also guarantees the
+      // guild parent exists.
+      const defaults = definition.schema.parse(clone(definition.defaults));
+      await this.cache.set(key, defaults, 300_000);
+      return defaults;
     }
 
     let data: unknown = row.data;
@@ -93,6 +88,10 @@ export class ConfigStore {
     actor?: ConfigActor,
   ): Promise<T> {
     const parsed = definition.schema.parse(value);
+    const guild = await this.prisma.guild.findUnique({ where: { guildId }, select: { guildId: true } });
+    if (!guild) {
+      throw new AppError('UNKNOWN_GUILD', `No guild record exists for ${guildId}.`, 404);
+    }
     const existing = await this.prisma.moduleConfig.findUnique({
       where: { guildId_moduleId: { guildId, moduleId: definition.moduleId } },
     });

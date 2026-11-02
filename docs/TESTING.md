@@ -35,6 +35,12 @@ npm.cmd run lint --workspaces
 - `parseDuration` compact and verbose units, rejection of malformed input,
   `formatDuration` output and relative timestamps.
 
+`src/core/config.test.ts`
+- Reading a missing module config returns defaults without creating a row.
+- Saving for a guild without a parent row fails with `UNKNOWN_GUILD`.
+- Saving upserts the config and writes an audit row in one transaction.
+- Invalid values are rejected before the database is touched.
+
 `src/core/modules/module-manifest.test.ts`
 - Every discovered module has a complete manifest (id, name, category,
   description, intents, permissions, UI schema).
