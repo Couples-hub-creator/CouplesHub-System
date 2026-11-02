@@ -40,7 +40,7 @@ import { Badge, StatusDot } from '@/components/ui/badge';
 import { ProgressRing } from '@/components/ui/progress';
 import { Segmented } from '@/components/ui/segmented';
 import { EmptyState, ErrorState } from '@/components/ui/empty-state';
-import { KpiCard, SectionCard } from '@/components/dashboard/kit';
+import { KpiCard, Notice, SectionCard } from '@/components/dashboard/kit';
 import { PageHeader } from '@/components/ui/page-header';
 import { formatNumber, formatRelativeTime } from '@/lib/utils';
 
@@ -98,7 +98,11 @@ export function OverviewView({ guildId, guildName }: { guildId: string; guildNam
         title={`${greeting}`}
         description={
           data
-            ? `${guildName} · ${formatNumber(data.kpis.members)} members tracked, ${data.setup.completed} of ${data.setup.total} setup steps done.`
+            ? `${guildName} · ${
+                data.kpis.members !== null
+                  ? `${formatNumber(data.kpis.members)} members tracked`
+                  : 'member count unavailable'
+              }, ${data.setup.completed} of ${data.setup.total} setup steps done.`
             : `Here is what is happening in ${guildName}.`
         }
         action={
@@ -113,6 +117,14 @@ export function OverviewView({ guildId, guildName }: { guildId: string; guildNam
           </Button>
         }
       />
+
+      {data?.database === false && (
+        <Notice tone="warning" title="Database not connected">
+          Discord data is live, but saved settings and historical stats need the database. Add{' '}
+          <code className="rounded bg-white/[0.06] px-1 py-0.5 font-mono text-[10px]">DATABASE_URL</code>{' '}
+          in Vercel, apply the Prisma schema, then redeploy.
+        </Notice>
+      )}
 
       {query.isError ? (
         <ErrorState

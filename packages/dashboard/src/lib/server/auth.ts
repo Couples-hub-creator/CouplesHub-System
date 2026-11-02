@@ -120,7 +120,7 @@ export async function requireGuildAccess(guildId: string): Promise<GuildAccess> 
 
   let res: Response;
   try {
-    res = await fetch('https://discord.com/api/v10/users/@me/guilds', {
+    res = await fetch('https://discord.com/api/v10/users/@me/guilds?with_counts=true', {
       headers: { Authorization: `Bearer ${token}` },
       // Per-user data must never enter Next's shared fetch cache.
       cache: 'no-store',

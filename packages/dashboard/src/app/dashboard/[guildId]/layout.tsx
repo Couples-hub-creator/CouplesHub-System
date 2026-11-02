@@ -1,5 +1,6 @@
 import { redirect } from 'next/navigation';
 import { getSession, requireGuildAccess, ApiError } from '@/lib/server/auth';
+import { getBotGuildIds } from '@/lib/server/bot-guilds';
 import { prisma } from '@/lib/prisma';
 import { DashboardShell } from '@/components/dashboard/shell';
 
@@ -30,19 +31,24 @@ export default async function GuildLayout({
   let botPresent = false;
   let plan: 'free' | 'premium' = 'free';
 
+  // The bot's live guild list is the source of truth for presence. The
+  // database row is only a fallback when Discord cannot be reached.
+  const botGuilds = await getBotGuildIds();
+  if (botGuilds) botPresent = botGuilds.has(params.guildId);
+
   try {
     const [guild, subscription] = await Promise.all([
       prisma.guild.findUnique({ where: { guildId: params.guildId }, select: { id: true } }),
       prisma.premiumSubscription.findUnique({ where: { guildId: params.guildId } }),
     ]);
-    botPresent = Boolean(guild);
+    if (!botGuilds) botPresent = Boolean(guild);
     plan =
       subscription?.status === 'active' &&
       (!subscription.currentEnd || subscription.currentEnd.getTime() > Date.now())
         ? 'premium'
         : 'free';
   } catch {
-    botPresent = false;
+    if (!botGuilds) botPresent = false;
   }
 
   return (

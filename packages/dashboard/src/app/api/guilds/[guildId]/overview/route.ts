@@ -1,5 +1,6 @@
+import { Prisma } from '@prisma/client';
 import { withHandler } from '@/lib/server/api';
-import { requireGuildAccess, ensureGuild } from '@/lib/server/auth';
+import { requireGuildAccess, ensureGuild, type DiscordGuild } from '@/lib/server/auth';
 import { prisma } from '@/lib/prisma';
 
 export const dynamic = 'force-dynamic';
@@ -10,12 +11,49 @@ function dayKey(date: Date) {
   return date.toISOString().slice(0, 10);
 }
 
-export const GET = withHandler<Ctx>(async (request, { params }) => {
-  await requireGuildAccess(params.guildId);
-  const guildId = params.guildId;
-  const range = Number(new URL(request.url).searchParams.get('range') ?? '30');
-  const days = [7, 30, 90].includes(range) ? range : 30;
+function emptyActivity(days: number) {
+  const buckets = new Map<string, { messages: number; commands: number; moderation: number }>();
+  for (let i = days - 1; i >= 0; i -= 1) {
+    const d = new Date(Date.now() - i * 86_400_000);
+    buckets.set(dayKey(d), { messages: 0, commands: 0, moderation: 0 });
+  }
+  return Array.from(buckets.entries()).map(([date, value]) => ({ date, ...value }));
+}
 
+const setupChecklist = [
+  { id: 'music', label: 'Turn on the music module', done: false },
+  { id: 'automod', label: 'Enable Auto-Mod protection', done: false },
+  { id: 'leveling', label: 'Set up leveling rewards', done: false },
+  { id: 'welcome', label: 'Write a welcome message', done: false },
+  { id: 'logs', label: 'Pick a moderation log channel', done: false },
+];
+
+function unavailableOverview(guild: DiscordGuild, days: number) {
+  return {
+    kpis: {
+      members: guild.approximate_member_count ?? null,
+      infractions: null,
+      commands: null,
+      songs: null,
+    },
+    activity: emptyActivity(days),
+    recentCases: [],
+    topCommands: [],
+    health: { ping: null, uptime: null, lavalinkNodes: null },
+    setup: { completed: 0, total: setupChecklist.length, checklist: setupChecklist },
+    modules: {
+      music: false,
+      moderation: false,
+      autoMod: false,
+      welcome: false,
+      leveling: false,
+      logging: false,
+    },
+    database: false,
+  };
+}
+
+async function databaseOverview(guildId: string, days: number) {
   const guild = await ensureGuild(guildId);
   const since = new Date(Date.now() - days * 86_400_000);
 
@@ -43,7 +81,6 @@ export const GET = withHandler<Ctx>(async (request, { params }) => {
     }),
   ]);
 
-  // Bucket activity into the requested window.
   const buckets = new Map<string, { messages: number; commands: number; moderation: number }>();
   for (let i = days - 1; i >= 0; i -= 1) {
     const d = new Date(Date.now() - i * 86_400_000);
@@ -58,9 +95,7 @@ export const GET = withHandler<Ctx>(async (request, { params }) => {
     else if (row.type === 'message') bucket.messages += 1;
   }
 
-  const activity = Array.from(buckets.entries()).map(([date, value]) => ({ date, ...value }));
-
-  const setupChecklist = [
+  const checklist = [
     { id: 'music', label: 'Turn on the music module', done: guild.musicEnabled },
     { id: 'automod', label: 'Enable Auto-Mod protection', done: guild.autoModEnabled },
     { id: 'leveling', label: 'Set up leveling rewards', done: guild.levelingEnabled },
@@ -68,11 +103,9 @@ export const GET = withHandler<Ctx>(async (request, { params }) => {
     { id: 'logs', label: 'Pick a moderation log channel', done: guild.loggingEnabled },
   ];
 
-  const completed = setupChecklist.filter((item) => item.done).length;
-
   return {
     kpis: { members, infractions, commands, songs },
-    activity,
+    activity: Array.from(buckets.entries()).map(([date, value]) => ({ date, ...value })),
     recentCases: recentCases.map((c) => ({
       id: c.id,
       caseNumber: c.caseNumber,
@@ -89,7 +122,11 @@ export const GET = withHandler<Ctx>(async (request, { params }) => {
       uptime: null as number | null,
       lavalinkNodes: null as number | null,
     },
-    setup: { completed, total: setupChecklist.length, checklist: setupChecklist },
+    setup: {
+      completed: checklist.filter((item) => item.done).length,
+      total: checklist.length,
+      checklist,
+    },
     modules: {
       music: guild.musicEnabled,
       moderation: guild.moderationEnabled,
@@ -98,5 +135,34 @@ export const GET = withHandler<Ctx>(async (request, { params }) => {
       leveling: guild.levelingEnabled,
       logging: guild.loggingEnabled,
     },
+    database: true,
   };
+}
+
+function isDatabaseUnavailable(error: unknown) {
+  if (error instanceof Prisma.PrismaClientInitializationError) return true;
+  if (error instanceof Prisma.PrismaClientKnownRequestError) {
+    return ['P1000', 'P1001', 'P1002', 'P1003', 'P1010', 'P1017', 'P2021', 'P2022'].includes(error.code);
+  }
+  return false;
+}
+
+export const GET = withHandler<Ctx>(async (request, { params }) => {
+  const access = await requireGuildAccess(params.guildId);
+  const guildId = params.guildId;
+  const range = Number(new URL(request.url).searchParams.get('range') ?? '30');
+  const days = [7, 30, 90].includes(range) ? range : 30;
+
+  if (!process.env.DATABASE_URL) {
+    return unavailableOverview(access.guild, days);
+  }
+
+  try {
+    return await databaseOverview(guildId, days);
+  } catch (error) {
+    // A configured-but-unreachable database should not turn the overview into
+    // a dead end. Show the live Discord numbers and an honest database notice.
+    if (isDatabaseUnavailable(error)) return unavailableOverview(access.guild, days);
+    throw error;
+  }
 });

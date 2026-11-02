@@ -94,7 +94,12 @@ export type RoleList = {
 }[];
 
 export interface OverviewResponse {
-  kpis: { members: number; infractions: number; commands: number; songs: number };
+  kpis: {
+    members: number | null;
+    infractions: number | null;
+    commands: number | null;
+    songs: number | null;
+  };
   activity: { date: string; messages: number; commands: number; moderation: number }[];
   recentCases: {
     id: string;
@@ -112,6 +117,7 @@ export interface OverviewResponse {
     checklist: { id: string; label: string; done: boolean }[];
   };
   modules: Record<string, boolean>;
+  database: boolean;
 }
 
 export interface CaseRow {

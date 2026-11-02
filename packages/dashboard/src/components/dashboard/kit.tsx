@@ -88,7 +88,7 @@ export function KpiCard({
   tone = 'emerald',
 }: {
   label: string;
-  value: number;
+  value: number | null;
   suffix?: string;
   delta?: { value: number; label: string } | null;
   icon: React.ReactNode;
@@ -125,7 +125,7 @@ export function KpiCard({
 
       <div className="mt-2 flex items-baseline gap-1.5">
         <span className="font-display text-2xl font-semibold tabular text-mist">
-          <CountUp to={value} />
+          {value === null ? <span className="text-mist-dim">—</span> : <CountUp to={value} />}
         </span>
         {suffix && <span className="text-sm text-mist-dim">{suffix}</span>}
       </div>
