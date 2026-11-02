@@ -1,0 +1,1810 @@
+{
+  "ban": {
+    "name": "حظر",
+    "description": "حظر عضو من السيرفر"
+  },
+  "ban.user": {
+    "name": "العضو",
+    "description": "العضو المراد حظره"
+  },
+  "ban.reason": {
+    "name": "السبب",
+    "description": "سبب الحظر"
+  },
+  "ban.days": {
+    "name": "الأيام",
+    "description": "حذف رسائل هذا العدد من الأيام"
+  },
+  "kick": {
+    "name": "طرد",
+    "description": "طرد عضو من السيرفر"
+  },
+  "kick.user": {
+    "name": "العضو",
+    "description": "العضو المراد طرده"
+  },
+  "kick.reason": {
+    "name": "السبب",
+    "description": "سبب الطرد"
+  },
+  "lock": {
+    "name": "قفل",
+    "description": "منع @everyone من إرسال الرسائل في هذه القناة"
+  },
+  "purge": {
+    "name": "تنظيف",
+    "description": "حذف الرسائل الأخيرة من هذه القناة"
+  },
+  "purge.amount": {
+    "name": "العدد",
+    "description": "عدد الرسائل المراد حذفها (1–100)"
+  },
+  "slowmode": {
+    "name": "الوضع_البطيء",
+    "description": "ضبط تأخير الوضع البطيء لهذه القناة"
+  },
+  "slowmode.seconds": {
+    "name": "الثواني",
+    "description": "التأخير من 0 إلى 21600 ثانية"
+  },
+  "timeout": {
+    "name": "مهلة",
+    "description": "منع عضو من التفاعل مؤقتًا"
+  },
+  "timeout.user": {
+    "name": "العضو",
+    "description": "العضو المراد إسكاته"
+  },
+  "timeout.minutes": {
+    "name": "الدقائق",
+    "description": "المدة من 1 إلى 40320 دقيقة"
+  },
+  "timeout.reason": {
+    "name": "السبب",
+    "description": "سبب إسكات هذا العضو"
+  },
+  "unban": {
+    "name": "رفع_الحظر",
+    "description": "رفع الحظر عن مستخدم ديسكورد بالمعرف"
+  },
+  "unban.user_id": {
+    "name": "معرف_المستخدم",
+    "description": "معرف مستخدم ديسكورد"
+  },
+  "unban.reason": {
+    "name": "السبب",
+    "description": "سبب رفع الحظر"
+  },
+  "unlock": {
+    "name": "فتح_القفل",
+    "description": "استعادة صلاحية إرسال الرسائل لـ @everyone في هذه القناة"
+  },
+  "warn": {
+    "name": "تحذير",
+    "description": "تسجيل تحذير لعضو في السيرفر"
+  },
+  "warn.user": {
+    "name": "العضو",
+    "description": "العضو المراد تحذيره"
+  },
+  "warn.reason": {
+    "name": "السبب",
+    "description": "سبب التحذير"
+  },
+  "warnings": {
+    "name": "التحذيرات",
+    "description": "عرض التحذيرات الأخيرة لعضو في السيرفر"
+  },
+  "warnings.user": {
+    "name": "العضو",
+    "description": "العضو المراد مراجعته"
+  },
+  "loop": {
+    "name": "التكرار",
+    "description": "ضبط وضع التكرار"
+  },
+  "loop.mode": {
+    "name": "الوضع",
+    "description": "وضع التكرار"
+  },
+  "nowplaying": {
+    "name": "قيد_التشغيل",
+    "description": "عرض الأغنية الحالية مع أدوات التحكم"
+  },
+  "pause": {
+    "name": "إيقاف_مؤقت",
+    "description": "إيقاف الأغنية الحالية مؤقتًا"
+  },
+  "play": {
+    "name": "تشغيل",
+    "description": "تشغيل أغنية أو إضافتها إلى قائمة الانتظار"
+  },
+  "play.query": {
+    "name": "البحث",
+    "description": "اسم الأغنية أو الرابط"
+  },
+  "queue": {
+    "name": "قائمة_الانتظار",
+    "description": "عرض قائمة الانتظار الحالية"
+  },
+  "resume": {
+    "name": "متابعة",
+    "description": "متابعة الأغنية المتوقفة"
+  },
+  "seek": {
+    "name": "تقديم",
+    "description": "الانتقال إلى موضع محدد في المقطع الحالي"
+  },
+  "seek.seconds": {
+    "name": "الثواني",
+    "description": "الموضع بالثواني"
+  },
+  "skip": {
+    "name": "تخطي",
+    "description": "تخطي الأغنية الحالية"
+  },
+  "stop": {
+    "name": "إيقاف",
+    "description": "إيقاف الموسيقى ومسح قائمة الانتظار"
+  },
+  "volume": {
+    "name": "الصوت",
+    "description": "ضبط مستوى الصوت"
+  },
+  "volume.level": {
+    "name": "المستوى",
+    "description": "مستوى الصوت (0-100)"
+  },
+  "help": {
+    "name": "مساعدة",
+    "description": "عرض جميع الأوامر المتاحة"
+  },
+  "help.category": {
+    "name": "الفئة",
+    "description": "تصفية حسب الفئة"
+  },
+  "ai": {
+    "name": "الذكاء",
+    "description": "محادثة الذكاء الاصطناعي وإعداداته"
+  },
+  "ai.ask": {
+    "name": "اسأل",
+    "description": "اسأل الذكاء الاصطناعي سؤالًا"
+  },
+  "ai.ask.prompt": {
+    "name": "السؤال",
+    "description": "سؤالك"
+  },
+  "ai.status": {
+    "name": "الحالة",
+    "description": "عرض إعدادات الذكاء الاصطناعي والحصة"
+  },
+  "ai.channel": {
+    "name": "القناة",
+    "description": "إضافة قنوات الذكاء الاصطناعي التلقائية أو إزالتها أو مسحها"
+  },
+  "ai.channel.action": {
+    "name": "الإجراء",
+    "description": "الإجراء"
+  },
+  "ai.channel.channel": {
+    "name": "القناة",
+    "description": "القناة"
+  },
+  "ai.settings": {
+    "name": "الإعدادات",
+    "description": "تحديث سلوك الذكاء الاصطناعي"
+  },
+  "ai.settings.trigger": {
+    "name": "المُشغّل",
+    "description": "متى يرد البوت"
+  },
+  "ai.settings.personality": {
+    "name": "الشخصية",
+    "description": "النبرة"
+  },
+  "ai.settings.reply_length": {
+    "name": "طول_الرد",
+    "description": "طول الرد"
+  },
+  "ai.settings.creativity": {
+    "name": "الإبداع",
+    "description": "0–100"
+  },
+  "ai.settings.memory": {
+    "name": "الذاكرة",
+    "description": "تذكّر رسائل القناة الأخيرة"
+  },
+  "ai.settings.memory_depth": {
+    "name": "عمق_الذاكرة",
+    "description": "عدد الرسائل المتذكّرة"
+  },
+  "ai.settings.rate_limit": {
+    "name": "حد_المعدل",
+    "description": "الطلبات لكل مستخدم في الساعة"
+  },
+  "ai.settings.monthly_quota": {
+    "name": "الحصة_الشهرية",
+    "description": "الطلبات الشهرية لهذا السيرفر"
+  },
+  "ai.settings.enabled": {
+    "name": "مفعّل",
+    "description": "تفعيل أو تعطيل محادثة الذكاء الاصطناعي"
+  },
+  "ai.prompt": {
+    "name": "التوجيه",
+    "description": "تعيين أو مسح توجيه النظام الإضافي"
+  },
+  "ai.prompt.text": {
+    "name": "النص",
+    "description": "التعليمات؛ اتركه فارغًا للمسح"
+  },
+  "ai.blocked": {
+    "name": "المحظورات",
+    "description": "إدارة المواضيع المحظورة"
+  },
+  "ai.blocked.action": {
+    "name": "الإجراء",
+    "description": "الإجراء"
+  },
+  "ai.blocked.topic": {
+    "name": "الموضوع",
+    "description": "الموضوع"
+  },
+  "ai.reset": {
+    "name": "إعادة_تعيين",
+    "description": "مسح ذاكرة محادثة الذكاء الاصطناعي لهذه القناة"
+  },
+  "automod": {
+    "name": "الإشراف_التلقائي",
+    "description": "ضبط قواعد الإشراف التلقائي"
+  },
+  "automod.status": {
+    "name": "الحالة",
+    "description": "عرض جميع القواعد"
+  },
+  "automod.toggle": {
+    "name": "تبديل",
+    "description": "تفعيل أو تعطيل قاعدة"
+  },
+  "automod.toggle.rule": {
+    "name": "القاعدة",
+    "description": "القاعدة"
+  },
+  "automod.toggle.enabled": {
+    "name": "مفعّل",
+    "description": "مفعّل"
+  },
+  "automod.punishment": {
+    "name": "العقوبة",
+    "description": "اختيار ما يحدث عند تفعيل قاعدة"
+  },
+  "automod.punishment.rule": {
+    "name": "القاعدة",
+    "description": "القاعدة"
+  },
+  "automod.punishment.action": {
+    "name": "العقوبة",
+    "description": "العقوبة"
+  },
+  "automod.threshold": {
+    "name": "العتبة",
+    "description": "تغيير عتبة قاعدة ونافذة الوقت"
+  },
+  "automod.threshold.rule": {
+    "name": "القاعدة",
+    "description": "القاعدة"
+  },
+  "automod.threshold.threshold": {
+    "name": "العتبة",
+    "description": "عدد مرات التفعيل"
+  },
+  "automod.threshold.window_seconds": {
+    "name": "نافذة_الثواني",
+    "description": "النافذة بالثواني"
+  },
+  "automod.badwords": {
+    "name": "الكلمات_الممنوعة",
+    "description": "إدارة الكلمات المحظورة"
+  },
+  "automod.badwords.action": {
+    "name": "الإجراء",
+    "description": "إضافة أو إزالة أو عرض"
+  },
+  "automod.badwords.word": {
+    "name": "الكلمة",
+    "description": "كلمة أو عبارة"
+  },
+  "automod.whitelist": {
+    "name": "القائمة_البيضاء",
+    "description": "استثناء قناة أو رتبة من الإشراف التلقائي"
+  },
+  "automod.whitelist.action": {
+    "name": "الإجراء",
+    "description": "إضافة أو إزالة"
+  },
+  "automod.whitelist.channel": {
+    "name": "القناة",
+    "description": "القناة"
+  },
+  "automod.whitelist.role": {
+    "name": "الرتبة",
+    "description": "الرتبة"
+  },
+  "automod.allowed": {
+    "name": "النطاقات_المسموحة",
+    "description": "إدارة نطاقات الروابط المسموحة"
+  },
+  "automod.allowed.action": {
+    "name": "الإجراء",
+    "description": "إضافة أو إزالة أو عرض"
+  },
+  "automod.allowed.domain": {
+    "name": "النطاق",
+    "description": "example.com"
+  },
+  "automod.raid": {
+    "name": "الغارات",
+    "description": "ضبط الحماية من الغارات"
+  },
+  "automod.raid.enabled": {
+    "name": "مفعّل",
+    "description": "مفعّل"
+  },
+  "automod.raid.threshold": {
+    "name": "العتبة",
+    "description": "عدد الانضمامات المطلوبة"
+  },
+  "automod.raid.window_seconds": {
+    "name": "نافذة_الثواني",
+    "description": "النافذة بالثواني"
+  },
+  "automod.raid.action": {
+    "name": "الإجراء",
+    "description": "الإجراء"
+  },
+  "automod.ignoreadmins": {
+    "name": "تجاهل_المشرفين",
+    "description": "تجاوز الإشراف التلقائي لمن لديه صلاحية إدارة السيرفر"
+  },
+  "automod.ignoreadmins.enabled": {
+    "name": "مفعّل",
+    "description": "مفعّل"
+  },
+  "birthday": {
+    "name": "عيد_الميلاد",
+    "description": "إدارة عيد ميلادك"
+  },
+  "birthday.set": {
+    "name": "تعيين",
+    "description": "حفظ عيد ميلادك"
+  },
+  "birthday.set.month": {
+    "name": "الشهر",
+    "description": "1–12"
+  },
+  "birthday.set.day": {
+    "name": "اليوم",
+    "description": "1–31"
+  },
+  "birthday.set.year": {
+    "name": "السنة",
+    "description": "سنة الميلاد (اختياري)"
+  },
+  "birthday.remove": {
+    "name": "إزالة",
+    "description": "حذف عيد ميلادك"
+  },
+  "birthday.list": {
+    "name": "عرض",
+    "description": "عرض عيد ميلادك المحفوظ"
+  },
+  "birthday.upcoming": {
+    "name": "القادمة",
+    "description": "عرض أعياد الميلاد القادمة"
+  },
+  "birthdays": {
+    "name": "أعياد_الميلاد",
+    "description": "ضبط إعلانات أعياد الميلاد"
+  },
+  "birthdays.show": {
+    "name": "عرض",
+    "description": "عرض إعدادات أعياد الميلاد"
+  },
+  "birthdays.channel": {
+    "name": "القناة",
+    "description": "تعيين قناة الإعلانات"
+  },
+  "birthdays.channel.channel": {
+    "name": "القناة",
+    "description": "القناة؛ اتركها فارغة للمسح"
+  },
+  "birthdays.message": {
+    "name": "الرسالة",
+    "description": "تعيين رسالة الإعلان"
+  },
+  "birthdays.message.message": {
+    "name": "الرسالة",
+    "description": "استخدم {user} و {server}"
+  },
+  "birthdays.timezone": {
+    "name": "المنطقة_الزمنية",
+    "description": "تعيين المنطقة الزمنية للإعلانات"
+  },
+  "birthdays.timezone.timezone": {
+    "name": "المنطقة_الزمنية",
+    "description": "منطقة زمنية IANA، مثل Europe/Paris"
+  },
+  "birthdays.time": {
+    "name": "الوقت",
+    "description": "تعيين وقت الإعلان اليومي"
+  },
+  "birthdays.time.hhmm": {
+    "name": "الوقت",
+    "description": "وقت بنظام 24 ساعة، مثل 09:00"
+  },
+  "customcommand": {
+    "name": "أمر_مخصص",
+    "description": "إدارة أوامر البادئة المخصصة"
+  },
+  "customcommand.add": {
+    "name": "إضافة",
+    "description": "إنشاء أمر مخصص أو استبداله"
+  },
+  "customcommand.add.name": {
+    "name": "الاسم",
+    "description": "اسم الأمر بدون البادئة"
+  },
+  "customcommand.add.response": {
+    "name": "الرد",
+    "description": "الرد؛ استخدم {user} و {server} و {channel} و {membercount}"
+  },
+  "customcommand.remove": {
+    "name": "إزالة",
+    "description": "حذف أمر مخصص"
+  },
+  "customcommand.remove.name": {
+    "name": "الاسم",
+    "description": "اسم الأمر"
+  },
+  "customcommand.list": {
+    "name": "عرض",
+    "description": "عرض الأوامر المخصصة"
+  },
+  "customcommand.show": {
+    "name": "إظهار",
+    "description": "عرض رد أمر مخصص"
+  },
+  "customcommand.show.name": {
+    "name": "الاسم",
+    "description": "اسم الأمر"
+  },
+  "afk": {
+    "name": "الغياب",
+    "description": "تعيين حالة الغياب"
+  },
+  "afk.set": {
+    "name": "تعيين",
+    "description": "تعيين حالة غيابك"
+  },
+  "afk.set.message": {
+    "name": "الرسالة",
+    "description": "سبب غيابك"
+  },
+  "afk.clear": {
+    "name": "مسح",
+    "description": "مسح حالة غيابك"
+  },
+  "afk.list": {
+    "name": "عرض",
+    "description": "عرض الأعضاء الغائبين"
+  },
+  "balance": {
+    "name": "رصيد",
+    "description": "عرض رصيد عضو"
+  },
+  "balance.user": {
+    "name": "العضو",
+    "description": "العضو"
+  },
+  "daily": {
+    "name": "يومي",
+    "description": "استلام مكافأتك اليومية"
+  },
+  "work": {
+    "name": "عمل",
+    "description": "العمل مقابل بعض العملات"
+  },
+  "pay": {
+    "name": "تحويل",
+    "description": "إرسال عملات إلى عضو آخر"
+  },
+  "pay.user": {
+    "name": "المستلم",
+    "description": "المستلم"
+  },
+  "pay.amount": {
+    "name": "المبلغ",
+    "description": "المبلغ"
+  },
+  "rob": {
+    "name": "سرقة",
+    "description": "محاولة سرقة عضو آخر"
+  },
+  "rob.user": {
+    "name": "الهدف",
+    "description": "الهدف"
+  },
+  "economy": {
+    "name": "الاقتصاد",
+    "description": "ضبط اقتصاد السيرفر"
+  },
+  "economy.show": {
+    "name": "عرض",
+    "description": "عرض إعدادات الاقتصاد"
+  },
+  "economy.rates": {
+    "name": "المعدلات",
+    "description": "تغيير المكافآت وفترات الانتظار"
+  },
+  "economy.rates.daily": {
+    "name": "اليومية",
+    "description": "المكافأة اليومية"
+  },
+  "economy.rates.work_min": {
+    "name": "الحد_الأدنى",
+    "description": "الحد الأدنى لمكافأة العمل"
+  },
+  "economy.rates.work_max": {
+    "name": "الحد_الأقصى",
+    "description": "الحد الأقصى لمكافأة العمل"
+  },
+  "economy.rates.tax": {
+    "name": "الضريبة",
+    "description": "ضريبة التحويل 0–0.5"
+  },
+  "economy.currency": {
+    "name": "العملة",
+    "description": "تعيين اسم العملة"
+  },
+  "economy.currency.name": {
+    "name": "الاسم",
+    "description": "الاسم"
+  },
+  "economy.give": {
+    "name": "منح",
+    "description": "منح عملات لعضو"
+  },
+  "economy.give.user": {
+    "name": "العضو",
+    "description": "العضو"
+  },
+  "economy.give.amount": {
+    "name": "المبلغ",
+    "description": "المبلغ"
+  },
+  "economy.reset": {
+    "name": "إعادة_تعيين",
+    "description": "إعادة تعيين كل الأرصدة في هذا السيرفر"
+  },
+  "economy.reset.confirm": {
+    "name": "تأكيد",
+    "description": "نعم، أعد تعيين الأرصدة"
+  },
+  "giveaway": {
+    "name": "سحب",
+    "description": "إنشاء السحوبات وإدارتها"
+  },
+  "giveaway.start": {
+    "name": "بدء",
+    "description": "بدء سحب"
+  },
+  "giveaway.start.prize": {
+    "name": "الجائزة",
+    "description": "الجائزة"
+  },
+  "giveaway.start.duration": {
+    "name": "المدة",
+    "description": "مثل 30m أو 2h أو 3d"
+  },
+  "giveaway.start.winners": {
+    "name": "الفائزون",
+    "description": "عدد الفائزين"
+  },
+  "giveaway.start.required_role": {
+    "name": "الرتبة_المطلوبة",
+    "description": "الرتبة المطلوبة للمشاركة"
+  },
+  "giveaway.end": {
+    "name": "إنهاء",
+    "description": "إنهاء سحب الآن"
+  },
+  "giveaway.end.id": {
+    "name": "المعرف",
+    "description": "معرف السحب"
+  },
+  "giveaway.reroll": {
+    "name": "إعادة_السحب",
+    "description": "اختيار فائزين جدد"
+  },
+  "giveaway.reroll.id": {
+    "name": "المعرف",
+    "description": "معرف السحب"
+  },
+  "giveaway.list": {
+    "name": "عرض",
+    "description": "عرض السحوبات النشطة"
+  },
+  "invites": {
+    "name": "الدعوات",
+    "description": "عرض إحصاءات الدعوات"
+  },
+  "invites.show": {
+    "name": "عرض",
+    "description": "عرض إحصاءات دعوات عضو"
+  },
+  "invites.show.user": {
+    "name": "العضو",
+    "description": "العضو؛ افتراضيًا أنت"
+  },
+  "invites.leaderboard": {
+    "name": "المتصدرون",
+    "description": "عرض أكثر الأعضاء دعوة"
+  },
+  "invites.refresh": {
+    "name": "تحديث",
+    "description": "تحديث ذاكرة الدعوات"
+  },
+  "invites.config": {
+    "name": "الإعدادات",
+    "description": "عرض إعدادات الدعوات"
+  },
+  "rank": {
+    "name": "المستوى",
+    "description": "عرض مستوى عضو ونقاط خبرته"
+  },
+  "rank.user": {
+    "name": "العضو",
+    "description": "العضو المراد عرضه"
+  },
+  "leaderboard": {
+    "name": "المتصدرون",
+    "description": "عرض لوحة صدارة الخبرة في السيرفر"
+  },
+  "leaderboard.period": {
+    "name": "الفترة",
+    "description": "النطاق الزمني"
+  },
+  "leaderboard.kind": {
+    "name": "النوع",
+    "description": "مصدر الخبرة"
+  },
+  "level": {
+    "name": "المستويات",
+    "description": "ضبط نظام المستويات"
+  },
+  "level.show": {
+    "name": "عرض",
+    "description": "عرض إعدادات المستويات الحالية"
+  },
+  "level.xp": {
+    "name": "الخبرة",
+    "description": "تغيير معدلات الخبرة وفترات الانتظار"
+  },
+  "level.xp.per_message": {
+    "name": "لكل_رسالة",
+    "description": "الخبرة لكل رسالة"
+  },
+  "level.xp.per_voice_minute": {
+    "name": "لكل_دقيقة_صوتية",
+    "description": "الخبرة لكل دقيقة صوتية"
+  },
+  "level.xp.cooldown": {
+    "name": "فترة_الانتظار",
+    "description": "فترة انتظار الرسائل بالثواني"
+  },
+  "level.xp.multiplier": {
+    "name": "المضاعف",
+    "description": "مضاعف الخبرة العام"
+  },
+  "level.rewards": {
+    "name": "المكافآت",
+    "description": "إدارة رتب مكافآت المستويات"
+  },
+  "level.rewards.action": {
+    "name": "الإجراء",
+    "description": "إضافة أو إزالة أو عرض"
+  },
+  "level.rewards.role": {
+    "name": "الرتبة",
+    "description": "رتبة المكافأة"
+  },
+  "level.rewards.level": {
+    "name": "المستوى",
+    "description": "المستوى المطلوب"
+  },
+  "level.announce": {
+    "name": "الإعلان",
+    "description": "تفعيل أو تعطيل إعلانات ترقية المستوى"
+  },
+  "level.announce.enabled": {
+    "name": "مفعّل",
+    "description": "مفعّل"
+  },
+  "level.addxp": {
+    "name": "إضافة_خبرة",
+    "description": "منح خبرة لعضو"
+  },
+  "level.addxp.user": {
+    "name": "العضو",
+    "description": "العضو"
+  },
+  "level.addxp.amount": {
+    "name": "المبلغ",
+    "description": "مقدار الخبرة"
+  },
+  "level.reset": {
+    "name": "إعادة_تعيين",
+    "description": "إعادة تعيين كل الخبرة في هذا السيرفر"
+  },
+  "level.reset.confirm": {
+    "name": "تأكيد",
+    "description": "نعم، أعد تعيين كل الأعضاء"
+  },
+  "logs": {
+    "name": "السجلات",
+    "description": "ضبط سجلات تدقيق Couples Hub"
+  },
+  "logs.channel": {
+    "name": "القناة",
+    "description": "تعيين قناة سجلات أو مسحها"
+  },
+  "logs.channel.kind": {
+    "name": "النوع",
+    "description": "أي عائلة أحداث"
+  },
+  "logs.channel.channel": {
+    "name": "القناة",
+    "description": "القناة التي تُرسل إليها السجلات؛ اتركها فارغة للمسح"
+  },
+  "logs.privacy": {
+    "name": "الخصوصية",
+    "description": "اختيار ما إذا كان محتوى الرسائل يُخزّن في السجلات"
+  },
+  "logs.privacy.enabled": {
+    "name": "مفعّل",
+    "description": "تخزين محتوى الرسائل"
+  },
+  "logs.retention": {
+    "name": "الاحتفاظ",
+    "description": "عدد أيام الاحتفاظ بالسجلات"
+  },
+  "logs.retention.days": {
+    "name": "الأيام",
+    "description": "من 1 إلى 365"
+  },
+  "logs.status": {
+    "name": "الحالة",
+    "description": "عرض إعداد السجلات الحالي"
+  },
+  "logs.test": {
+    "name": "اختبار",
+    "description": "إرسال سجل تجريبي إلى قناة سجلات الإشراف"
+  },
+  "case": {
+    "name": "الحالة",
+    "description": "عرض حالات الإشراف أو التعليق عليها أو التراجع عنها"
+  },
+  "case.view": {
+    "name": "عرض",
+    "description": "عرض حالة"
+  },
+  "case.view.number": {
+    "name": "الرقم",
+    "description": "رقم الحالة"
+  },
+  "case.list": {
+    "name": "عرض_الكل",
+    "description": "عرض الحالات الأخيرة"
+  },
+  "case.list.user": {
+    "name": "العضو",
+    "description": "تصفية حسب العضو"
+  },
+  "case.list.type": {
+    "name": "النوع",
+    "description": "تصفية حسب النوع"
+  },
+  "case.list.active": {
+    "name": "النشطة",
+    "description": "الحالات النشطة فقط"
+  },
+  "case.reason": {
+    "name": "السبب",
+    "description": "تغيير سبب حالة"
+  },
+  "case.reason.number": {
+    "name": "الرقم",
+    "description": "رقم الحالة"
+  },
+  "case.reason.reason": {
+    "name": "السبب",
+    "description": "السبب الجديد"
+  },
+  "case.note": {
+    "name": "ملاحظة",
+    "description": "تعيين ملاحظة داخلية على حالة"
+  },
+  "case.note.number": {
+    "name": "الرقم",
+    "description": "رقم الحالة"
+  },
+  "case.note.note": {
+    "name": "الملاحظة",
+    "description": "الملاحظة"
+  },
+  "case.undo": {
+    "name": "تراجع",
+    "description": "عكس العقوبة حيثما أمكن"
+  },
+  "case.undo.number": {
+    "name": "الرقم",
+    "description": "رقم الحالة"
+  },
+  "case.undo.confirm": {
+    "name": "تأكيد",
+    "description": "نعم، تراجع عنها"
+  },
+  "case.delete": {
+    "name": "حذف",
+    "description": "حذف حالة من القائمة حذفًا ناعمًا"
+  },
+  "case.delete.number": {
+    "name": "الرقم",
+    "description": "رقم الحالة"
+  },
+  "case.delete.confirm": {
+    "name": "تأكيد",
+    "description": "نعم، احذفها"
+  },
+  "moderation": {
+    "name": "الإشراف",
+    "description": "ضبط سلوك الإشراف"
+  },
+  "moderation.show": {
+    "name": "عرض",
+    "description": "عرض إعدادات الإشراف"
+  },
+  "moderation.maxwarns": {
+    "name": "الحد_الأقصى_للتحذيرات",
+    "description": "التحذيرات قبل الحظر التلقائي؛ 0 يعطله"
+  },
+  "moderation.maxwarns.count": {
+    "name": "العدد",
+    "description": "من 0 إلى 100"
+  },
+  "moderation.muteduration": {
+    "name": "مدة_الإسكات",
+    "description": "مدة المهلة الافتراضية"
+  },
+  "moderation.muteduration.minutes": {
+    "name": "الدقائق",
+    "description": "من 1 إلى 40320"
+  },
+  "moderation.warnexpiry": {
+    "name": "انتهاء_التحذير",
+    "description": "الأيام قبل أن يتوقف احتساب التحذير"
+  },
+  "moderation.warnexpiry.days": {
+    "name": "الأيام",
+    "description": "0 يعني أبدًا"
+  },
+  "moderation.dm": {
+    "name": "الرسائل_الخاصة",
+    "description": "إرسال رسالة خاصة للأعضاء عند معاقبتهم"
+  },
+  "moderation.dm.enabled": {
+    "name": "مفعّل",
+    "description": "مفعّل"
+  },
+  "moderation.requirereason": {
+    "name": "طلب_السبب",
+    "description": "طلب سبب في أوامر الإشراف"
+  },
+  "moderation.requirereason.enabled": {
+    "name": "مفعّل",
+    "description": "مفعّل"
+  },
+  "moderation.appeal": {
+    "name": "الاستئناف",
+    "description": "تعيين أو مسح رابط الاستئناف في رسائل العقوبة"
+  },
+  "moderation.appeal.url": {
+    "name": "الرابط",
+    "description": "https://…؛ اتركه فارغًا للمسح"
+  },
+  "radio": {
+    "name": "الراديو",
+    "description": "تشغيل محطات الراديو وإدارتها"
+  },
+  "radio.play": {
+    "name": "تشغيل",
+    "description": "تشغيل محطة راديو"
+  },
+  "radio.play.station": {
+    "name": "المحطة",
+    "description": "اسم المحطة أو معرفها"
+  },
+  "radio.list": {
+    "name": "عرض",
+    "description": "عرض محطات الراديو"
+  },
+  "radio.add": {
+    "name": "إضافة",
+    "description": "إضافة محطة مخصصة"
+  },
+  "radio.add.name": {
+    "name": "الاسم",
+    "description": "اسم المحطة"
+  },
+  "radio.add.url": {
+    "name": "الرابط",
+    "description": "رابط البث المباشر"
+  },
+  "radio.add.genre": {
+    "name": "النوع",
+    "description": "النوع"
+  },
+  "radio.remove": {
+    "name": "إزالة",
+    "description": "حذف محطة مخصصة"
+  },
+  "radio.remove.station": {
+    "name": "المحطة",
+    "description": "اسم المحطة أو معرفها"
+  },
+  "radio.favorite": {
+    "name": "المفضلة",
+    "description": "تبديل محطة كمفضلة"
+  },
+  "radio.favorite.station": {
+    "name": "المحطة",
+    "description": "اسم المحطة أو معرفها"
+  },
+  "radio.247": {
+    "name": "استمرار",
+    "description": "إبقاء المحطة الحالية تعمل 24/7"
+  },
+  "radio.247.enabled": {
+    "name": "مفعّل",
+    "description": "مفعّل"
+  },
+  "poll": {
+    "name": "استطلاع",
+    "description": "إنشاء الاستطلاعات وإدارتها"
+  },
+  "poll.create": {
+    "name": "إنشاء",
+    "description": "إنشاء استطلاع"
+  },
+  "poll.create.question": {
+    "name": "السؤال",
+    "description": "السؤال"
+  },
+  "poll.create.option1": {
+    "name": "الخيار_1",
+    "description": "الخيار 1"
+  },
+  "poll.create.option2": {
+    "name": "الخيار_2",
+    "description": "الخيار 2"
+  },
+  "poll.create.option3": {
+    "name": "الخيار_3",
+    "description": "الخيار 3"
+  },
+  "poll.create.option4": {
+    "name": "الخيار_4",
+    "description": "الخيار 4"
+  },
+  "poll.create.option5": {
+    "name": "الخيار_5",
+    "description": "الخيار 5"
+  },
+  "poll.create.duration": {
+    "name": "المدة",
+    "description": "مثل 30m أو 2h أو 1d؛ اتركها فارغة بلا نهاية"
+  },
+  "poll.create.multi": {
+    "name": "متعدد",
+    "description": "السماح بخيارات متعددة"
+  },
+  "poll.end": {
+    "name": "إنهاء",
+    "description": "إنهاء استطلاع الآن"
+  },
+  "poll.end.id": {
+    "name": "المعرف",
+    "description": "معرف الاستطلاع"
+  },
+  "poll.list": {
+    "name": "عرض",
+    "description": "عرض الاستطلاعات النشطة"
+  },
+  "reminder": {
+    "name": "تذكير",
+    "description": "إنشاء التذكيرات الشخصية وإدارتها"
+  },
+  "reminder.set": {
+    "name": "تعيين",
+    "description": "تعيين تذكير"
+  },
+  "reminder.set.when": {
+    "name": "متى",
+    "description": "مثل 30m أو 2h أو 1d2h"
+  },
+  "reminder.set.text": {
+    "name": "النص",
+    "description": "ما تريد تذكيرك به"
+  },
+  "reminder.list": {
+    "name": "عرض",
+    "description": "عرض تذكيراتك"
+  },
+  "reminder.cancel": {
+    "name": "إلغاء",
+    "description": "إلغاء أحد تذكيراتك"
+  },
+  "reminder.cancel.id": {
+    "name": "المعرف",
+    "description": "معرف التذكير"
+  },
+  "reminder.clear": {
+    "name": "مسح",
+    "description": "حذف كل تذكيراتك"
+  },
+  "reminder.clear.confirm": {
+    "name": "تأكيد",
+    "description": "نعم، احذفها"
+  },
+  "rolemenu": {
+    "name": "قائمة_الرتب",
+    "description": "إنشاء قوائم رتب بالأزرار وإدارتها"
+  },
+  "rolemenu.create": {
+    "name": "إنشاء",
+    "description": "إنشاء قائمة رتب بالأزرار"
+  },
+  "rolemenu.create.title": {
+    "name": "العنوان",
+    "description": "عنوان التضمين"
+  },
+  "rolemenu.create.description": {
+    "name": "الوصف",
+    "description": "وصف التضمين"
+  },
+  "rolemenu.create.role1": {
+    "name": "الرتبة_1",
+    "description": "الرتبة الأولى"
+  },
+  "rolemenu.create.role2": {
+    "name": "الرتبة_2",
+    "description": "الرتبة الثانية"
+  },
+  "rolemenu.create.role3": {
+    "name": "الرتبة_3",
+    "description": "الرتبة الثالثة"
+  },
+  "rolemenu.create.role4": {
+    "name": "الرتبة_4",
+    "description": "الرتبة الرابعة"
+  },
+  "rolemenu.create.role5": {
+    "name": "الرتبة_5",
+    "description": "الرتبة الخامسة"
+  },
+  "rolemenu.create.channel": {
+    "name": "القناة",
+    "description": "القناة؛ افتراضيًا هنا"
+  },
+  "rolemenu.add": {
+    "name": "إضافة",
+    "description": "إضافة زر رتبة إلى قائمة موجودة"
+  },
+  "rolemenu.add.message_id": {
+    "name": "معرف_الرسالة",
+    "description": "معرف رسالة القائمة"
+  },
+  "rolemenu.add.role": {
+    "name": "الرتبة",
+    "description": "الرتبة"
+  },
+  "rolemenu.add.label": {
+    "name": "التسمية",
+    "description": "تسمية الزر"
+  },
+  "rolemenu.add.style": {
+    "name": "النمط",
+    "description": "نمط الزر"
+  },
+  "rolemenu.remove": {
+    "name": "إزالة",
+    "description": "إزالة زر رتبة"
+  },
+  "rolemenu.remove.message_id": {
+    "name": "معرف_الرسالة",
+    "description": "معرف رسالة القائمة"
+  },
+  "rolemenu.remove.role": {
+    "name": "الرتبة",
+    "description": "الرتبة"
+  },
+  "rolemenu.list": {
+    "name": "عرض",
+    "description": "عرض قوائم الرتب"
+  },
+  "rolemenu.delete": {
+    "name": "حذف",
+    "description": "حذف كل الأزرار في قائمة"
+  },
+  "rolemenu.delete.message_id": {
+    "name": "معرف_الرسالة",
+    "description": "معرف رسالة القائمة"
+  },
+  "reactionrole": {
+    "name": "رتب_التفاعل",
+    "description": "إدارة رتب التفاعل"
+  },
+  "reactionrole.add": {
+    "name": "إضافة",
+    "description": "إضافة رتبة تفاعل إلى رسالة"
+  },
+  "reactionrole.add.message_id": {
+    "name": "معرف_الرسالة",
+    "description": "معرف الرسالة"
+  },
+  "reactionrole.add.emoji": {
+    "name": "الإيموجي",
+    "description": "الإيموجي"
+  },
+  "reactionrole.add.role": {
+    "name": "الرتبة",
+    "description": "الرتبة"
+  },
+  "reactionrole.remove": {
+    "name": "إزالة",
+    "description": "إزالة رتبة تفاعل"
+  },
+  "reactionrole.remove.message_id": {
+    "name": "معرف_الرسالة",
+    "description": "معرف الرسالة"
+  },
+  "reactionrole.remove.emoji": {
+    "name": "الإيموجي",
+    "description": "الإيموجي"
+  },
+  "reactionrole.remove.role": {
+    "name": "الرتبة",
+    "description": "الرتبة"
+  },
+  "reactionrole.list": {
+    "name": "عرض",
+    "description": "عرض رتب التفاعل"
+  },
+  "reactionrole.clear": {
+    "name": "مسح",
+    "description": "حذف كل رتب التفاعل على رسالة"
+  },
+  "reactionrole.clear.message_id": {
+    "name": "معرف_الرسالة",
+    "description": "معرف الرسالة"
+  },
+  "schedule": {
+    "name": "الجدولة",
+    "description": "جدولة الرسائل المتكررة"
+  },
+  "schedule.add": {
+    "name": "إضافة",
+    "description": "إنشاء رسالة مجدولة"
+  },
+  "schedule.add.name": {
+    "name": "الاسم",
+    "description": "اسم المهمة"
+  },
+  "schedule.add.channel": {
+    "name": "القناة",
+    "description": "القناة المستهدفة"
+  },
+  "schedule.add.message": {
+    "name": "الرسالة",
+    "description": "الرسالة المراد إرسالها"
+  },
+  "schedule.add.recurrence": {
+    "name": "التكرار",
+    "description": "كم مرة"
+  },
+  "schedule.add.time": {
+    "name": "الوقت",
+    "description": "HH:MM لليومي أو الأسبوعي أو الشهري"
+  },
+  "schedule.add.day": {
+    "name": "اليوم",
+    "description": "يوم الأسبوع 0–6 (الأحد–السبت) أو يوم الشهر 1–31"
+  },
+  "schedule.add.cron": {
+    "name": "كرون",
+    "description": "تعبير كرون عندما يكون التكرار=cron"
+  },
+  "schedule.add.when": {
+    "name": "متى",
+    "description": "مرة واحدة: YYYY-MM-DD HH:MM (UTC) أو ISO"
+  },
+  "schedule.add.timezone": {
+    "name": "المنطقة_الزمنية",
+    "description": "منطقة IANA؛ افتراضيًا إعداد السيرفر"
+  },
+  "schedule.list": {
+    "name": "عرض",
+    "description": "عرض المهام المجدولة"
+  },
+  "schedule.pause": {
+    "name": "إيقاف_مؤقت",
+    "description": "إيقاف مهمة مؤقتًا"
+  },
+  "schedule.pause.id": {
+    "name": "المعرف",
+    "description": "معرف المهمة"
+  },
+  "schedule.resume": {
+    "name": "متابعة",
+    "description": "متابعة مهمة"
+  },
+  "schedule.resume.id": {
+    "name": "المعرف",
+    "description": "معرف المهمة"
+  },
+  "schedule.run": {
+    "name": "تشغيل",
+    "description": "تشغيل مهمة الآن"
+  },
+  "schedule.run.id": {
+    "name": "المعرف",
+    "description": "معرف المهمة"
+  },
+  "schedule.remove": {
+    "name": "إزالة",
+    "description": "حذف مهمة"
+  },
+  "schedule.remove.id": {
+    "name": "المعرف",
+    "description": "معرف المهمة"
+  },
+  "schedule.remove.confirm": {
+    "name": "تأكيد",
+    "description": "نعم، احذفها"
+  },
+  "security": {
+    "name": "الأمان",
+    "description": "ضبط الحماية من التخريب وأمان الحسابات"
+  },
+  "security.status": {
+    "name": "الحالة",
+    "description": "عرض إعدادات الأمان"
+  },
+  "security.antinuke": {
+    "name": "مكافحة_التخريب",
+    "description": "ضبط الحماية من الإجراءات الجماعية"
+  },
+  "security.antinuke.enabled": {
+    "name": "مفعّل",
+    "description": "مفعّل"
+  },
+  "security.antinuke.threshold": {
+    "name": "العتبة",
+    "description": "الإجراءات قبل التفعيل"
+  },
+  "security.antinuke.window_seconds": {
+    "name": "نافذة_الثواني",
+    "description": "النافذة بالثواني"
+  },
+  "security.antinuke.action": {
+    "name": "العقوبة",
+    "description": "العقوبة"
+  },
+  "security.antibot": {
+    "name": "مكافحة_البوتات",
+    "description": "طرد البوتات غير المعتمدة"
+  },
+  "security.antibot.enabled": {
+    "name": "مفعّل",
+    "description": "مفعّل"
+  },
+  "security.accountage": {
+    "name": "عمر_الحساب",
+    "description": "التصرف مع الحسابات الجديدة جدًا"
+  },
+  "security.accountage.days": {
+    "name": "الأيام",
+    "description": "الحد الأدنى للعمر بالأيام؛ 0 يعطله"
+  },
+  "security.accountage.action": {
+    "name": "الإجراء",
+    "description": "الإجراء"
+  },
+  "security.whitelist": {
+    "name": "القائمة_البيضاء",
+    "description": "استثناء مستخدم أو رتبة من مكافحة التخريب"
+  },
+  "security.whitelist.action": {
+    "name": "الإجراء",
+    "description": "إضافة أو إزالة"
+  },
+  "security.whitelist.user": {
+    "name": "المستخدم",
+    "description": "المستخدم"
+  },
+  "security.whitelist.role": {
+    "name": "الرتبة",
+    "description": "الرتبة"
+  },
+  "security.restore": {
+    "name": "الاستعادة",
+    "description": "استعادة القنوات والرتب المحذوفة من اللقطات"
+  },
+  "security.restore.enabled": {
+    "name": "مفعّل",
+    "description": "مفعّل"
+  },
+  "security.snapshot": {
+    "name": "لقطة",
+    "description": "حفظ لقطة للقنوات والرتب الآن"
+  },
+  "security.logchannel": {
+    "name": "قناة_السجلات",
+    "description": "تعيين قناة سجلات الأمان"
+  },
+  "security.logchannel.channel": {
+    "name": "القناة",
+    "description": "القناة؛ اتركها فارغة للمسح"
+  },
+  "security.lockdown": {
+    "name": "إغلاق_السيرفر",
+    "description": "قفل أو فتح كل القنوات النصية"
+  },
+  "security.lockdown.enabled": {
+    "name": "مفعّل",
+    "description": "الإغلاق مفعّل"
+  },
+  "security.lockdown.reason": {
+    "name": "السبب",
+    "description": "السبب"
+  },
+  "starboard": {
+    "name": "اللوحة_المميزة",
+    "description": "ضبط اللوحة المميزة"
+  },
+  "starboard.status": {
+    "name": "الحالة",
+    "description": "عرض إعدادات اللوحة"
+  },
+  "starboard.channel": {
+    "name": "القناة",
+    "description": "تعيين قناة اللوحة"
+  },
+  "starboard.channel.channel": {
+    "name": "القناة",
+    "description": "القناة؛ اتركها فارغة للمسح"
+  },
+  "starboard.threshold": {
+    "name": "العتبة",
+    "description": "عدد النجوم المطلوب"
+  },
+  "starboard.threshold.count": {
+    "name": "العدد",
+    "description": "من 1 إلى 50"
+  },
+  "starboard.emoji": {
+    "name": "الإيموجي",
+    "description": "إيموجي التفاعل"
+  },
+  "starboard.emoji.emoji": {
+    "name": "الإيموجي",
+    "description": "الإيموجي"
+  },
+  "starboard.toggle": {
+    "name": "تبديل",
+    "description": "تفعيل أو تعطيل اللوحة"
+  },
+  "starboard.toggle.enabled": {
+    "name": "مفعّل",
+    "description": "مفعّل"
+  },
+  "starboard.selfstar": {
+    "name": "نجمة_ذاتية",
+    "description": "السماح للمؤلفين بتفضيل رسائلهم"
+  },
+  "starboard.selfstar.enabled": {
+    "name": "مفعّل",
+    "description": "مفعّل"
+  },
+  "suggest": {
+    "name": "اقترح",
+    "description": "إرسال اقتراح"
+  },
+  "suggest.content": {
+    "name": "المحتوى",
+    "description": "اقتراحك"
+  },
+  "suggestions": {
+    "name": "الاقتراحات",
+    "description": "إدارة الاقتراحات"
+  },
+  "suggestions.channel": {
+    "name": "القناة",
+    "description": "تعيين قناة الاقتراحات"
+  },
+  "suggestions.channel.channel": {
+    "name": "القناة",
+    "description": "القناة؛ اتركها فارغة للمسح"
+  },
+  "suggestions.log": {
+    "name": "السجل",
+    "description": "تعيين قناة سجل قرارات الاقتراحات"
+  },
+  "suggestions.log.channel": {
+    "name": "القناة",
+    "description": "القناة؛ اتركها فارغة للمسح"
+  },
+  "suggestions.list": {
+    "name": "عرض",
+    "description": "عرض الاقتراحات"
+  },
+  "suggestions.list.status": {
+    "name": "الحالة",
+    "description": "تصفية حسب الحالة"
+  },
+  "suggestions.approve": {
+    "name": "موافقة",
+    "description": "الموافقة على اقتراح"
+  },
+  "suggestions.approve.id": {
+    "name": "المعرف",
+    "description": "معرف الاقتراح"
+  },
+  "suggestions.approve.note": {
+    "name": "الملاحظة",
+    "description": "ملاحظة اختيارية"
+  },
+  "suggestions.deny": {
+    "name": "رفض",
+    "description": "رفض اقتراح"
+  },
+  "suggestions.deny.id": {
+    "name": "المعرف",
+    "description": "معرف الاقتراح"
+  },
+  "suggestions.deny.note": {
+    "name": "الملاحظة",
+    "description": "ملاحظة اختيارية"
+  },
+  "voice": {
+    "name": "الصوتي",
+    "description": "التحكم في قناتك الصوتية المؤقتة"
+  },
+  "voice.name": {
+    "name": "الاسم",
+    "description": "تعيين اسم القناة"
+  },
+  "voice.name.name": {
+    "name": "الاسم",
+    "description": "الاسم الجديد"
+  },
+  "voice.limit": {
+    "name": "الحد",
+    "description": "تعيين حد الأعضاء"
+  },
+  "voice.limit.limit": {
+    "name": "الحد",
+    "description": "0 يعني بلا حد"
+  },
+  "voice.lock": {
+    "name": "قفل",
+    "description": "قفل قناتك"
+  },
+  "voice.unlock": {
+    "name": "فتح",
+    "description": "فتح قناتك"
+  },
+  "voice.permit": {
+    "name": "سماح",
+    "description": "السماح لعضو بالدخول"
+  },
+  "voice.permit.user": {
+    "name": "العضو",
+    "description": "العضو"
+  },
+  "voice.reject": {
+    "name": "منع",
+    "description": "منع عضو من الدخول"
+  },
+  "voice.reject.user": {
+    "name": "العضو",
+    "description": "العضو"
+  },
+  "voice.claim": {
+    "name": "استلام",
+    "description": "استلام قناة مهجورة"
+  },
+  "voice.transfer": {
+    "name": "نقل",
+    "description": "نقل ملكية القناة"
+  },
+  "voice.transfer.user": {
+    "name": "العضو",
+    "description": "العضو"
+  },
+  "voice.delete": {
+    "name": "حذف",
+    "description": "حذف قناتك"
+  },
+  "voice.delete.confirm": {
+    "name": "تأكيد",
+    "description": "نعم، احذفها"
+  },
+  "voice.info": {
+    "name": "معلومات",
+    "description": "عرض معلومات قناتك"
+  },
+  "ticket": {
+    "name": "التذاكر",
+    "description": "ضبط تذاكر الدعم وإدارتها"
+  },
+  "ticket.setup": {
+    "name": "إعداد",
+    "description": "ضبط نظام التذاكر"
+  },
+  "ticket.setup.category": {
+    "name": "الفئة",
+    "description": "فئة قنوات التذاكر"
+  },
+  "ticket.setup.panel": {
+    "name": "اللوحة",
+    "description": "تعيين قناة لوحة التذاكر"
+  },
+  "ticket.setup.transcript": {
+    "name": "السجل",
+    "description": "تعيين قناة نصوص التذاكر"
+  },
+  "ticket.panel": {
+    "name": "لوحة",
+    "description": "إرسال لوحة التذاكر"
+  },
+  "ticket.close": {
+    "name": "إغلاق",
+    "description": "إغلاق هذه التذكرة"
+  },
+  "ticket.claim": {
+    "name": "استلام",
+    "description": "استلام هذه التذكرة"
+  },
+  "ticket.staff": {
+    "name": "الفريق",
+    "description": "إدارة أعضاء فريق الدعم"
+  },
+  "ticket.staff.action": {
+    "name": "الإجراء",
+    "description": "إضافة أو إزالة"
+  },
+  "ticket.staff.role": {
+    "name": "الرتبة",
+    "description": "رتبة الفريق"
+  },
+  "ticket.add": {
+    "name": "إضافة",
+    "description": "إضافة عضو إلى التذكرة"
+  },
+  "ticket.add.user": {
+    "name": "المستخدم",
+    "description": "المستخدم"
+  },
+  "ticket.remove": {
+    "name": "إزالة",
+    "description": "إزالة عضو من التذكرة"
+  },
+  "ticket.remove.user": {
+    "name": "المستخدم",
+    "description": "المستخدم"
+  },
+  "ticket.list": {
+    "name": "عرض",
+    "description": "عرض التذاكر المفتوحة"
+  },
+  "serverinfo": {
+    "name": "معلومات_السيرفر",
+    "description": "عرض معلومات السيرفر"
+  },
+  "userinfo": {
+    "name": "معلومات_العضو",
+    "description": "عرض معلومات عضو"
+  },
+  "userinfo.user": {
+    "name": "العضو",
+    "description": "العضو"
+  },
+  "avatar": {
+    "name": "الصورة_الرمزية",
+    "description": "عرض صورة عضو الرمزية"
+  },
+  "avatar.user": {
+    "name": "العضو",
+    "description": "العضو"
+  },
+  "avatar.size": {
+    "name": "الحجم",
+    "description": "حجم الصورة بالبكسل"
+  },
+  "banner": {
+    "name": "الغلاف",
+    "description": "عرض غلاف ملف عضو"
+  },
+  "banner.user": {
+    "name": "العضو",
+    "description": "العضو"
+  },
+  "roleinfo": {
+    "name": "معلومات_الرتبة",
+    "description": "عرض معلومات رتبة"
+  },
+  "roleinfo.role": {
+    "name": "الرتبة",
+    "description": "الرتبة"
+  },
+  "channelinfo": {
+    "name": "معلومات_القناة",
+    "description": "عرض معلومات قناة"
+  },
+  "channelinfo.channel": {
+    "name": "القناة",
+    "description": "القناة"
+  },
+  "ping": {
+    "name": "بينغ",
+    "description": "عرض زمن استجابة البوت"
+  },
+  "verify": {
+    "name": "التحقق",
+    "description": "ضبط بوابة التحقق"
+  },
+  "verify.setup": {
+    "name": "إعداد",
+    "description": "ضبط بوابة التحقق"
+  },
+  "verify.setup.verified_role": {
+    "name": "رتبة_الموثّقين",
+    "description": "الرتبة بعد التحقق"
+  },
+  "verify.setup.unverified_role": {
+    "name": "رتبة_غير_الموثّقين",
+    "description": "الرتبة قبل التحقق"
+  },
+  "verify.setup.panel_channel": {
+    "name": "قناة_اللوحة",
+    "description": "القناة التي تُرسل إليها لوحة التحقق"
+  },
+  "verify.panel": {
+    "name": "لوحة",
+    "description": "إرسال لوحة التحقق"
+  },
+  "verify.status": {
+    "name": "الحالة",
+    "description": "عرض إعدادات التحقق"
+  },
+  "verify.method": {
+    "name": "الطريقة",
+    "description": "اختيار طريقة التحقق"
+  },
+  "verify.method.method": {
+    "name": "الطريقة",
+    "description": "الطريقة"
+  },
+  "verify.reset": {
+    "name": "إعادة_تعيين",
+    "description": "إعادة تعيين تحقق عضو"
+  },
+  "verify.reset.user": {
+    "name": "المستخدم",
+    "description": "المستخدم"
+  },
+  "verify.toggle": {
+    "name": "تبديل",
+    "description": "تفعيل أو تعطيل بوابة التحقق"
+  },
+  "verify.toggle.enabled": {
+    "name": "مفعّل",
+    "description": "مفعّل"
+  },
+  "welcome": {
+    "name": "الترحيب",
+    "description": "ضبط رسائل الترحيب والوداع والترقية"
+  },
+  "welcome.status": {
+    "name": "الحالة",
+    "description": "عرض إعدادات الترحيب"
+  },
+  "welcome.channel": {
+    "name": "القناة",
+    "description": "تعيين قناة للترحيب أو الوداع أو الترقية"
+  },
+  "welcome.channel.kind": {
+    "name": "النوع",
+    "description": "أي نوع من الرسائل"
+  },
+  "welcome.channel.channel": {
+    "name": "القناة",
+    "description": "القناة؛ اتركها فارغة للمسح"
+  },
+  "welcome.message": {
+    "name": "الرسالة",
+    "description": "تعيين قالب رسالة"
+  },
+  "welcome.message.kind": {
+    "name": "النوع",
+    "description": "أي نوع من الرسائل"
+  },
+  "welcome.message.template": {
+    "name": "القالب",
+    "description": "القالب؛ استخدم {user} و {server}"
+  },
+  "welcome.card": {
+    "name": "البطاقة",
+    "description": "اختيار قالب بطاقة"
+  },
+  "welcome.card.template": {
+    "name": "القالب",
+    "description": "اسم القالب"
+  },
+  "welcome.autorole": {
+    "name": "الرتبة_التلقائية",
+    "description": "إدارة الرتب التلقائية للأعضاء الجدد"
+  },
+  "welcome.autorole.action": {
+    "name": "الإجراء",
+    "description": "إضافة أو إزالة أو عرض"
+  },
+  "welcome.autorole.role": {
+    "name": "الرتبة",
+    "description": "الرتبة"
+  },
+  "welcome.toggle": {
+    "name": "تبديل",
+    "description": "تفعيل أو تعطيل الترحيب"
+  },
+  "welcome.toggle.enabled": {
+    "name": "مفعّل",
+    "description": "مفعّل"
+  },
+  "welcome.dm": {
+    "name": "الرسائل_الخاصة",
+    "description": "إرسال ترحيب في رسالة خاصة"
+  },
+  "welcome.dm.enabled": {
+    "name": "مفعّل",
+    "description": "مفعّل"
+  },
+  "welcome.deleteafter": {
+    "name": "الحذف_بعد",
+    "description": "حذف رسالة الترحيب بعد مدة"
+  },
+  "welcome.deleteafter.seconds": {
+    "name": "الثواني",
+    "description": "0 للاحتفاظ بها"
+  },
+  "welcome.test": {
+    "name": "اختبار",
+    "description": "إرسال بطاقة ترحيب تجريبية"
+  },
+  "welcome.variables": {
+    "name": "المتغيرات",
+    "description": "عرض المتغيرات المتاحة"
+  }
+}

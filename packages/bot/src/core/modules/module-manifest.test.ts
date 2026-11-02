@@ -67,7 +67,7 @@ test('slash command names are unique and fit the Discord budget', () => {
       assert.ok(name, `${file} has a command without data.name`);
       assert.ok(!names.has(name), `duplicate command /${name} in ${file} and ${names.get(name)}`);
       names.set(name, file);
-      const payload = JSON.stringify(command.data.toJSON());
+      const payload = JSON.stringify(command.toJSON());
       assert.ok(Buffer.byteLength(payload, 'utf8') < 8_000, `/${name} payload is too large`);
     }
   }

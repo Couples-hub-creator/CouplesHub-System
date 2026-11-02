@@ -5,6 +5,7 @@ import {
   RESTPostAPIChatInputApplicationCommandsJSONBody,
   SlashCommandOptionsOnlyBuilder,
 } from 'discord.js';
+import { localizeCommandPayload, type LocalizableCommandPayload } from '../core/commandLocalization';
 
 export type CommandCategory =
   | 'music'
@@ -54,6 +55,7 @@ export abstract class Command {
   public autocomplete?(interaction: AutocompleteInteraction): Promise<void>;
 
   public toJSON(): RESTPostAPIChatInputApplicationCommandsJSONBody {
-    return this.data.toJSON();
+    const payload = this.data.toJSON() as unknown as LocalizableCommandPayload;
+    return localizeCommandPayload(payload) as unknown as RESTPostAPIChatInputApplicationCommandsJSONBody;
   }
 }

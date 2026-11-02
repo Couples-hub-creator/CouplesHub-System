@@ -1,0 +1,1810 @@
+{
+  "ban": {
+    "name": "bannir",
+    "description": "Bannir un membre du serveur"
+  },
+  "ban.user": {
+    "name": "membre",
+    "description": "Le membre à bannir"
+  },
+  "ban.reason": {
+    "name": "raison",
+    "description": "La raison du bannissement"
+  },
+  "ban.days": {
+    "name": "jours",
+    "description": "Supprimer les messages de ce nombre de jours"
+  },
+  "kick": {
+    "name": "expulser",
+    "description": "Expulser un membre du serveur"
+  },
+  "kick.user": {
+    "name": "membre",
+    "description": "Le membre à expulser"
+  },
+  "kick.reason": {
+    "name": "raison",
+    "description": "La raison de l'expulsion"
+  },
+  "lock": {
+    "name": "verrouiller",
+    "description": "Empêcher @everyone d'envoyer des messages dans ce salon"
+  },
+  "purge": {
+    "name": "purger",
+    "description": "Supprimer les messages récents de ce salon"
+  },
+  "purge.amount": {
+    "name": "nombre",
+    "description": "Nombre de messages à supprimer (1–100)"
+  },
+  "slowmode": {
+    "name": "mode_lent",
+    "description": "Régler le délai du mode lent de ce salon"
+  },
+  "slowmode.seconds": {
+    "name": "secondes",
+    "description": "Délai de 0 à 21600 secondes"
+  },
+  "timeout": {
+    "name": "exclure",
+    "description": "Empêcher temporairement un membre d'interagir"
+  },
+  "timeout.user": {
+    "name": "membre",
+    "description": "Membre à exclure"
+  },
+  "timeout.minutes": {
+    "name": "minutes",
+    "description": "Durée de 1 à 40320 minutes"
+  },
+  "timeout.reason": {
+    "name": "raison",
+    "description": "Raison de cette exclusion"
+  },
+  "unban": {
+    "name": "débannir",
+    "description": "Débannir un utilisateur Discord par identifiant"
+  },
+  "unban.user_id": {
+    "name": "identifiant",
+    "description": "Identifiant de l'utilisateur Discord"
+  },
+  "unban.reason": {
+    "name": "raison",
+    "description": "Raison de la levée du bannissement"
+  },
+  "unlock": {
+    "name": "déverrouiller",
+    "description": "Rétablir l'autorisation d'écrire de @everyone dans ce salon"
+  },
+  "warn": {
+    "name": "avertir",
+    "description": "Enregistrer un avertissement pour un membre"
+  },
+  "warn.user": {
+    "name": "membre",
+    "description": "Membre à avertir"
+  },
+  "warn.reason": {
+    "name": "raison",
+    "description": "Raison de l'avertissement"
+  },
+  "warnings": {
+    "name": "avertissements",
+    "description": "Voir les avertissements récents d'un membre"
+  },
+  "warnings.user": {
+    "name": "membre",
+    "description": "Membre à consulter"
+  },
+  "loop": {
+    "name": "boucle",
+    "description": "Définir le mode de lecture en boucle"
+  },
+  "loop.mode": {
+    "name": "mode",
+    "description": "Mode de boucle"
+  },
+  "nowplaying": {
+    "name": "en_lecture",
+    "description": "Voir la piste en cours avec les contrôles"
+  },
+  "pause": {
+    "name": "pause",
+    "description": "Mettre la piste en cours en pause"
+  },
+  "play": {
+    "name": "jouer",
+    "description": "Jouer une piste ou l'ajouter à la file"
+  },
+  "play.query": {
+    "name": "recherche",
+    "description": "Nom ou URL de la piste"
+  },
+  "queue": {
+    "name": "file",
+    "description": "Voir la file de lecture actuelle"
+  },
+  "resume": {
+    "name": "reprendre",
+    "description": "Reprendre la piste en pause"
+  },
+  "seek": {
+    "name": "avancer",
+    "description": "Aller à une position précise de la piste en cours"
+  },
+  "seek.seconds": {
+    "name": "secondes",
+    "description": "Position en secondes"
+  },
+  "skip": {
+    "name": "passer",
+    "description": "Passer la piste en cours"
+  },
+  "stop": {
+    "name": "arrêter",
+    "description": "Arrêter la musique et vider la file"
+  },
+  "volume": {
+    "name": "volume",
+    "description": "Régler le volume"
+  },
+  "volume.level": {
+    "name": "niveau",
+    "description": "Niveau du volume (0-100)"
+  },
+  "help": {
+    "name": "aide",
+    "description": "Voir toutes les commandes disponibles"
+  },
+  "help.category": {
+    "name": "catégorie",
+    "description": "Filtrer par catégorie"
+  },
+  "ai": {
+    "name": "ia",
+    "description": "Discussion et configuration de l'IA"
+  },
+  "ai.ask": {
+    "name": "demander",
+    "description": "Poser une question à l'IA"
+  },
+  "ai.ask.prompt": {
+    "name": "question",
+    "description": "Votre question"
+  },
+  "ai.status": {
+    "name": "statut",
+    "description": "Afficher la configuration et le quota de l'IA"
+  },
+  "ai.channel": {
+    "name": "salon",
+    "description": "Ajouter, retirer ou vider les salons automatiques de l'IA"
+  },
+  "ai.channel.action": {
+    "name": "action",
+    "description": "Action"
+  },
+  "ai.channel.channel": {
+    "name": "salon",
+    "description": "Salon"
+  },
+  "ai.settings": {
+    "name": "paramètres",
+    "description": "Modifier le comportement de l'IA"
+  },
+  "ai.settings.trigger": {
+    "name": "déclencheur",
+    "description": "Quand le bot répond"
+  },
+  "ai.settings.personality": {
+    "name": "personnalité",
+    "description": "Ton"
+  },
+  "ai.settings.reply_length": {
+    "name": "longueur",
+    "description": "Longueur des réponses"
+  },
+  "ai.settings.creativity": {
+    "name": "créativité",
+    "description": "0–100"
+  },
+  "ai.settings.memory": {
+    "name": "mémoire",
+    "description": "Mémoriser les récents messages du salon"
+  },
+  "ai.settings.memory_depth": {
+    "name": "profondeur",
+    "description": "Nombre de messages mémorisés"
+  },
+  "ai.settings.rate_limit": {
+    "name": "limite",
+    "description": "Requêtes par membre et par heure"
+  },
+  "ai.settings.monthly_quota": {
+    "name": "quota_mensuel",
+    "description": "Requêtes mensuelles pour ce serveur"
+  },
+  "ai.settings.enabled": {
+    "name": "activé",
+    "description": "Activer ou désactiver la discussion IA"
+  },
+  "ai.prompt": {
+    "name": "invite",
+    "description": "Définir ou effacer l'invite système supplémentaire"
+  },
+  "ai.prompt.text": {
+    "name": "texte",
+    "description": "Instruction ; omettre pour effacer"
+  },
+  "ai.blocked": {
+    "name": "bloqués",
+    "description": "Gérer les sujets bloqués"
+  },
+  "ai.blocked.action": {
+    "name": "action",
+    "description": "Action"
+  },
+  "ai.blocked.topic": {
+    "name": "sujet",
+    "description": "Sujet"
+  },
+  "ai.reset": {
+    "name": "réinitialiser",
+    "description": "Effacer la mémoire de conversation de l'IA pour ce salon"
+  },
+  "automod": {
+    "name": "automod",
+    "description": "Configurer les règles de modération automatique"
+  },
+  "automod.status": {
+    "name": "statut",
+    "description": "Afficher toutes les règles"
+  },
+  "automod.toggle": {
+    "name": "basculer",
+    "description": "Activer ou désactiver une règle"
+  },
+  "automod.toggle.rule": {
+    "name": "règle",
+    "description": "Règle"
+  },
+  "automod.toggle.enabled": {
+    "name": "activé",
+    "description": "Activé"
+  },
+  "automod.punishment": {
+    "name": "sanction",
+    "description": "Choisir ce qui se passe quand une règle se déclenche"
+  },
+  "automod.punishment.rule": {
+    "name": "règle",
+    "description": "Règle"
+  },
+  "automod.punishment.action": {
+    "name": "sanction",
+    "description": "Sanction"
+  },
+  "automod.threshold": {
+    "name": "seuil",
+    "description": "Modifier le seuil et la fenêtre d'une règle"
+  },
+  "automod.threshold.rule": {
+    "name": "règle",
+    "description": "Règle"
+  },
+  "automod.threshold.threshold": {
+    "name": "seuil",
+    "description": "Nombre de déclenchements"
+  },
+  "automod.threshold.window_seconds": {
+    "name": "fenêtre",
+    "description": "Fenêtre en secondes"
+  },
+  "automod.badwords": {
+    "name": "mots_interdits",
+    "description": "Gérer les mots bloqués"
+  },
+  "automod.badwords.action": {
+    "name": "action",
+    "description": "Ajouter, retirer ou lister"
+  },
+  "automod.badwords.word": {
+    "name": "mot",
+    "description": "Mot ou expression"
+  },
+  "automod.whitelist": {
+    "name": "liste_blanche",
+    "description": "Exempter un salon ou un rôle de l'AutoMod"
+  },
+  "automod.whitelist.action": {
+    "name": "action",
+    "description": "Ajouter ou retirer"
+  },
+  "automod.whitelist.channel": {
+    "name": "salon",
+    "description": "Salon"
+  },
+  "automod.whitelist.role": {
+    "name": "rôle",
+    "description": "Rôle"
+  },
+  "automod.allowed": {
+    "name": "domaines_autorisés",
+    "description": "Gérer les domaines de liens autorisés"
+  },
+  "automod.allowed.action": {
+    "name": "action",
+    "description": "Ajouter, retirer ou lister"
+  },
+  "automod.allowed.domain": {
+    "name": "domaine",
+    "description": "example.com"
+  },
+  "automod.raid": {
+    "name": "raid",
+    "description": "Configurer la protection contre les raids"
+  },
+  "automod.raid.enabled": {
+    "name": "activé",
+    "description": "Activé"
+  },
+  "automod.raid.threshold": {
+    "name": "seuil",
+    "description": "Connexions nécessaires"
+  },
+  "automod.raid.window_seconds": {
+    "name": "fenêtre",
+    "description": "Fenêtre en secondes"
+  },
+  "automod.raid.action": {
+    "name": "action",
+    "description": "Action"
+  },
+  "automod.ignoreadmins": {
+    "name": "ignorer_admins",
+    "description": "Ignorer l'AutoMod pour les membres ayant Gérer le serveur"
+  },
+  "automod.ignoreadmins.enabled": {
+    "name": "activé",
+    "description": "Activé"
+  },
+  "birthday": {
+    "name": "anniversaire",
+    "description": "Gérer votre anniversaire"
+  },
+  "birthday.set": {
+    "name": "définir",
+    "description": "Enregistrer votre anniversaire"
+  },
+  "birthday.set.month": {
+    "name": "mois",
+    "description": "1–12"
+  },
+  "birthday.set.day": {
+    "name": "jour",
+    "description": "1–31"
+  },
+  "birthday.set.year": {
+    "name": "année",
+    "description": "Année de naissance (facultatif)"
+  },
+  "birthday.remove": {
+    "name": "supprimer",
+    "description": "Supprimer votre anniversaire"
+  },
+  "birthday.list": {
+    "name": "lister",
+    "description": "Afficher votre anniversaire enregistré"
+  },
+  "birthday.upcoming": {
+    "name": "à_venir",
+    "description": "Afficher les anniversaires à venir"
+  },
+  "birthdays": {
+    "name": "anniversaires",
+    "description": "Configurer les annonces d'anniversaire"
+  },
+  "birthdays.show": {
+    "name": "afficher",
+    "description": "Afficher la configuration des anniversaires"
+  },
+  "birthdays.channel": {
+    "name": "salon",
+    "description": "Définir le salon d'annonce"
+  },
+  "birthdays.channel.channel": {
+    "name": "salon",
+    "description": "Salon ; omettre pour effacer"
+  },
+  "birthdays.message": {
+    "name": "message",
+    "description": "Définir le message d'annonce"
+  },
+  "birthdays.message.message": {
+    "name": "message",
+    "description": "Utilisez {user} et {server}"
+  },
+  "birthdays.timezone": {
+    "name": "fuseau",
+    "description": "Définir le fuseau horaire des annonces"
+  },
+  "birthdays.timezone.timezone": {
+    "name": "fuseau",
+    "description": "Fuseau IANA, ex. Europe/Paris"
+  },
+  "birthdays.time": {
+    "name": "heure",
+    "description": "Définir l'heure d'annonce quotidienne"
+  },
+  "birthdays.time.hhmm": {
+    "name": "heure",
+    "description": "Heure au format 24 h, ex. 09:00"
+  },
+  "customcommand": {
+    "name": "commande_perso",
+    "description": "Gérer les commandes personnalisées à préfixe"
+  },
+  "customcommand.add": {
+    "name": "ajouter",
+    "description": "Créer ou remplacer une commande personnalisée"
+  },
+  "customcommand.add.name": {
+    "name": "nom",
+    "description": "Nom de la commande sans préfixe"
+  },
+  "customcommand.add.response": {
+    "name": "réponse",
+    "description": "Réponse ; utilisez {user}, {server}, {channel}, {membercount}"
+  },
+  "customcommand.remove": {
+    "name": "retirer",
+    "description": "Supprimer une commande personnalisée"
+  },
+  "customcommand.remove.name": {
+    "name": "nom",
+    "description": "Nom de la commande"
+  },
+  "customcommand.list": {
+    "name": "lister",
+    "description": "Lister les commandes personnalisées"
+  },
+  "customcommand.show": {
+    "name": "afficher",
+    "description": "Afficher la réponse d'une commande personnalisée"
+  },
+  "customcommand.show.name": {
+    "name": "nom",
+    "description": "Nom de la commande"
+  },
+  "afk": {
+    "name": "absence",
+    "description": "Définir un statut d'absence"
+  },
+  "afk.set": {
+    "name": "définir",
+    "description": "Définir votre statut d'absence"
+  },
+  "afk.set.message": {
+    "name": "message",
+    "description": "Pourquoi vous êtes absent"
+  },
+  "afk.clear": {
+    "name": "effacer",
+    "description": "Effacer votre statut d'absence"
+  },
+  "afk.list": {
+    "name": "lister",
+    "description": "Lister les membres absents"
+  },
+  "balance": {
+    "name": "solde",
+    "description": "Afficher le solde d'un membre"
+  },
+  "balance.user": {
+    "name": "membre",
+    "description": "Membre"
+  },
+  "daily": {
+    "name": "quotidien",
+    "description": "Récupérer votre récompense quotidienne"
+  },
+  "work": {
+    "name": "travailler",
+    "description": "Travailler pour gagner de la monnaie"
+  },
+  "pay": {
+    "name": "payer",
+    "description": "Envoyer de la monnaie à un autre membre"
+  },
+  "pay.user": {
+    "name": "destinataire",
+    "description": "Destinataire"
+  },
+  "pay.amount": {
+    "name": "montant",
+    "description": "Montant"
+  },
+  "rob": {
+    "name": "voler",
+    "description": "Tenter de voler un autre membre"
+  },
+  "rob.user": {
+    "name": "cible",
+    "description": "Cible"
+  },
+  "economy": {
+    "name": "économie",
+    "description": "Configurer l'économie du serveur"
+  },
+  "economy.show": {
+    "name": "afficher",
+    "description": "Afficher la configuration de l'économie"
+  },
+  "economy.rates": {
+    "name": "taux",
+    "description": "Modifier les récompenses et les délais"
+  },
+  "economy.rates.daily": {
+    "name": "quotidien",
+    "description": "Récompense quotidienne"
+  },
+  "economy.rates.work_min": {
+    "name": "minimum",
+    "description": "Récompense minimale de travail"
+  },
+  "economy.rates.work_max": {
+    "name": "maximum",
+    "description": "Récompense maximale de travail"
+  },
+  "economy.rates.tax": {
+    "name": "taxe",
+    "description": "Taxe de transfert 0–0.5"
+  },
+  "economy.currency": {
+    "name": "monnaie",
+    "description": "Définir le nom de la monnaie"
+  },
+  "economy.currency.name": {
+    "name": "nom",
+    "description": "Nom"
+  },
+  "economy.give": {
+    "name": "donner",
+    "description": "Donner de la monnaie à un membre"
+  },
+  "economy.give.user": {
+    "name": "membre",
+    "description": "Membre"
+  },
+  "economy.give.amount": {
+    "name": "montant",
+    "description": "Montant"
+  },
+  "economy.reset": {
+    "name": "réinitialiser",
+    "description": "Réinitialiser tous les soldes de ce serveur"
+  },
+  "economy.reset.confirm": {
+    "name": "confirmer",
+    "description": "Oui, réinitialiser les soldes"
+  },
+  "giveaway": {
+    "name": "concours",
+    "description": "Créer et gérer des concours"
+  },
+  "giveaway.start": {
+    "name": "lancer",
+    "description": "Lancer un concours"
+  },
+  "giveaway.start.prize": {
+    "name": "lot",
+    "description": "Lot"
+  },
+  "giveaway.start.duration": {
+    "name": "durée",
+    "description": "ex. 30m, 2h, 3d"
+  },
+  "giveaway.start.winners": {
+    "name": "gagnants",
+    "description": "Nombre de gagnants"
+  },
+  "giveaway.start.required_role": {
+    "name": "rôle_requis",
+    "description": "Rôle requis pour participer"
+  },
+  "giveaway.end": {
+    "name": "terminer",
+    "description": "Terminer un concours maintenant"
+  },
+  "giveaway.end.id": {
+    "name": "identifiant",
+    "description": "Identifiant du concours"
+  },
+  "giveaway.reroll": {
+    "name": "retirage",
+    "description": "Choisir de nouveaux gagnants"
+  },
+  "giveaway.reroll.id": {
+    "name": "identifiant",
+    "description": "Identifiant du concours"
+  },
+  "giveaway.list": {
+    "name": "lister",
+    "description": "Lister les concours actifs"
+  },
+  "invites": {
+    "name": "invitations",
+    "description": "Voir les statistiques d'invitations"
+  },
+  "invites.show": {
+    "name": "afficher",
+    "description": "Afficher les statistiques d'invitations d'un membre"
+  },
+  "invites.show.user": {
+    "name": "membre",
+    "description": "Membre ; par défaut vous"
+  },
+  "invites.leaderboard": {
+    "name": "classement",
+    "description": "Afficher les meilleurs inviteurs"
+  },
+  "invites.refresh": {
+    "name": "actualiser",
+    "description": "Actualiser le cache des invitations"
+  },
+  "invites.config": {
+    "name": "configuration",
+    "description": "Afficher la configuration des invitations"
+  },
+  "rank": {
+    "name": "rang",
+    "description": "Afficher le niveau et l'XP d'un membre"
+  },
+  "rank.user": {
+    "name": "membre",
+    "description": "Membre à consulter"
+  },
+  "leaderboard": {
+    "name": "classement",
+    "description": "Afficher le classement XP du serveur"
+  },
+  "leaderboard.period": {
+    "name": "période",
+    "description": "Fenêtre temporelle"
+  },
+  "leaderboard.kind": {
+    "name": "type",
+    "description": "Source d'XP"
+  },
+  "level": {
+    "name": "niveaux",
+    "description": "Configurer le système de niveaux"
+  },
+  "level.show": {
+    "name": "afficher",
+    "description": "Afficher la configuration actuelle des niveaux"
+  },
+  "level.xp": {
+    "name": "xp",
+    "description": "Modifier les taux d'XP et les délais"
+  },
+  "level.xp.per_message": {
+    "name": "par_message",
+    "description": "XP par message"
+  },
+  "level.xp.per_voice_minute": {
+    "name": "par_minute_vocale",
+    "description": "XP par minute vocale"
+  },
+  "level.xp.cooldown": {
+    "name": "délai",
+    "description": "Délai entre messages en secondes"
+  },
+  "level.xp.multiplier": {
+    "name": "multiplicateur",
+    "description": "Multiplicateur d'XP global"
+  },
+  "level.rewards": {
+    "name": "récompenses",
+    "description": "Gérer les rôles de récompense"
+  },
+  "level.rewards.action": {
+    "name": "action",
+    "description": "Ajouter, retirer ou lister"
+  },
+  "level.rewards.role": {
+    "name": "rôle",
+    "description": "Rôle de récompense"
+  },
+  "level.rewards.level": {
+    "name": "niveau",
+    "description": "Niveau requis"
+  },
+  "level.announce": {
+    "name": "annonce",
+    "description": "Activer ou désactiver les annonces de niveau"
+  },
+  "level.announce.enabled": {
+    "name": "activé",
+    "description": "Activé"
+  },
+  "level.addxp": {
+    "name": "ajouter_xp",
+    "description": "Donner de l'XP à un membre"
+  },
+  "level.addxp.user": {
+    "name": "membre",
+    "description": "Membre"
+  },
+  "level.addxp.amount": {
+    "name": "montant",
+    "description": "Quantité d'XP"
+  },
+  "level.reset": {
+    "name": "réinitialiser",
+    "description": "Réinitialiser toute l'XP de ce serveur"
+  },
+  "level.reset.confirm": {
+    "name": "confirmer",
+    "description": "Oui, réinitialiser tous les membres"
+  },
+  "logs": {
+    "name": "journaux",
+    "description": "Configurer la journalisation d'audit Couples Hub"
+  },
+  "logs.channel": {
+    "name": "salon",
+    "description": "Définir ou effacer un salon de journaux"
+  },
+  "logs.channel.kind": {
+    "name": "type",
+    "description": "Quelle famille d'événements"
+  },
+  "logs.channel.channel": {
+    "name": "salon",
+    "description": "Salon de destination ; omettre pour effacer"
+  },
+  "logs.privacy": {
+    "name": "confidentialité",
+    "description": "Choisir si le contenu des messages est stocké"
+  },
+  "logs.privacy.enabled": {
+    "name": "activé",
+    "description": "Stocker le contenu des messages"
+  },
+  "logs.retention": {
+    "name": "conservation",
+    "description": "Nombre de jours de journaux à conserver"
+  },
+  "logs.retention.days": {
+    "name": "jours",
+    "description": "De 1 à 365"
+  },
+  "logs.status": {
+    "name": "statut",
+    "description": "Afficher la configuration actuelle des journaux"
+  },
+  "logs.test": {
+    "name": "test",
+    "description": "Envoyer une entrée de test au salon de modération"
+  },
+  "case": {
+    "name": "dossier",
+    "description": "Voir, annoter ou annuler des dossiers de modération"
+  },
+  "case.view": {
+    "name": "voir",
+    "description": "Afficher un dossier"
+  },
+  "case.view.number": {
+    "name": "numéro",
+    "description": "Numéro du dossier"
+  },
+  "case.list": {
+    "name": "lister",
+    "description": "Lister les dossiers récents"
+  },
+  "case.list.user": {
+    "name": "membre",
+    "description": "Filtrer par membre"
+  },
+  "case.list.type": {
+    "name": "type",
+    "description": "Filtrer par type"
+  },
+  "case.list.active": {
+    "name": "actifs",
+    "description": "Dossiers actifs uniquement"
+  },
+  "case.reason": {
+    "name": "raison",
+    "description": "Modifier la raison d'un dossier"
+  },
+  "case.reason.number": {
+    "name": "numéro",
+    "description": "Numéro du dossier"
+  },
+  "case.reason.reason": {
+    "name": "raison",
+    "description": "Nouvelle raison"
+  },
+  "case.note": {
+    "name": "note",
+    "description": "Définir une note interne sur un dossier"
+  },
+  "case.note.number": {
+    "name": "numéro",
+    "description": "Numéro du dossier"
+  },
+  "case.note.note": {
+    "name": "note",
+    "description": "Note"
+  },
+  "case.undo": {
+    "name": "annuler",
+    "description": "Inverser une sanction lorsque possible"
+  },
+  "case.undo.number": {
+    "name": "numéro",
+    "description": "Numéro du dossier"
+  },
+  "case.undo.confirm": {
+    "name": "confirmer",
+    "description": "Oui, annuler"
+  },
+  "case.delete": {
+    "name": "supprimer",
+    "description": "Supprimer un dossier de la liste"
+  },
+  "case.delete.number": {
+    "name": "numéro",
+    "description": "Numéro du dossier"
+  },
+  "case.delete.confirm": {
+    "name": "confirmer",
+    "description": "Oui, supprimer"
+  },
+  "moderation": {
+    "name": "modération",
+    "description": "Configurer le comportement de la modération"
+  },
+  "moderation.show": {
+    "name": "afficher",
+    "description": "Afficher la configuration de la modération"
+  },
+  "moderation.maxwarns": {
+    "name": "max_avertissements",
+    "description": "Avertissements avant un bannissement auto ; 0 désactive"
+  },
+  "moderation.maxwarns.count": {
+    "name": "nombre",
+    "description": "De 0 à 100"
+  },
+  "moderation.muteduration": {
+    "name": "durée_exclusion",
+    "description": "Durée d'exclusion par défaut"
+  },
+  "moderation.muteduration.minutes": {
+    "name": "minutes",
+    "description": "De 1 à 40320"
+  },
+  "moderation.warnexpiry": {
+    "name": "expiration",
+    "description": "Jours avant qu'un avertissement ne compte plus"
+  },
+  "moderation.warnexpiry.days": {
+    "name": "jours",
+    "description": "0 pour jamais"
+  },
+  "moderation.dm": {
+    "name": "mp",
+    "description": "Envoyer un message privé aux membres sanctionnés"
+  },
+  "moderation.dm.enabled": {
+    "name": "activé",
+    "description": "Activé"
+  },
+  "moderation.requirereason": {
+    "name": "raison_obligatoire",
+    "description": "Exiger une raison pour les commandes de modération"
+  },
+  "moderation.requirereason.enabled": {
+    "name": "activé",
+    "description": "Activé"
+  },
+  "moderation.appeal": {
+    "name": "recours",
+    "description": "Définir ou effacer l'URL de recours envoyée en MP"
+  },
+  "moderation.appeal.url": {
+    "name": "url",
+    "description": "https://… ; omettre pour effacer"
+  },
+  "radio": {
+    "name": "radio",
+    "description": "Jouer et gérer les stations de radio"
+  },
+  "radio.play": {
+    "name": "jouer",
+    "description": "Jouer une station de radio"
+  },
+  "radio.play.station": {
+    "name": "station",
+    "description": "Nom ou identifiant de la station"
+  },
+  "radio.list": {
+    "name": "lister",
+    "description": "Lister les stations de radio"
+  },
+  "radio.add": {
+    "name": "ajouter",
+    "description": "Ajouter une station personnalisée"
+  },
+  "radio.add.name": {
+    "name": "nom",
+    "description": "Nom de la station"
+  },
+  "radio.add.url": {
+    "name": "url",
+    "description": "URL du flux direct"
+  },
+  "radio.add.genre": {
+    "name": "genre",
+    "description": "Genre"
+  },
+  "radio.remove": {
+    "name": "retirer",
+    "description": "Supprimer une station personnalisée"
+  },
+  "radio.remove.station": {
+    "name": "station",
+    "description": "Nom ou identifiant de la station"
+  },
+  "radio.favorite": {
+    "name": "favori",
+    "description": "Basculer une station en favori"
+  },
+  "radio.favorite.station": {
+    "name": "station",
+    "description": "Nom ou identifiant de la station"
+  },
+  "radio.247": {
+    "name": "continu",
+    "description": "Garder la station actuelle en lecture 24/7"
+  },
+  "radio.247.enabled": {
+    "name": "activé",
+    "description": "Activé"
+  },
+  "poll": {
+    "name": "sondage",
+    "description": "Créer et gérer des sondages"
+  },
+  "poll.create": {
+    "name": "créer",
+    "description": "Créer un sondage"
+  },
+  "poll.create.question": {
+    "name": "question",
+    "description": "Question"
+  },
+  "poll.create.option1": {
+    "name": "option_1",
+    "description": "Option 1"
+  },
+  "poll.create.option2": {
+    "name": "option_2",
+    "description": "Option 2"
+  },
+  "poll.create.option3": {
+    "name": "option_3",
+    "description": "Option 3"
+  },
+  "poll.create.option4": {
+    "name": "option_4",
+    "description": "Option 4"
+  },
+  "poll.create.option5": {
+    "name": "option_5",
+    "description": "Option 5"
+  },
+  "poll.create.duration": {
+    "name": "durée",
+    "description": "ex. 30m, 2h, 1d ; omettre pour ne pas terminer"
+  },
+  "poll.create.multi": {
+    "name": "multiple",
+    "description": "Autoriser plusieurs choix"
+  },
+  "poll.end": {
+    "name": "terminer",
+    "description": "Terminer un sondage maintenant"
+  },
+  "poll.end.id": {
+    "name": "identifiant",
+    "description": "Identifiant du sondage"
+  },
+  "poll.list": {
+    "name": "lister",
+    "description": "Lister les sondages actifs"
+  },
+  "reminder": {
+    "name": "rappel",
+    "description": "Créer et gérer des rappels personnels"
+  },
+  "reminder.set": {
+    "name": "définir",
+    "description": "Définir un rappel"
+  },
+  "reminder.set.when": {
+    "name": "quand",
+    "description": "ex. 30m, 2h, 1d2h"
+  },
+  "reminder.set.text": {
+    "name": "texte",
+    "description": "Ce dont il faut vous rappeler"
+  },
+  "reminder.list": {
+    "name": "lister",
+    "description": "Lister vos rappels"
+  },
+  "reminder.cancel": {
+    "name": "annuler",
+    "description": "Annuler un de vos rappels"
+  },
+  "reminder.cancel.id": {
+    "name": "identifiant",
+    "description": "Identifiant du rappel"
+  },
+  "reminder.clear": {
+    "name": "vider",
+    "description": "Supprimer tous vos rappels"
+  },
+  "reminder.clear.confirm": {
+    "name": "confirmer",
+    "description": "Oui, les supprimer"
+  },
+  "rolemenu": {
+    "name": "menu_rôles",
+    "description": "Créer et gérer des menus de rôles à boutons"
+  },
+  "rolemenu.create": {
+    "name": "créer",
+    "description": "Créer un menu de rôles à boutons"
+  },
+  "rolemenu.create.title": {
+    "name": "titre",
+    "description": "Titre de l'embed"
+  },
+  "rolemenu.create.description": {
+    "name": "description",
+    "description": "Description de l'embed"
+  },
+  "rolemenu.create.role1": {
+    "name": "rôle_1",
+    "description": "Premier rôle"
+  },
+  "rolemenu.create.role2": {
+    "name": "rôle_2",
+    "description": "Deuxième rôle"
+  },
+  "rolemenu.create.role3": {
+    "name": "rôle_3",
+    "description": "Troisième rôle"
+  },
+  "rolemenu.create.role4": {
+    "name": "rôle_4",
+    "description": "Quatrième rôle"
+  },
+  "rolemenu.create.role5": {
+    "name": "rôle_5",
+    "description": "Cinquième rôle"
+  },
+  "rolemenu.create.channel": {
+    "name": "salon",
+    "description": "Salon ; par défaut ici"
+  },
+  "rolemenu.add": {
+    "name": "ajouter",
+    "description": "Ajouter un bouton de rôle à un menu existant"
+  },
+  "rolemenu.add.message_id": {
+    "name": "message",
+    "description": "Identifiant du message du menu"
+  },
+  "rolemenu.add.role": {
+    "name": "rôle",
+    "description": "Rôle"
+  },
+  "rolemenu.add.label": {
+    "name": "libellé",
+    "description": "Libellé du bouton"
+  },
+  "rolemenu.add.style": {
+    "name": "style",
+    "description": "Style du bouton"
+  },
+  "rolemenu.remove": {
+    "name": "retirer",
+    "description": "Retirer un bouton de rôle"
+  },
+  "rolemenu.remove.message_id": {
+    "name": "message",
+    "description": "Identifiant du message du menu"
+  },
+  "rolemenu.remove.role": {
+    "name": "rôle",
+    "description": "Rôle"
+  },
+  "rolemenu.list": {
+    "name": "lister",
+    "description": "Lister les menus de rôles"
+  },
+  "rolemenu.delete": {
+    "name": "supprimer",
+    "description": "Supprimer tous les boutons d'un menu"
+  },
+  "rolemenu.delete.message_id": {
+    "name": "message",
+    "description": "Identifiant du message du menu"
+  },
+  "reactionrole": {
+    "name": "rôle_réaction",
+    "description": "Gérer les rôles par réaction"
+  },
+  "reactionrole.add": {
+    "name": "ajouter",
+    "description": "Ajouter un rôle par réaction à un message"
+  },
+  "reactionrole.add.message_id": {
+    "name": "message",
+    "description": "Identifiant du message"
+  },
+  "reactionrole.add.emoji": {
+    "name": "emoji",
+    "description": "Emoji"
+  },
+  "reactionrole.add.role": {
+    "name": "rôle",
+    "description": "Rôle"
+  },
+  "reactionrole.remove": {
+    "name": "retirer",
+    "description": "Retirer un rôle par réaction"
+  },
+  "reactionrole.remove.message_id": {
+    "name": "message",
+    "description": "Identifiant du message"
+  },
+  "reactionrole.remove.emoji": {
+    "name": "emoji",
+    "description": "Emoji"
+  },
+  "reactionrole.remove.role": {
+    "name": "rôle",
+    "description": "Rôle"
+  },
+  "reactionrole.list": {
+    "name": "lister",
+    "description": "Lister les rôles par réaction"
+  },
+  "reactionrole.clear": {
+    "name": "vider",
+    "description": "Supprimer tous les rôles par réaction d'un message"
+  },
+  "reactionrole.clear.message_id": {
+    "name": "message",
+    "description": "Identifiant du message"
+  },
+  "schedule": {
+    "name": "planification",
+    "description": "Planifier des messages récurrents"
+  },
+  "schedule.add": {
+    "name": "ajouter",
+    "description": "Créer un message planifié"
+  },
+  "schedule.add.name": {
+    "name": "nom",
+    "description": "Nom de la tâche"
+  },
+  "schedule.add.channel": {
+    "name": "salon",
+    "description": "Salon cible"
+  },
+  "schedule.add.message": {
+    "name": "message",
+    "description": "Message à envoyer"
+  },
+  "schedule.add.recurrence": {
+    "name": "récurrence",
+    "description": "Fréquence"
+  },
+  "schedule.add.time": {
+    "name": "heure",
+    "description": "HH:MM pour quotidien, hebdo ou mensuel"
+  },
+  "schedule.add.day": {
+    "name": "jour",
+    "description": "Jour de semaine 0–6 (dim–sam) ou jour du mois 1–31"
+  },
+  "schedule.add.cron": {
+    "name": "cron",
+    "description": "Expression cron pour récurrence=cron"
+  },
+  "schedule.add.when": {
+    "name": "quand",
+    "description": "Une fois : AAAA-MM-JJ HH:MM (UTC) ou ISO"
+  },
+  "schedule.add.timezone": {
+    "name": "fuseau",
+    "description": "Fuseau IANA ; par défaut celui du serveur"
+  },
+  "schedule.list": {
+    "name": "lister",
+    "description": "Lister les tâches planifiées"
+  },
+  "schedule.pause": {
+    "name": "mettre_en_pause",
+    "description": "Mettre une tâche en pause"
+  },
+  "schedule.pause.id": {
+    "name": "identifiant",
+    "description": "Identifiant de la tâche"
+  },
+  "schedule.resume": {
+    "name": "reprendre",
+    "description": "Reprendre une tâche"
+  },
+  "schedule.resume.id": {
+    "name": "identifiant",
+    "description": "Identifiant de la tâche"
+  },
+  "schedule.run": {
+    "name": "exécuter",
+    "description": "Exécuter une tâche maintenant"
+  },
+  "schedule.run.id": {
+    "name": "identifiant",
+    "description": "Identifiant de la tâche"
+  },
+  "schedule.remove": {
+    "name": "retirer",
+    "description": "Supprimer une tâche"
+  },
+  "schedule.remove.id": {
+    "name": "identifiant",
+    "description": "Identifiant de la tâche"
+  },
+  "schedule.remove.confirm": {
+    "name": "confirmer",
+    "description": "Oui, la supprimer"
+  },
+  "security": {
+    "name": "sécurité",
+    "description": "Configurer l'anti-nuke et la sécurité des comptes"
+  },
+  "security.status": {
+    "name": "statut",
+    "description": "Afficher la configuration de sécurité"
+  },
+  "security.antinuke": {
+    "name": "anti_nuke",
+    "description": "Configurer la protection contre les actions massives"
+  },
+  "security.antinuke.enabled": {
+    "name": "activé",
+    "description": "Activé"
+  },
+  "security.antinuke.threshold": {
+    "name": "seuil",
+    "description": "Actions avant déclenchement"
+  },
+  "security.antinuke.window_seconds": {
+    "name": "fenêtre",
+    "description": "Fenêtre en secondes"
+  },
+  "security.antinuke.action": {
+    "name": "sanction",
+    "description": "Sanction"
+  },
+  "security.antibot": {
+    "name": "anti_bot",
+    "description": "Expulser les bots non approuvés"
+  },
+  "security.antibot.enabled": {
+    "name": "activé",
+    "description": "Activé"
+  },
+  "security.accountage": {
+    "name": "âge_compte",
+    "description": "Agir sur les comptes très récents"
+  },
+  "security.accountage.days": {
+    "name": "jours",
+    "description": "Âge minimum en jours ; 0 désactive"
+  },
+  "security.accountage.action": {
+    "name": "action",
+    "description": "Action"
+  },
+  "security.whitelist": {
+    "name": "liste_blanche",
+    "description": "Exempter un utilisateur ou un rôle de l'anti-nuke"
+  },
+  "security.whitelist.action": {
+    "name": "action",
+    "description": "Ajouter ou retirer"
+  },
+  "security.whitelist.user": {
+    "name": "utilisateur",
+    "description": "Utilisateur"
+  },
+  "security.whitelist.role": {
+    "name": "rôle",
+    "description": "Rôle"
+  },
+  "security.restore": {
+    "name": "restauration",
+    "description": "Restaurer les salons et rôles supprimés"
+  },
+  "security.restore.enabled": {
+    "name": "activé",
+    "description": "Activé"
+  },
+  "security.snapshot": {
+    "name": "instantané",
+    "description": "Enregistrer un instantané des salons et rôles"
+  },
+  "security.logchannel": {
+    "name": "salon_journaux",
+    "description": "Définir le salon des journaux de sécurité"
+  },
+  "security.logchannel.channel": {
+    "name": "salon",
+    "description": "Salon ; omettre pour effacer"
+  },
+  "security.lockdown": {
+    "name": "confinement",
+    "description": "Verrouiller ou déverrouiller tous les salons textuels"
+  },
+  "security.lockdown.enabled": {
+    "name": "activé",
+    "description": "Confinement activé"
+  },
+  "security.lockdown.reason": {
+    "name": "raison",
+    "description": "Raison"
+  },
+  "starboard": {
+    "name": "starboard",
+    "description": "Configurer le starboard"
+  },
+  "starboard.status": {
+    "name": "statut",
+    "description": "Afficher la configuration du starboard"
+  },
+  "starboard.channel": {
+    "name": "salon",
+    "description": "Définir le salon du starboard"
+  },
+  "starboard.channel.channel": {
+    "name": "salon",
+    "description": "Salon ; omettre pour effacer"
+  },
+  "starboard.threshold": {
+    "name": "seuil",
+    "description": "Étoiles requises"
+  },
+  "starboard.threshold.count": {
+    "name": "nombre",
+    "description": "De 1 à 50"
+  },
+  "starboard.emoji": {
+    "name": "emoji",
+    "description": "Emoji de réaction"
+  },
+  "starboard.emoji.emoji": {
+    "name": "emoji",
+    "description": "Emoji"
+  },
+  "starboard.toggle": {
+    "name": "basculer",
+    "description": "Activer ou désactiver le starboard"
+  },
+  "starboard.toggle.enabled": {
+    "name": "activé",
+    "description": "Activé"
+  },
+  "starboard.selfstar": {
+    "name": "auto_étoile",
+    "description": "Autoriser les auteurs à étoiler leurs messages"
+  },
+  "starboard.selfstar.enabled": {
+    "name": "activé",
+    "description": "Activé"
+  },
+  "suggest": {
+    "name": "suggérer",
+    "description": "Soumettre une suggestion"
+  },
+  "suggest.content": {
+    "name": "contenu",
+    "description": "Votre suggestion"
+  },
+  "suggestions": {
+    "name": "suggestions",
+    "description": "Gérer les suggestions"
+  },
+  "suggestions.channel": {
+    "name": "salon",
+    "description": "Définir le salon des suggestions"
+  },
+  "suggestions.channel.channel": {
+    "name": "salon",
+    "description": "Salon ; omettre pour effacer"
+  },
+  "suggestions.log": {
+    "name": "journal",
+    "description": "Définir le salon du journal des décisions"
+  },
+  "suggestions.log.channel": {
+    "name": "salon",
+    "description": "Salon ; omettre pour effacer"
+  },
+  "suggestions.list": {
+    "name": "lister",
+    "description": "Lister les suggestions"
+  },
+  "suggestions.list.status": {
+    "name": "statut",
+    "description": "Filtrer par statut"
+  },
+  "suggestions.approve": {
+    "name": "approuver",
+    "description": "Approuver une suggestion"
+  },
+  "suggestions.approve.id": {
+    "name": "identifiant",
+    "description": "Identifiant de la suggestion"
+  },
+  "suggestions.approve.note": {
+    "name": "note",
+    "description": "Note facultative"
+  },
+  "suggestions.deny": {
+    "name": "refuser",
+    "description": "Refuser une suggestion"
+  },
+  "suggestions.deny.id": {
+    "name": "identifiant",
+    "description": "Identifiant de la suggestion"
+  },
+  "suggestions.deny.note": {
+    "name": "note",
+    "description": "Note facultative"
+  },
+  "voice": {
+    "name": "vocal",
+    "description": "Contrôler votre salon vocal temporaire"
+  },
+  "voice.name": {
+    "name": "nom",
+    "description": "Définir le nom du salon"
+  },
+  "voice.name.name": {
+    "name": "nom",
+    "description": "Nouveau nom"
+  },
+  "voice.limit": {
+    "name": "limite",
+    "description": "Définir la limite de membres"
+  },
+  "voice.limit.limit": {
+    "name": "limite",
+    "description": "0 signifie aucune limite"
+  },
+  "voice.lock": {
+    "name": "verrouiller",
+    "description": "Verrouiller votre salon"
+  },
+  "voice.unlock": {
+    "name": "déverrouiller",
+    "description": "Déverrouiller votre salon"
+  },
+  "voice.permit": {
+    "name": "autoriser",
+    "description": "Autoriser un membre à entrer"
+  },
+  "voice.permit.user": {
+    "name": "membre",
+    "description": "Membre"
+  },
+  "voice.reject": {
+    "name": "refuser",
+    "description": "Empêcher un membre d'entrer"
+  },
+  "voice.reject.user": {
+    "name": "membre",
+    "description": "Membre"
+  },
+  "voice.claim": {
+    "name": "réclamer",
+    "description": "Réclamer un salon abandonné"
+  },
+  "voice.transfer": {
+    "name": "transférer",
+    "description": "Transférer la propriété du salon"
+  },
+  "voice.transfer.user": {
+    "name": "membre",
+    "description": "Membre"
+  },
+  "voice.delete": {
+    "name": "supprimer",
+    "description": "Supprimer votre salon"
+  },
+  "voice.delete.confirm": {
+    "name": "confirmer",
+    "description": "Oui, le supprimer"
+  },
+  "voice.info": {
+    "name": "infos",
+    "description": "Afficher les informations de votre salon"
+  },
+  "ticket": {
+    "name": "ticket",
+    "description": "Configurer et gérer les tickets de support"
+  },
+  "ticket.setup": {
+    "name": "configurer",
+    "description": "Configurer le système de tickets"
+  },
+  "ticket.setup.category": {
+    "name": "catégorie",
+    "description": "Catégorie des salons de tickets"
+  },
+  "ticket.setup.panel": {
+    "name": "panneau",
+    "description": "Définir le salon du panneau de tickets"
+  },
+  "ticket.setup.transcript": {
+    "name": "transcription",
+    "description": "Définir le salon des transcriptions"
+  },
+  "ticket.panel": {
+    "name": "panneau",
+    "description": "Envoyer le panneau de tickets"
+  },
+  "ticket.close": {
+    "name": "fermer",
+    "description": "Fermer ce ticket"
+  },
+  "ticket.claim": {
+    "name": "réclamer",
+    "description": "Réclamer ce ticket"
+  },
+  "ticket.staff": {
+    "name": "équipe",
+    "description": "Gérer les membres de l'équipe support"
+  },
+  "ticket.staff.action": {
+    "name": "action",
+    "description": "Ajouter ou retirer"
+  },
+  "ticket.staff.role": {
+    "name": "rôle",
+    "description": "Rôle de l'équipe"
+  },
+  "ticket.add": {
+    "name": "ajouter",
+    "description": "Ajouter un membre au ticket"
+  },
+  "ticket.add.user": {
+    "name": "utilisateur",
+    "description": "Utilisateur"
+  },
+  "ticket.remove": {
+    "name": "retirer",
+    "description": "Retirer un membre du ticket"
+  },
+  "ticket.remove.user": {
+    "name": "utilisateur",
+    "description": "Utilisateur"
+  },
+  "ticket.list": {
+    "name": "lister",
+    "description": "Lister les tickets ouverts"
+  },
+  "serverinfo": {
+    "name": "infos_serveur",
+    "description": "Afficher les informations du serveur"
+  },
+  "userinfo": {
+    "name": "infos_membre",
+    "description": "Afficher les informations d'un membre"
+  },
+  "userinfo.user": {
+    "name": "membre",
+    "description": "Membre"
+  },
+  "avatar": {
+    "name": "avatar",
+    "description": "Afficher l'avatar d'un membre"
+  },
+  "avatar.user": {
+    "name": "membre",
+    "description": "Membre"
+  },
+  "avatar.size": {
+    "name": "taille",
+    "description": "Taille de l'image en pixels"
+  },
+  "banner": {
+    "name": "bannière",
+    "description": "Afficher la bannière de profil d'un membre"
+  },
+  "banner.user": {
+    "name": "membre",
+    "description": "Membre"
+  },
+  "roleinfo": {
+    "name": "infos_rôle",
+    "description": "Afficher les informations d'un rôle"
+  },
+  "roleinfo.role": {
+    "name": "rôle",
+    "description": "Rôle"
+  },
+  "channelinfo": {
+    "name": "infos_salon",
+    "description": "Afficher les informations d'un salon"
+  },
+  "channelinfo.channel": {
+    "name": "salon",
+    "description": "Salon"
+  },
+  "ping": {
+    "name": "latence",
+    "description": "Afficher la latence du bot"
+  },
+  "verify": {
+    "name": "vérification",
+    "description": "Configurer la porte de vérification"
+  },
+  "verify.setup": {
+    "name": "configurer",
+    "description": "Configurer la porte de vérification"
+  },
+  "verify.setup.verified_role": {
+    "name": "rôle_vérifié",
+    "description": "Rôle après vérification"
+  },
+  "verify.setup.unverified_role": {
+    "name": "rôle_non_vérifié",
+    "description": "Rôle avant vérification"
+  },
+  "verify.setup.panel_channel": {
+    "name": "salon_panneau",
+    "description": "Salon où envoyer le panneau de vérification"
+  },
+  "verify.panel": {
+    "name": "panneau",
+    "description": "Envoyer le panneau de vérification"
+  },
+  "verify.status": {
+    "name": "statut",
+    "description": "Afficher la configuration de vérification"
+  },
+  "verify.method": {
+    "name": "méthode",
+    "description": "Choisir la méthode de vérification"
+  },
+  "verify.method.method": {
+    "name": "méthode",
+    "description": "Méthode"
+  },
+  "verify.reset": {
+    "name": "réinitialiser",
+    "description": "Réinitialiser la vérification d'un membre"
+  },
+  "verify.reset.user": {
+    "name": "utilisateur",
+    "description": "Utilisateur"
+  },
+  "verify.toggle": {
+    "name": "basculer",
+    "description": "Activer ou désactiver la vérification"
+  },
+  "verify.toggle.enabled": {
+    "name": "activé",
+    "description": "Activé"
+  },
+  "welcome": {
+    "name": "bienvenue",
+    "description": "Configurer les messages de bienvenue et d'adieu"
+  },
+  "welcome.status": {
+    "name": "statut",
+    "description": "Afficher la configuration de bienvenue"
+  },
+  "welcome.channel": {
+    "name": "salon",
+    "description": "Définir un salon de bienvenue ou d'adieu"
+  },
+  "welcome.channel.kind": {
+    "name": "type",
+    "description": "Quel type de message"
+  },
+  "welcome.channel.channel": {
+    "name": "salon",
+    "description": "Salon ; omettre pour effacer"
+  },
+  "welcome.message": {
+    "name": "message",
+    "description": "Définir un modèle de message"
+  },
+  "welcome.message.kind": {
+    "name": "type",
+    "description": "Quel type de message"
+  },
+  "welcome.message.template": {
+    "name": "modèle",
+    "description": "Modèle ; utilisez {user} et {server}"
+  },
+  "welcome.card": {
+    "name": "carte",
+    "description": "Choisir un modèle de carte"
+  },
+  "welcome.card.template": {
+    "name": "modèle",
+    "description": "Nom du modèle"
+  },
+  "welcome.autorole": {
+    "name": "rôle_auto",
+    "description": "Gérer les rôles automatiques des nouveaux membres"
+  },
+  "welcome.autorole.action": {
+    "name": "action",
+    "description": "Ajouter, retirer ou lister"
+  },
+  "welcome.autorole.role": {
+    "name": "rôle",
+    "description": "Rôle"
+  },
+  "welcome.toggle": {
+    "name": "basculer",
+    "description": "Activer ou désactiver la bienvenue"
+  },
+  "welcome.toggle.enabled": {
+    "name": "activé",
+    "description": "Activé"
+  },
+  "welcome.dm": {
+    "name": "mp",
+    "description": "Envoyer la bienvenue en message privé"
+  },
+  "welcome.dm.enabled": {
+    "name": "activé",
+    "description": "Activé"
+  },
+  "welcome.deleteafter": {
+    "name": "suppression",
+    "description": "Supprimer le message de bienvenue après un délai"
+  },
+  "welcome.deleteafter.seconds": {
+    "name": "secondes",
+    "description": "0 pour le conserver"
+  },
+  "welcome.test": {
+    "name": "test",
+    "description": "Envoyer une carte de bienvenue de test"
+  },
+  "welcome.variables": {
+    "name": "variables",
+    "description": "Afficher les variables disponibles"
+  }
+}
