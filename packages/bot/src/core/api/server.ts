@@ -1,6 +1,7 @@
 import { createHmac, timingSafeEqual } from 'crypto';
 import { createServer, IncomingMessage, Server, ServerResponse } from 'http';
 import { URL } from 'url';
+import { PermissionFlagsBits, type TextChannel } from 'discord.js';
 import { Prisma } from '@prisma/client';
 import type { BotClient } from '../../structures/BotClient';
 import { logger } from '../logger';
@@ -8,6 +9,7 @@ import { AppError, briefError, isAppError } from '../errors';
 import { renderCardPooled } from '../cards/pool';
 import { buildTemplate, templateIds } from '../cards/templates';
 import { validateCardSpec, type CardSample, type CardType } from '../cards/types';
+import { resolveTracks } from '../../modules/music/resolve';
 
 const MAX_BODY = 1_048_576;
 const MAX_SKEW_MS = 5 * 60_000;
@@ -142,10 +144,47 @@ async function playerState(client: BotClient, guildId: string): Promise<PlayerSt
 }
 
 async function handlePlayerAction(client: BotClient, guildId: string, body: Record<string, unknown>): Promise<void> {
-  const queue = client.musicManager.getQueue(guildId);
-  if (!queue?.player) throw new AppError('NOT_CONNECTED', 'The bot is not connected in that server.', 404);
   const action = String(body.action ?? '');
   const value = body.value;
+
+  // Joining is the one action that must run before a player exists. The
+  // dashboard needs it to start a session without waiting for a /play in chat.
+  if (action === 'join') {
+    const guild = client.guilds.cache.get(guildId);
+    if (!guild) throw new AppError('GUILD_NOT_FOUND', 'That server is not cached by the bot.', 404);
+    if (typeof value !== 'string' || !value.trim()) {
+      throw new AppError('BAD_VALUE', 'join expects a voice channel id.', 400);
+    }
+    const voiceChannel = guild.channels.cache.get(value.trim());
+    if (!voiceChannel?.isVoiceBased()) {
+      throw new AppError('BAD_VALUE', 'That channel is not a voice channel.', 400);
+    }
+    const me = guild.members.me ?? (await guild.members.fetchMe());
+    const permissions = voiceChannel.permissionsFor(me);
+    if (!permissions?.has(PermissionFlagsBits.Connect) || !permissions.has(PermissionFlagsBits.Speak)) {
+      throw new AppError('MISSING_PERMISSION', 'The bot cannot connect and speak in that channel.', 403);
+    }
+    const canSend = (channel: typeof guild.systemChannel) =>
+      Boolean(channel && channel.isTextBased() && channel.permissionsFor(me)?.has(PermissionFlagsBits.SendMessages));
+    const textChannel =
+      (canSend(guild.systemChannel) ? guild.systemChannel : null) ??
+      guild.channels.cache.find(
+        (channel): channel is TextChannel =>
+          channel.isTextBased() && !channel.isDMBased() && Boolean(channel.permissionsFor(me)?.has(PermissionFlagsBits.SendMessages)),
+      );
+    if (!textChannel) {
+      throw new AppError('MISSING_PERMISSION', 'The bot needs a text channel where it can send messages.', 403);
+    }
+    const existing = client.musicManager.getQueue(guildId);
+    if (existing?.player) throw new AppError('ALREADY_CONNECTED', 'The bot is already connected in that server.', 409);
+    const queue = existing ?? client.musicManager.createQueue(guildId, textChannel, voiceChannel);
+    queue.voiceChannel = voiceChannel;
+    await queue.connect();
+    return;
+  }
+
+  const queue = client.musicManager.getQueue(guildId);
+  if (!queue?.player) throw new AppError('NOT_CONNECTED', 'The bot is not connected in that server.', 404);
   switch (action) {
     case 'pause':
       queue.pause();
@@ -187,16 +226,12 @@ async function handlePlayerAction(client: BotClient, guildId: string, body: Reco
       }
       const node = client.shoukaku.nodes.get('default');
       if (!node) throw new AppError('LAVALINK_OFFLINE', 'The Lavalink node is offline.', 503);
-      const result = (await node.rest.resolve(value.trim())) as unknown as {
-        loadType?: string;
-        tracks?: Array<{ encoded: string; info: any }>;
-      } | null;
-      if (!result || result.loadType === 'error' || result.loadType === 'empty' || !Array.isArray(result.tracks) || !result.tracks.length) {
+      const resolved = await resolveTracks(node, value.trim());
+      if (!resolved.tracks.length) {
         throw new AppError('NO_RESULTS', 'No tracks matched that query.', 422);
       }
-      const tracks = result.tracks.map((track) => ({ encoded: track.encoded, info: track.info }));
-      if (result.loadType === 'playlist') queue.addTracks(tracks);
-      else queue.addTrack(tracks[0]);
+      if (resolved.loadType === 'playlist') queue.addTracks(resolved.tracks);
+      else queue.addTrack(resolved.tracks[0]);
       if (!queue.currentTrack) await queue.play();
       break;
     }

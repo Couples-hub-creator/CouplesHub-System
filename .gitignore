@@ -49,3 +49,8 @@ docker-compose.override.yml
 # Generated Prisma schema copy for the dashboard build
 packages/dashboard/prisma/
 .neon
+
+# Lavalink runtime
+lavalink/Lavalink.jar
+lavalink/logs/
+lavalink/plugins/

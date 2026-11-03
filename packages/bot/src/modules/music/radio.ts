@@ -8,6 +8,7 @@ import {
 import { Command } from '../../structures/Command';
 import type { BotClient } from '../../structures/BotClient';
 import type { MusicManager, Track } from './MusicManager';
+import { resolveTracks } from './resolve';
 
 export class RadioCommand extends Command {
   public category = 'music' as const;
@@ -179,8 +180,8 @@ export class RadioCommand extends Command {
       return;
     }
     try {
-      const result = await node.rest.resolve(station.streamUrl);
-      const tracks = Array.isArray(result?.tracks) ? result.tracks : [];
+      const resolved = await resolveTracks(node, station.streamUrl, { searchFallback: false });
+      const tracks = resolved.tracks;
       if (!tracks.length) {
         await interaction.editReply({ content: 'That stream could not be resolved.' });
         return;

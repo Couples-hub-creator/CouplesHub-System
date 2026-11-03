@@ -1,6 +1,7 @@
 import type { BotModule } from '../../core/modules/types';
 import type { BotClient } from '../../structures/BotClient';
 import type { MusicManager } from './MusicManager';
+import { resolveTracks } from './resolve';
 import { RadioCommand } from './radio';
 import { logger } from '../../core/logger';
 
@@ -24,8 +25,8 @@ async function resume247(client: BotClient, guildId: string): Promise<void> {
   if (!station) return;
   const node = (client as any).shoukaku.nodes.get('default');
   if (!node) return;
-  const result = await node.rest.resolve(station.streamUrl).catch(() => null);
-  const tracks = Array.isArray(result?.tracks) ? result.tracks : [];
+  const resolved = await resolveTracks(node, station.streamUrl, { searchFallback: false });
+  const tracks = resolved.tracks;
   if (!tracks.length) return;
   const queue = existing ?? musicManager.createQueue(guildId, textChannel as any, voiceChannel);
   if (!queue.tracks.length && !queue.currentTrack) {

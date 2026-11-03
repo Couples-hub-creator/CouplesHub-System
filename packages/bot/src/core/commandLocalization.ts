@@ -39,8 +39,22 @@ export interface LocalizableCommandPayload extends LocalizableOption {
   description: string;
 }
 
-function validName(value: unknown): value is string {
-  return typeof value === 'string' && value.length >= 1 && value.length <= NAME_LIMIT && !/\s/.test(value);
+/**
+ * Discord validates localized command/option names against
+ * `^[-_\p{L}\p{N}]{1,32}$` and requires lowercase. Arabic tashkeel is a
+ * combining mark (`\p{M}`), not a letter, so names like "مفعّل" are rejected
+ * with `STRING_TYPE_REGEX`. Normalize, drop marks, and keep the display name
+ * valid instead of letting the whole registration fail.
+ */
+export function normalizeLocalizedName(value: string): string | null {
+  const normalized = value
+    .normalize('NFC')
+    .toLowerCase()
+    .replace(/\p{M}+/gu, '')
+    .replace(/\s+/g, '_')
+    .replace(/[^\p{L}\p{N}\-_]/gu, '');
+  if (normalized.length < 1 || normalized.length > NAME_LIMIT) return null;
+  return normalized;
 }
 
 function validDescription(value: unknown): value is string {
@@ -64,8 +78,9 @@ function apply(
 ): void {
   const entry = catalog[pathPrefix];
   if (entry) {
-    if (validName(entry.name)) {
-      payload.name_localizations = merge(payload.name_localizations, locale, entry.name);
+    const localizedName = entry.name ? normalizeLocalizedName(entry.name) : null;
+    if (localizedName) {
+      payload.name_localizations = merge(payload.name_localizations, locale, localizedName);
     }
     if (validDescription(entry.description)) {
       payload.description_localizations = merge(payload.description_localizations, locale, entry.description);

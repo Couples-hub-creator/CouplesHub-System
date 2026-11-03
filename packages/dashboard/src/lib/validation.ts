@@ -40,6 +40,7 @@ export const musicSettingsSchema = z.object({
  * always matches the action: a volume command can never arrive with a string.
  */
 export const musicActionSchema = z.discriminatedUnion('action', [
+  z.object({ action: z.literal('join'), value: snowflake }),
   z.object({ action: z.literal('pause') }),
   z.object({ action: z.literal('resume') }),
   z.object({ action: z.literal('skip') }),

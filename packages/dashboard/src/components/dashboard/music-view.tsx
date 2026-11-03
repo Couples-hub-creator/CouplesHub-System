@@ -26,6 +26,7 @@ import {
   ChevronDown,
   GripVertical,
   ListMusic,
+  LogIn,
   Music4,
   Pause,
   Play,
@@ -46,6 +47,7 @@ import { api, ApiClientError, type MusicStateResponse } from '@/lib/api/client';
 import { useGuildRealtime } from '@/lib/hooks/use-realtime';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { SectionCard, Notice } from '@/components/dashboard/kit';
 import { EmptyState } from '@/components/ui/empty-state';
 import { PageHeader } from '@/components/ui/page-header';
@@ -240,6 +242,28 @@ export function MusicView({ guildId }: { guildId: string }) {
   };
 
   const disconnected = !state?.connected;
+  const [voiceId, setVoiceId] = React.useState('');
+
+  const channelsQuery = useQuery({
+    queryKey: ['discord-channels', guildId],
+    queryFn: () =>
+      api.get<{ voice: { id: string; name: string }[] }>(`/api/discord/guilds/${guildId}/channels`),
+    enabled: disconnected,
+    staleTime: 60_000,
+  });
+  const voiceChannels = channelsQuery.data?.voice;
+
+  React.useEffect(() => {
+    if (!voiceId && voiceChannels?.length) setVoiceId(voiceChannels[0].id);
+  }, [voiceChannels, voiceId]);
+
+  const joinChannel = () => {
+    if (!voiceId) return;
+    control.mutate(
+      { action: 'join', value: voiceId },
+      { onSuccess: () => toast.success('Joined the voice channel') },
+    );
+  };
 
   return (
     <div className="mx-auto w-full max-w-shell space-y-5">
@@ -259,8 +283,42 @@ export function MusicView({ guildId }: { guildId: string }) {
         <Notice tone="warning" title="The player is not reachable">
           {state?.reason === 'BOT_API_UNAVAILABLE'
             ? 'This deployment has no bot control API configured, so playback cannot be driven from here. Set BOT_API_URL and BOT_API_SECRET to enable it.'
-            : 'Couples Hub is not in a voice channel in this server right now. Join one with /play, then reload.'}
+            : 'Couples Hub is not in a voice channel in this server right now. Pick one below, or use /play in Discord.'}
         </Notice>
+      )}
+
+      {disconnected && state?.reason !== 'BOT_API_UNAVAILABLE' && (
+        <SectionCard
+          title="Connect a voice channel"
+          description="Couples Hub joins the channel, then the queue below takes over."
+          icon={<Radio />}
+        >
+          <div className="flex flex-col gap-2 sm:flex-row">
+            <Select value={voiceId} onValueChange={setVoiceId}>
+              <SelectTrigger className="sm:max-w-xs">
+                <SelectValue placeholder={channelsQuery.isPending ? 'Loading channels…' : 'Select a voice channel'} />
+              </SelectTrigger>
+              <SelectContent>
+                {(voiceChannels ?? []).map((channel) => (
+                  <SelectItem key={channel.id} value={channel.id}>
+                    {channel.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <Button onClick={joinChannel} disabled={!voiceId || control.isPending}>
+              <LogIn className="size-4" />
+              {control.isPending ? 'Connecting…' : 'Join channel'}
+            </Button>
+          </div>
+          {channelsQuery.isError && (
+            <p className="mt-2 text-xs text-danger">
+              {channelsQuery.error instanceof ApiClientError
+                ? channelsQuery.error.message
+                : 'Could not load the voice channels for this server.'}
+            </p>
+          )}
+        </SectionCard>
       )}
 
       <div className="grid gap-4 xl:grid-cols-[1.5fr_1fr]">

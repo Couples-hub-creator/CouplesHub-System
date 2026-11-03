@@ -1,6 +1,7 @@
 import { SlashCommandBuilder, ChatInputCommandInteraction } from 'discord.js';
 import { Command, CommandCategory } from '../../structures/Command';
-import { MusicManager, Track } from '../../modules/music/MusicManager';
+import { MusicManager } from '../../modules/music/MusicManager';
+import { resolveTracks } from '../../modules/music/resolve';
 import { logger } from '../../utils/logger';
 
 export default class PlayCommand extends Command {
@@ -48,27 +49,26 @@ export default class PlayCommand extends Command {
         return;
       }
 
-      // Resolve the track
-      const result = await node.rest.resolve(query);
+      // Resolve the track. Plain queries search YouTube, then YouTube Music.
+      const resolved = await resolveTracks(node, query);
 
-      if (!result || result.tracks.length === 0) {
+      if (!resolved.tracks.length) {
         await interaction.editReply('No results found for your query!');
         return;
       }
 
-      const tracks: Track[] = result.tracks.map((track: any) => ({
-        encoded: track.encoded,
-        info: track.info,
-      }));
-
-      if (result.playlistInfo) {
-        queue.addTracks(tracks);
+      // A search result is a list of candidates, not a playlist. Only a real
+      // playlist should enqueue every track.
+      if (resolved.loadType === 'playlist') {
+        queue.addTracks(resolved.tracks);
         await interaction.editReply(
-          `Added **${result.playlistInfo.name}** (${tracks.length} tracks) to the queue!`
+          resolved.playlistName
+            ? `Added **${resolved.playlistName}** (${resolved.tracks.length} tracks) to the queue!`
+            : `Added **${resolved.tracks.length} tracks** to the queue!`,
         );
       } else {
-        queue.addTrack(tracks[0]);
-        await interaction.editReply(`Added **${tracks[0].info.title}** to the queue!`);
+        queue.addTrack(resolved.tracks[0]);
+        await interaction.editReply(`Added **${resolved.tracks[0].info.title}** to the queue!`);
       }
 
       if (!queue.player) {

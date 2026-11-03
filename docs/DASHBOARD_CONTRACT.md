@@ -99,7 +99,7 @@ All paths are under `/api/guilds/[guildId]`.
 | GET | `/render/[type]` | Signed PNG proxy for the card designer (`welcome`, `goodbye`, `boost`, `rank`, `levelup`) |
 | GET | `/tickets` | Ticket table data from the bot API |
 | GET | `/giveaways` | Giveaway table data from the bot API |
-| GET/POST | `/music` | Player state and controls |
+| GET/POST | `/music` | Player state and controls (join, queue, filters) |
 | GET | `/premium` | Plan, limits and premium module availability |
 | GET/POST/PATCH/DELETE | `/radio` | Stations, favorites, 24/7 state |
 | GET/POST/DELETE | `/roles` | Role menus and reaction roles |

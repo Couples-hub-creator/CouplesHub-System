@@ -93,7 +93,7 @@ export class Queue {
     const player = await this.client.shoukaku.joinVoiceChannel({
       guildId: this.guildId,
       channelId: this.voiceChannel.id,
-      shardId: 0,
+      shardId: this.voiceChannel.guild.shardId,
     });
 
     this.player = player;

@@ -176,6 +176,7 @@ context only; authorization already happened in the dashboard.
 | `loop` | `off \| track \| queue` | Set loop |
 | `volume` | number | Set volume |
 | `seek` | number (ms) | Seek |
+| `join` | voice channel id | Connect the bot to a voice channel |
 | `play` | string | Resolve and enqueue |
 | `leave` | — | Stop and delete the queue |
 | `clear` | — | Clear queued tracks |
@@ -188,6 +189,8 @@ Success: `200 { "ok": true }`.
 Errors:
 
 - `404 NOT_CONNECTED` — no player for that guild.
+- `409 ALREADY_CONNECTED` — `join` was called while a player already exists.
+- `403 MISSING_PERMISSION` — the bot cannot connect, speak, or send messages.
 - `400 BAD_VALUE` / `BAD_ACTION` — invalid action or type.
 - `409 NOT_FOUND` — queue index out of range.
 - `422 NO_RESULTS` — search resolved to nothing.

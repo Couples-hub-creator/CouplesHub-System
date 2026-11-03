@@ -10,6 +10,7 @@ import {
   commandPayloadSize,
   LOCALIZED_COMMAND_LOCALES,
   MAX_COMMAND_PAYLOAD_BYTES,
+  normalizeLocalizedName,
   type LocalizableCommandPayload,
 } from './commandLocalization';
 
@@ -86,7 +87,7 @@ test('registered payloads apply the catalog and stay inside the 8000-byte limit'
     for (const locale of LOCALIZED_COMMAND_LOCALES) {
       assert.equal(
         payload.name_localizations?.[locale],
-        commandLocalizationCatalogs[locale][payload.name]?.name,
+        normalizeLocalizedName(commandLocalizationCatalogs[locale][payload.name]?.name ?? ''),
         `/${payload.name} is missing the ${locale} name`,
       );
       assert.equal(
@@ -114,7 +115,12 @@ test('localized payloads respect Discord name and description limits', () => {
     if (payload.name_localizations) {
       for (const [locale, value] of Object.entries(payload.name_localizations)) {
         assert.ok(value.length >= 1 && value.length <= 32, `${payload.name} (${locale}) name is ${value.length} chars`);
-        assert.match(value, /^[^\s]+$/u, `${payload.name} (${locale}) name has whitespace`);
+        assert.match(
+          value,
+          /^[-_\p{L}\p{N}]{1,32}$/u,
+          `${payload.name} (${locale}) name contains characters Discord rejects`,
+        );
+        assert.doesNotMatch(value, /\p{M}/u, `${payload.name} (${locale}) name contains combining marks`);
         assert.equal(value, value.toLowerCase(), `${payload.name} (${locale}) name must be lowercase`);
       }
     }
