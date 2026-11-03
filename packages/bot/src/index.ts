@@ -41,7 +41,8 @@ client.shoukaku = new Shoukaku(
   {
     moveOnDisconnect: true,
     resume: true,
-    reconnectTries: 5,
+    reconnectTries: 30,
+    reconnectInterval: 5000,
     restTimeout: 5000,
   },
 );

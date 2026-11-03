@@ -1,5 +1,6 @@
 import type { NextAuthOptions } from 'next-auth';
 import DiscordProvider from 'next-auth/providers/discord';
+import { prisma } from '@/lib/prisma';
 
 const scopes = ['identify', 'guilds'].join(' ');
 
@@ -32,36 +33,29 @@ export const authOptions: NextAuthOptions = {
         token.discordAccessToken = account.access_token;
         token.discordRefreshToken = account.refresh_token;
         token.discordExpiresAt = account.expires_at;
-      }
 
-      // Refresh the Discord token when it is close to expiry.
-      const expiresAt = typeof token.discordExpiresAt === 'number' ? token.discordExpiresAt : 0;
-      const expiresSoon = expiresAt > 0 && Date.now() / 1000 > expiresAt - 60;
-
-      if (expiresSoon && token.discordRefreshToken) {
-        try {
-          const res = await fetch('https://discord.com/api/oauth2/token', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: new URLSearchParams({
-              client_id: process.env.DISCORD_CLIENT_ID ?? '',
-              client_secret: process.env.DISCORD_CLIENT_SECRET ?? '',
-              grant_type: 'refresh_token',
-              refresh_token: String(token.discordRefreshToken),
-            }),
-          });
-          if (res.ok) {
-            const refreshed = (await res.json()) as {
-              access_token: string;
-              refresh_token: string;
-              expires_in: number;
-            };
-            token.discordAccessToken = refreshed.access_token;
-            token.discordRefreshToken = refreshed.refresh_token;
-            token.discordExpiresAt = Math.floor(Date.now() / 1000) + refreshed.expires_in;
-          }
-        } catch {
-          // Keep the existing token; the guild fetch will surface the failure.
+        // Persist the rotating token pair. The JWT itself is not rewritten by
+        // getServerSession in the App Router, so refreshing there would leave
+        // the old refresh token in the cookie and lose the rotated one.
+        const userId = String(user.id ?? '');
+        const accessToken = typeof account.access_token === 'string' ? account.access_token : '';
+        if (userId && accessToken) {
+          await prisma.discordCredential
+            .upsert({
+              where: { userId },
+              update: {
+                accessToken,
+                refreshToken: account.refresh_token ?? null,
+                expiresAt: account.expires_at ?? 0,
+              },
+              create: {
+                userId,
+                accessToken,
+                refreshToken: account.refresh_token ?? null,
+                expiresAt: account.expires_at ?? 0,
+              },
+            })
+            .catch(() => undefined);
         }
       }
 

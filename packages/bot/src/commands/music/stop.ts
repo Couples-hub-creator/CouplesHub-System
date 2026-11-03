@@ -28,8 +28,8 @@ export default class StopCommand extends Command {
       return;
     }
 
-    queue.stop();
-    musicManager.deleteQueue(interaction.guildId!);
+    await queue.stop();
+    await musicManager.deleteQueue(interaction.guildId!);
     await interaction.editReply('Stopped the music and cleared the queue!');
   }
 }

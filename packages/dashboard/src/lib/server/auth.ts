@@ -53,8 +53,14 @@ export async function requireSession() {
   return session;
 }
 
-/** Reads the Discord access token from the encrypted NextAuth JWT, server-side only. */
-async function getDiscordToken(): Promise<string | null> {
+interface DiscordToken {
+  accessToken: string;
+  refreshToken: string | null;
+  expiresAt: number;
+}
+
+/** Reads the token pair from the encrypted NextAuth JWT, server-side only. */
+async function readJwtToken(): Promise<DiscordToken | null> {
   try {
     const cookieStore = cookies();
     const req = {
@@ -64,17 +70,115 @@ async function getDiscordToken(): Promise<string | null> {
       req: req as Parameters<typeof getToken>[0]['req'],
       secret: process.env.NEXTAUTH_SECRET,
     });
-    return typeof token?.discordAccessToken === 'string' ? token.discordAccessToken : null;
+    if (typeof token?.discordAccessToken !== 'string') return null;
+    return {
+      accessToken: token.discordAccessToken,
+      refreshToken: typeof token.discordRefreshToken === 'string' ? token.discordRefreshToken : null,
+      expiresAt: typeof token.discordExpiresAt === 'number' ? token.discordExpiresAt : 0,
+    };
   } catch {
     return null;
   }
 }
 
+async function refreshDiscordToken(userId: string, refreshToken: string): Promise<DiscordToken | null> {
+  try {
+    const res = await fetch('https://discord.com/api/oauth2/token', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({
+        client_id: process.env.DISCORD_CLIENT_ID ?? '',
+        client_secret: process.env.DISCORD_CLIENT_SECRET ?? '',
+        grant_type: 'refresh_token',
+        refresh_token: refreshToken,
+      }),
+      cache: 'no-store',
+    });
+    if (!res.ok) return null;
+    const data = (await res.json()) as {
+      access_token: string;
+      refresh_token?: string;
+      expires_in: number;
+    };
+    if (!data.access_token) return null;
+    const next: DiscordToken = {
+      accessToken: data.access_token,
+      refreshToken: data.refresh_token ?? refreshToken,
+      expiresAt: Math.floor(Date.now() / 1000) + Number(data.expires_in ?? 0),
+    };
+    await prisma.discordCredential
+      .update({
+        where: { userId },
+        data: {
+          accessToken: next.accessToken,
+          refreshToken: next.refreshToken,
+          expiresAt: next.expiresAt,
+        },
+      })
+      .catch(() => undefined);
+    return next;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Returns a live Discord access token for a signed-in user. Tokens are kept in
+ * the database because Discord rotates refresh tokens and the NextAuth JWT is
+ * not rewritten by getServerSession in the App Router.
+ */
+async function getDiscordToken(userId: string): Promise<string | null> {
+  const row = await prisma.discordCredential.findUnique({ where: { userId } }).catch(() => null);
+  let credential: DiscordToken | null = row
+    ? { accessToken: row.accessToken, refreshToken: row.refreshToken, expiresAt: row.expiresAt }
+    : null;
+
+  if (!credential) {
+    // Sessions created before DiscordCredential existed still carry the pair
+    // inside the encrypted JWT. Import it once, then use the database copy.
+    const legacy = await readJwtToken();
+    if (legacy) {
+      credential = legacy;
+      await prisma.discordCredential
+        .upsert({
+          where: { userId },
+          update: {
+            accessToken: legacy.accessToken,
+            refreshToken: legacy.refreshToken,
+            expiresAt: legacy.expiresAt,
+          },
+          create: {
+            userId,
+            accessToken: legacy.accessToken,
+            refreshToken: legacy.refreshToken,
+            expiresAt: legacy.expiresAt,
+          },
+        })
+        .catch(() => undefined);
+    }
+  }
+
+  if (!credential) return null;
+
+  const now = Math.floor(Date.now() / 1000);
+  if (credential.expiresAt > 0 && now > credential.expiresAt - 60) {
+    if (credential.refreshToken) {
+      const refreshed = await refreshDiscordToken(userId, credential.refreshToken);
+      if (refreshed) return refreshed.accessToken;
+    }
+    if (now >= credential.expiresAt) return null;
+  }
+
+  return credential.accessToken;
+}
+
 /** Fetches the guilds the signed-in user can manage. */
 export async function getManageableGuilds(options: { strict?: boolean } = {}): Promise<DiscordGuild[]> {
   const session = await getSession();
-  const token = await getDiscordToken();
-  if (!session?.user || !token) return [];
+  const userId = session?.user?.id;
+  if (!session?.user || !userId) return [];
+  const token = await getDiscordToken(userId);
+  if (!token) return [];
 
   try {
     const res = await fetch('https://discord.com/api/v10/users/@me/guilds?with_counts=true', {
@@ -111,11 +215,15 @@ export interface GuildAccess {
  */
 export async function requireGuildAccess(guildId: string): Promise<GuildAccess> {
   const session = await getSession();
-  const token = await getDiscordToken();
   const userDiscordId = session?.user?.id;
 
-  if (!session?.user || !token || !userDiscordId) {
+  if (!session?.user || !userDiscordId) {
     throw new ApiError(401, 'You need to sign in again.', 'SESSION_EXPIRED');
+  }
+
+  const token = await getDiscordToken(userDiscordId);
+  if (!token) {
+    throw new ApiError(401, 'Your Discord session expired. Sign in again.', 'SESSION_EXPIRED');
   }
 
   let res: Response;

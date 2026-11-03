@@ -54,7 +54,18 @@ import { PageHeader } from '@/components/ui/page-header';
 import { Badge, StatusDot } from '@/components/ui/badge';
 import { cn, formatDuration } from '@/lib/utils';
 
-const FILTERS = ['bassboost', 'nightcore', 'vaporwave', '8d', 'karaoke', 'tremolo', 'vibrato', 'soft'];
+const FILTERS = [
+  'bassboost',
+  'nightcore',
+  'vaporwave',
+  'slowmode',
+  '8d',
+  'karaoke',
+  'tremolo',
+  'vibrato',
+  'distortion',
+  'lowpass',
+];
 
 function usePlayer(guildId: string) {
   const queryClient = useQueryClient();

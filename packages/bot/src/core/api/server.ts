@@ -152,6 +152,9 @@ async function handlePlayerAction(client: BotClient, guildId: string, body: Reco
   if (action === 'join') {
     const guild = client.guilds.cache.get(guildId);
     if (!guild) throw new AppError('GUILD_NOT_FOUND', 'That server is not cached by the bot.', 404);
+    if (client.lavalinkStatus() !== 'connected') {
+      throw new AppError('LAVALINK_OFFLINE', 'The Lavalink node is offline.', 503);
+    }
     if (typeof value !== 'string' || !value.trim()) {
       throw new AppError('BAD_VALUE', 'join expects a voice channel id.', 400);
     }
@@ -176,7 +179,17 @@ async function handlePlayerAction(client: BotClient, guildId: string, body: Reco
       throw new AppError('MISSING_PERMISSION', 'The bot needs a text channel where it can send messages.', 403);
     }
     const existing = client.musicManager.getQueue(guildId);
-    if (existing?.player) throw new AppError('ALREADY_CONNECTED', 'The bot is already connected in that server.', 409);
+    const connection = client.shoukaku.connections.get(guildId);
+    if (existing?.player && connection && connection.channelId === voiceChannel.id) {
+      throw new AppError('ALREADY_CONNECTED', 'The bot is already connected in that server.', 409);
+    }
+
+    // Move the bot if it is already connected somewhere else.
+    if (connection && connection.channelId !== voiceChannel.id) {
+      await client.shoukaku.leaveVoiceChannel(guildId);
+      if (existing) existing.player = null;
+    }
+
     const queue = existing ?? client.musicManager.createQueue(guildId, textChannel, voiceChannel);
     queue.voiceChannel = voiceChannel;
     await queue.connect();
@@ -225,7 +238,9 @@ async function handlePlayerAction(client: BotClient, guildId: string, body: Reco
         throw new AppError('BAD_VALUE', 'play expects a URL or search query.', 400);
       }
       const node = client.shoukaku.nodes.get('default');
-      if (!node) throw new AppError('LAVALINK_OFFLINE', 'The Lavalink node is offline.', 503);
+      if (!node || client.lavalinkStatus() !== 'connected') {
+        throw new AppError('LAVALINK_OFFLINE', 'The Lavalink node is offline.', 503);
+      }
       const resolved = await resolveTracks(node, value.trim());
       if (!resolved.tracks.length) {
         throw new AppError('NO_RESULTS', 'No tracks matched that query.', 422);
@@ -236,8 +251,8 @@ async function handlePlayerAction(client: BotClient, guildId: string, body: Reco
       break;
     }
     case 'leave':
-      queue.stop();
-      client.musicManager.deleteQueue(guildId);
+      await queue.stop();
+      await client.musicManager.deleteQueue(guildId);
       break;
     case 'clear':
       queue.clearQueue();

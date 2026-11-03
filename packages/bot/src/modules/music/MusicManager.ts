@@ -51,10 +51,10 @@ export class MusicManager {
     return queue;
   }
 
-  public deleteQueue(guildId: string): void {
+  public async deleteQueue(guildId: string): Promise<void> {
     const queue = this.queues.get(guildId);
     if (queue) {
-      queue.destroy();
+      await queue.destroy();
       this.queues.delete(guildId);
     }
   }
@@ -90,6 +90,29 @@ export class Queue {
   }
 
   public async connect(): Promise<Player> {
+    if (
+      this.player &&
+      this.client.shoukaku.players.has(this.guildId) &&
+      this.client.shoukaku.connections.has(this.guildId)
+    ) {
+      return this.player;
+    }
+    this.player = null;
+
+    // A previous process or an interrupted leave can leave a Shoukaku player
+    // behind. Reuse it when the connection is still alive; otherwise clear the
+    // stale state before joining, or Shoukaku rejects the join.
+    const existing = this.client.shoukaku.players.get(this.guildId);
+    const connection = this.client.shoukaku.connections.get(this.guildId);
+    if (existing && connection) {
+      this.player = existing;
+      this.bindPlayer(existing);
+      return existing;
+    }
+    if (existing || connection) {
+      await this.client.shoukaku.leaveVoiceChannel(this.guildId);
+    }
+
     const player = await this.client.shoukaku.joinVoiceChannel({
       guildId: this.guildId,
       channelId: this.voiceChannel.id,
@@ -97,24 +120,27 @@ export class Queue {
     });
 
     this.player = player;
+    this.bindPlayer(player);
 
+    return player;
+  }
+
+  private bindPlayer(player: Player): void {
     player.on('start', () => {
       logger.info(`Started playing: ${this.currentTrack?.info.title}`);
     });
 
-    player.on('end', () => {
-      this.handleTrackEnd();
+    player.on('end', (event: { reason?: string }) => {
+      this.handleTrackEnd(event.reason);
     });
 
     player.on('closed', () => {
-      this.destroy();
+      void this.destroy();
     });
 
     player.on('exception', (error: any) => {
       logger.error('Player error:', error);
     });
-
-    return player;
   }
 
   public addTrack(track: Track): void {
@@ -126,10 +152,6 @@ export class Queue {
   }
 
   public async play(): Promise<void> {
-    if (!this.player) {
-      await this.connect();
-    }
-
     if (this.paused) {
       this.player?.setPaused(false);
       this.paused = false;
@@ -139,9 +161,13 @@ export class Queue {
     if (this.tracks.length === 0) {
       if (this.currentTrack) {
         this.currentTrack = null;
-        this.destroy();
+        await this.destroy();
       }
       return;
+    }
+
+    if (!this.player) {
+      await this.connect();
     }
 
     if (this.loop === 'track' && this.currentTrack) {
@@ -190,15 +216,12 @@ export class Queue {
     }
   }
 
-  public stop(): void {
+  public async stop(): Promise<void> {
     this.tracks = [];
     this.currentTrack = null;
     this.previousTrack = null;
-    if (this.player) {
-      this.player.stopTrack();
-      this.client.shoukaku.leaveVoiceChannel(this.guildId);
-    }
-    this.destroy();
+    if (this.player) this.player.stopTrack();
+    await this.destroy();
   }
 
   public setVolume(volume: number): void {
@@ -280,24 +303,32 @@ export class Queue {
     }
   }
 
-  private handleTrackEnd(): void {
+  private handleTrackEnd(reason?: string): void {
+    // Lavalink emits `replaced` when a new track takes over, and `cleanup`
+    // when the player is being destroyed. Advancing on those events would
+    // skip the track that was just started.
+    if (reason === 'replaced' || reason === 'cleanup') return;
+
     if (this.loop === 'track' && this.currentTrack) {
       this.player?.playTrack({ track: { encoded: this.currentTrack.encoded } });
     } else if (this.loop === 'queue' && this.currentTrack) {
       this.tracks.push(this.currentTrack);
-      this.play();
+      void this.play();
     } else {
-      this.play();
+      void this.play();
     }
   }
 
-  public destroy(): void {
-    if (this.player) {
-      this.client.shoukaku.leaveVoiceChannel(this.guildId);
-      this.player = null;
-    }
+  public async destroy(): Promise<void> {
+    const player = this.player ?? this.client.shoukaku.players.get(this.guildId) ?? null;
+    this.player = null;
     this.currentTrack = null;
     this.previousTrack = null;
     this.tracks = [];
+    if (player) {
+      // Await the remote destroy so a rejoin immediately after leaving does
+      // not hit Shoukaku's "already have an existing connection" guard.
+      await this.client.shoukaku.leaveVoiceChannel(this.guildId);
+    }
   }
 }

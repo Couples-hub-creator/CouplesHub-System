@@ -317,6 +317,22 @@ modules into real bot features and closes the gap to MEE6/Dyno/Carl-bot depth.
 - Server clock skew between dashboard and bot is under five minutes. Both
   containers use `TZ` but signatures use Unix milliseconds, so timezone does not
   affect verification.
+- Dashboard Discord tokens live in `DiscordCredential` and are refreshed there.
+  NextAuth's App Router `getServerSession` does not rewrite the session JWT, and
+  Discord rotates refresh tokens, so keeping the pair only in the JWT loses the
+  rotated token after the first refresh.
+- The dashboard can start a player with the `join` action before any queue
+  exists. `/play` still works from chat; the dashboard picker is a convenience,
+  not a second playback engine.
+- A search result is a list of candidates, so `/play` enqueues the first one. A
+  real playlist enqueues every track. Treating both as playlists was the source
+  of the duplicate-queue bug.
+- Lavalink track-end handling ignores `replaced` and `cleanup` reasons. Those
+  arrive when a new track takes over or the player is destroyed; advancing on
+  them skips tracks or reconnects after a stop.
+- Lavalink uses the `youtube-source` plugin with `MUSIC`, `ANDROID_VR`, `WEB`,
+  `WEBEMBEDDED` and `TVHTML5_SIMPLY`. Some videos still require a cookie or an
+  OAuth refresh token; the bot reports the track failure instead of hanging.
 
 ## Verification in this pass
 

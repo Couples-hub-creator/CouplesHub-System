@@ -783,3 +783,15 @@ model PlatformState {
   value     Json     @default("{}")
   updatedAt DateTime @updatedAt
 }
+
+/// Discord OAuth tokens for the dashboard. Discord access tokens last about
+/// seven days, and refresh tokens rotate, so the refreshed pair must be
+/// persisted somewhere the NextAuth JWT callback cannot reach reliably.
+model DiscordCredential {
+  userId       String   @id
+  accessToken  String
+  refreshToken String?
+  expiresAt    Int
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}

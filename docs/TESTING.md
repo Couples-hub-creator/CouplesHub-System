@@ -111,7 +111,11 @@ on a production guild.
 ### Music and radio
 
 - [ ] `/play` joins, queues and starts playback with Lavalink online.
-- [ ] `/pause`, `/resume`, `/skip`, `/stop`, `/volume`, `/loop`, `/seek` work.
+- [ ] A plain search enqueues one result; a playlist URL enqueues every track.
+- [ ] The dashboard music page joins a voice channel without `/play`, then
+      queues a search result.
+- [ ] `/pause`, `/resume`, `/skip`, `/previous`, `/stop`, `/volume`, `/loop`,
+      `/seek` work. Loop-track restarts the same track instead of skipping it.
 - [ ] `/radio play` starts a station; `/radio 247 on` survives a bot restart.
 - [ ] With Lavalink offline, music commands return a clear unavailable message
       and the rest of the bot still works.

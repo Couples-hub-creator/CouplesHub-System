@@ -35,9 +35,15 @@ same password in both services.
 
 ## Sources
 
-- YouTube, SoundCloud, Bandcamp, Twitch, Vimeo and direct HTTP streams are
-  enabled in `application.yml`.
-- YouTube occasionally asks for a fresh visitor token. If YouTube search fails,
-  use a SoundCloud URL or add a LavaSrc plugin with your own credentials.
-- `Lavalink.jar` and `logs/` are ignored by git; the jar is downloaded at
-  runtime.
+- YouTube goes through the `youtube-source` plugin configured under `plugins`
+  in `application.yml`. The built-in YouTube source is disabled. The plugin is
+  downloaded into `plugins/` on first start.
+- The plugin uses `MUSIC`, `ANDROID_VR`, `WEB`, `WEBEMBEDDED` and
+  `TVHTML5_SIMPLY`. Search and playlists work without credentials. Some videos
+  still answer "This video requires login"; that is a YouTube-side restriction,
+  not a Lavalink failure. Add a burner account cookie or OAuth refresh token to
+  the plugin if those videos matter.
+- SoundCloud's built-in source is unreliable on Lavalink 4.2.2. Use a direct
+  HTTP stream, Bandcamp, Twitch, Vimeo or a LavaSrc plugin for SoundCloud.
+- `Lavalink.jar`, `plugins/` and `logs/` are ignored by git. The jar is
+  downloaded by `start.bat`; the plugin is downloaded by Lavalink.

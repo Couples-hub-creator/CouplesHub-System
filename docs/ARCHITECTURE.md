@@ -186,6 +186,10 @@ service, not in a migration.
   an undo path where the platform allows it.
 - Anti-nuke defaults to alert-only and anti-bot is off, so a new install cannot
   mass-punish members before an operator reviews the thresholds.
+- Discord OAuth tokens are stored in `DiscordCredential`, keyed by Discord user
+  id, and refreshed server-side. Discord rotates refresh tokens and
+  `getServerSession` does not rewrite the NextAuth JWT in the App Router, so a
+  JWT-only refresh eventually breaks every guild-scoped call.
 - Secrets are environment-only. The repository ships no credentials.
 
 ## Failure behaviour
