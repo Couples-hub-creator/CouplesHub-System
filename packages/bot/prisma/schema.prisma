@@ -540,6 +540,7 @@ model RadioStation {
 
   guild     Guild    @relation(fields: [guildId], references: [guildId], onDelete: Cascade)
 
+  @@unique([guildId, name])
   @@index([guildId])
 }
 

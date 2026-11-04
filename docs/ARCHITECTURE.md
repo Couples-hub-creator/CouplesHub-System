@@ -197,7 +197,7 @@ service, not in a migration.
 | Failure | Behaviour |
 | --- | --- |
 | Redis down | In-process cache, warning log, no feature loss. |
-| Lavalink down | Music commands reply with a clear unavailable message; the rest of the bot keeps working. Radio reconnect waits for a node. |
+| Lavalink down | Music commands reply with a clear unavailable message; the rest of the bot keeps working. Radio reconnect waits for a node, and a supervisor re-adds the node if Lavalink was still booting. |
 | Database down | Startup fails fast (`$connect`); at runtime command handlers return a database-unavailable message. |
 | Dashboard bot API unset | Player and generic module console report an explicit unavailable state. |
 | Module throws during load | Logged; other modules continue. |

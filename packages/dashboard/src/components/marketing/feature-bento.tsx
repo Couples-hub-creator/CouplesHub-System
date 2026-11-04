@@ -277,7 +277,7 @@ function AiChatVisual() {
       >
         <div className="flex items-center gap-1.5">
           <Sparkles className="size-3 text-emerald" />
-          <span className="text-[11px] text-mist">Something slow to start. Try the lofi station.</span>
+          <span className="text-[11px] text-mist">Something slow to start. Try Groove Salad.</span>
         </div>
         <div className="mt-1.5 flex gap-1" aria-hidden>
           <span className="size-1 rounded-full bg-emerald/60 animate-typing-dot" />

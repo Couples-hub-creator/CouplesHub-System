@@ -1,3 +1,4 @@
+import { Prisma } from '@prisma/client';
 import { withHandler, readJson } from '@/lib/server/api';
 import { requireGuildAccess, ensureGuild, ApiError } from '@/lib/server/auth';
 import { rateLimit } from '@/lib/server/rate-limit';
@@ -48,6 +49,12 @@ export const POST = withHandler<Ctx>(async (request, { params }) => {
   const input = await readJson(request, stationSchema);
   await ensureGuild(params.guildId);
 
+  const duplicate = await prisma.radioStation.findFirst({
+    where: { guildId: params.guildId, name: { equals: input.name, mode: 'insensitive' } },
+    select: { id: true },
+  });
+  if (duplicate) throw new ApiError(409, 'A station with that name already exists.', 'STATION_EXISTS');
+
   const station = await prisma.radioStation.create({
     data: {
       guildId: params.guildId,
@@ -58,6 +65,11 @@ export const POST = withHandler<Ctx>(async (request, { params }) => {
       favorite: input.favorite ?? false,
       isCustom: true,
     },
+  }).catch((error: unknown) => {
+    if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') {
+      throw new ApiError(409, 'A station with that name already exists.', 'STATION_EXISTS');
+    }
+    throw error;
   });
 
   await publish(params.guildId, 'settings:updated', { module: 'radio', action: 'station-create' });
@@ -117,8 +129,15 @@ export const DELETE = withHandler<Ctx>(async (request, { params }) => {
 
   const station = await prisma.radioStation.findFirst({ where: { id, guildId: params.guildId } });
   if (!station) throw new ApiError(404, 'That station does not exist in this server.', 'NOT_FOUND');
+  if (!station.isCustom) throw new ApiError(403, 'Built-in stations cannot be deleted.', 'BUILT_IN_STATION');
 
-  await prisma.radioStation.delete({ where: { id: station.id } });
+  await prisma.$transaction([
+    prisma.radioStation.delete({ where: { id: station.id } }),
+    prisma.musicSettings.updateMany({
+      where: { guildId: params.guildId, lastRadioStationId: station.id },
+      data: { lastRadioStationId: null },
+    }),
+  ]);
   await publish(params.guildId, 'settings:updated', { module: 'radio', action: 'station-delete' });
   return { deleted: station.id };
 });

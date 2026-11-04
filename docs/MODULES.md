@@ -226,9 +226,10 @@ Anti-nuke, anti-bot, account-age gates, lockdown and snapshot restore.
 Lavalink v4 playback, queue controls and radio.
 
 - **Commands:** `/radio play|list|add|remove|favorite|247` plus the legacy `/play`, `/pause`, `/resume`, `/skip`, `/stop`, `/queue`, `/nowplaying`, `/loop`, `/seek`, `/volume`, `/help`.
-- **Events:** `clientReady`, `voiceStateUpdate`
+- **Events:** `clientReady`, `guildCreate`, `voiceStateUpdate`
 - **Config:** uses `MusicSettings` and `Guild.musicEnabled`; no generic config block, because the dedicated dashboard player and radio pages already own these values.
-- **24/7 radio:** `MusicSettings.lastRadioStationId` + `radioTextChannelId`; the module reconnects on `clientReady` and after a bot voice disconnect.
+- **Radio library:** 11 built-in SomaFM streams are seeded per guild and reconciled on startup. Built-ins cannot be deleted; custom stations are user-owned. `@@unique([guildId, name])` prevents duplicate names.
+- **24/7 radio:** `MusicSettings.lastRadioStationId` + `radioTextChannelId`; the module waits for a connected Lavalink node, reconnects on `clientReady`, and after a bot voice disconnect. A supervisor re-adds the node if Lavalink starts late.
 - **Persistence:** `MusicSettings`, `RadioStation`, `RadioFavorite`, `SavedPlaylist`.
 
 ## Security

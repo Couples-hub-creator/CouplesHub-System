@@ -1,5 +1,5 @@
 import { GatewayIntentBits, Partials } from 'discord.js';
-import { Shoukaku, Connectors } from 'shoukaku';
+import { Constants, Shoukaku, Connectors } from 'shoukaku';
 import { BotClient } from './structures/BotClient';
 import { MusicManager } from './modules/music/MusicManager';
 import { loadCommands } from './handlers/commandHandler';
@@ -28,21 +28,21 @@ const client = new BotClient({
 
 client.musicManager = new MusicManager(client);
 
+const lavalinkNode = {
+  name: 'default',
+  url: `${env.LAVALINK_HOST}:${env.LAVALINK_PORT}`,
+  auth: env.LAVALINK_PASSWORD,
+  secure: env.LAVALINK_SECURE,
+};
+
 client.shoukaku = new Shoukaku(
   new Connectors.DiscordJS(client),
-  [
-    {
-      name: 'default',
-      url: `${env.LAVALINK_HOST}:${env.LAVALINK_PORT}`,
-      auth: env.LAVALINK_PASSWORD,
-      secure: env.LAVALINK_SECURE,
-    },
-  ],
+  [lavalinkNode],
   {
     moveOnDisconnect: true,
     resume: true,
     reconnectTries: 30,
-    reconnectInterval: 5000,
+    reconnectInterval: 5,
     restTimeout: 5000,
   },
 );
@@ -52,6 +52,60 @@ client.shoukaku.on('error', (name, error) => {
     `Lavalink node [${name}] error: ${error instanceof Error ? error.message || error.name : String(error)}`,
   );
 });
+
+client.shoukaku.on('ready', (name, resumed) => {
+  logger.info(`Lavalink node [${name}] ready${resumed ? ' (resumed session)' : ''}`);
+});
+
+client.shoukaku.on('close', (name, code, reason) => {
+  logger.warn(`Lavalink node [${name}] closed (${code})${reason ? `: ${reason}` : ''}`);
+});
+
+client.shoukaku.on('raw', (name, payload: any) => {
+  if (payload?.op === 'ready') {
+    logger.info(`Lavalink node [${name}] ready payload: session=${payload.sessionId ? 'present' : 'missing'}`);
+  }
+});
+
+client.shoukaku.on('debug', (_name, message) => {
+  logger.debug(`Lavalink debug: ${message}`);
+});
+
+function ensureLavalinkNode(): void {
+  if (client.shoukaku.nodes.has(lavalinkNode.name)) return;
+  logger.warn('Lavalink node is missing; adding it again');
+  client.shoukaku.addNode(lavalinkNode);
+}
+
+// Lavalink logs "ready to accept connections" before its WebSocket endpoint
+// finishes initialising. An early connection can be closed after the upgrade,
+// which removes the node from Shoukaku. Re-add it until a session sticks.
+let connectingSince = 0;
+const nodeSupervisor = setInterval(() => {
+  const node = client.shoukaku.nodes.get(lavalinkNode.name);
+  if (!node) {
+    connectingSince = 0;
+    ensureLavalinkNode();
+    return;
+  }
+  if (node.state === Constants.State.CONNECTED) {
+    connectingSince = 0;
+    return;
+  }
+  if (node.state === Constants.State.CONNECTING) {
+    if (!connectingSince) connectingSince = Date.now();
+    if (Date.now() - connectingSince < 60_000) return;
+  }
+  logger.warn(`Lavalink node [${lavalinkNode.name}] is not connected; recreating it`);
+  connectingSince = 0;
+  try {
+    client.shoukaku.removeNode(lavalinkNode.name, 'Node supervisor reconnect');
+  } catch {
+    // The node was already removed between the lookup and the removal.
+  }
+  ensureLavalinkNode();
+}, 15_000);
+nodeSupervisor.unref?.();
 
 const moduleContext = {
   client,

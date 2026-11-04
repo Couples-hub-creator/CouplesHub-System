@@ -9,6 +9,7 @@ import { Command } from '../../structures/Command';
 import type { BotClient } from '../../structures/BotClient';
 import type { MusicManager, Track } from './MusicManager';
 import { resolveTracks } from './resolve';
+import { ensureBuiltInStations } from './stations';
 
 export class RadioCommand extends Command {
   public category = 'music' as const;
@@ -60,6 +61,8 @@ export class RadioCommand extends Command {
     const client = interaction.client as BotClient;
     const sub = interaction.options.getSubcommand();
 
+    await ensureBuiltInStations(client.prisma, interaction.guildId).catch(() => undefined);
+
     if (sub === 'list') {
       const stations = await client.prisma.radioStation.findMany({
         where: { guildId: interaction.guildId },
@@ -92,10 +95,18 @@ export class RadioCommand extends Command {
         await interaction.editReply({ content: 'The stream URL must start with http:// or https://.' });
         return;
       }
+      const name = interaction.options.getString('name', true).trim().slice(0, 80);
+      const duplicate = await client.prisma.radioStation.findFirst({
+        where: { guildId: interaction.guildId, name: { equals: name, mode: 'insensitive' } },
+      });
+      if (duplicate) {
+        await interaction.editReply({ content: 'A station with that name already exists.' });
+        return;
+      }
       const station = await client.prisma.radioStation.create({
         data: {
           guildId: interaction.guildId,
-          name: interaction.options.getString('name', true).trim().slice(0, 80),
+          name,
           streamUrl: url,
           genre: (interaction.options.getString('genre') ?? 'custom').trim().slice(0, 40) || 'custom',
           isCustom: true,
@@ -130,7 +141,13 @@ export class RadioCommand extends Command {
         await interaction.editReply({ content: 'Only custom stations can be deleted.' });
         return;
       }
-      await client.prisma.radioStation.delete({ where: { id: station.id } });
+      await client.prisma.$transaction([
+        client.prisma.radioStation.delete({ where: { id: station.id } }),
+        client.prisma.musicSettings.updateMany({
+          where: { guildId: interaction.guildId, lastRadioStationId: station.id },
+          data: { lastRadioStationId: null },
+        }),
+      ]);
       await interaction.editReply({ content: `Deleted **${station.name}**.` });
       return;
     }

@@ -254,7 +254,17 @@ modules into real bot features and closes the gap to MEE6/Dyno/Carl-bot depth.
   supports multi-select; `Poll.ended` allows safe endings.
 - **Radio 24/7 persistence.** `MusicSettings.lastRadioStationId` and
   `radioTextChannelId` let the module reconnect on `clientReady` and after a bot
-  voice disconnect.
+  voice disconnect. Resume waits for a connected Shoukaku node instead of
+  assuming Lavalink finished booting when the Discord client did.
+- **Built-in radio catalog is reconciled, not copied.** Eleven direct SomaFM
+  MP3 streams are upserted per guild and stale built-ins are removed. The
+  `@@unique([guildId, name])` constraint prevents duplicate stations. Built-ins
+  are protected from deletion in both the bot command and the dashboard route;
+  custom stations stay user-owned.
+- **Shoukaku reconnect interval is seconds.** `reconnectInterval: 5` means five
+  seconds. A value of `5000` would make the client wait over an hour between
+  attempts. A node supervisor also re-adds the node when Lavalink closes the
+  early handshake it accepts before its WebSocket endpoint is fully ready.
 - **AI personality compatibility.** Canonical values are
   `balanced|friendly|witty|professional|chaotic`; legacy dashboard values
   `concise` and `sarcastic` map to `professional` and `witty`. `monthlyQuota`

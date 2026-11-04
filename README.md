@@ -27,7 +27,8 @@ docs/          Architecture, module catalog, contracts and testing
 - **Localization:** English, Arabic and French command names and descriptions,
   RTL-aware card text, locale-aware messages.
 - **Music:** Lavalink v4 playback, queue management, filters and `/radio` with
-  favorites and 24/7 reconnection across restarts.
+  a built-in SomaFM station library, custom streams, favorites and 24/7
+  reconnection across restarts.
 - **Moderation:** cases with undo, warnings, timeouts, bans, purges, locks, slow
   mode, DM notices and appeal links.
 - **Auto-mod:** spam, caps, mentions, links, invites, bad words, Zalgo, raid

@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "node --import tsx --watch src/index.ts",
     "build": "tsc",
-    "test": "node --import tsx --test src/utils/time.test.ts src/core/config.test.ts src/core/modules/module-manifest.test.ts src/core/commandLocalization.test.ts",
+    "test": "node --import tsx --test src/utils/time.test.ts src/core/config.test.ts src/core/modules/module-manifest.test.ts src/core/commandLocalization.test.ts src/modules/music/stations.test.ts",
     "start": "node dist/index.js",
     "lint": "eslint src --ext .ts",
     "format": "prettier --write \"src/**/*.ts\""
